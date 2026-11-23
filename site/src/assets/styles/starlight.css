@@ -1,0 +1,192 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/funnel-display';
+@import '@fontsource-variable/funnel-sans';
+@import '@fontsource-variable/geist-mono';
+
+@layer base {
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+/* The docs load only this file, so the site's own values (§9.1, §9.2) are
+   mapped onto Starlight's variables here. Dark is near-black and orange,
+   light is white and electric violet, as everywhere else on the site. */
+:root {
+  --sl-font: 'Funnel Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  --sl-font-display: 'Funnel Display Variable', 'Funnel Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  --sl-font-mono: 'Geist Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --backdrop-color: #0a0a0acc;
+  --border: #272727;
+  --sl-color-accent: oklch(61.86% 0.1946 38.88);
+  --sl-color-accent-high: oklch(67.4% 0.2072 39.23);
+  --sl-color-accent-low: oklch(0.266 0.079 36.259);
+  --sl-color-black: #0a0a0a;
+  --sl-color-gray-1: #ededea;
+  --sl-color-gray-2: #ededea;
+  --sl-color-gray-3: #a1a1a1;
+  --sl-color-gray-4: #a1a1a1;
+  --sl-color-gray-5: #272727;
+  --sl-color-gray-6: #141414;
+  --sl-color-white: #ededea;
+  --list-marker-color: var(--sl-color-accent);
+}
+
+:root[data-theme='light'] {
+  --backdrop-color: #ffffffcc;
+  --border: #e6e6ea;
+  --sl-color-accent: oklch(55.8% 0.288 302.321);
+  --sl-color-accent-high: oklch(55.8% 0.288 302.321);
+  --sl-color-accent-low: oklch(0.946 0.033 307.174);
+  --sl-color-black: #ffffff;
+  --sl-color-gray-1: #0b0b0c;
+  --sl-color-gray-2: #0b0b0c;
+  --sl-color-gray-3: #55555c;
+  --sl-color-gray-4: #55555c;
+  --sl-color-gray-5: #e6e6ea;
+  --sl-color-gray-6: #f6f6f8;
+  --sl-color-gray-7: #f6f6f8;
+  --sl-color-white: #0b0b0c;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--sl-font-display);
+  letter-spacing: -0.035em;
+}
+
+header {
+  border: none !important;
+  padding: 0 !important;
+}
+
+header.header {
+  background-color: transparent !important;
+  height: 4.5rem !important;
+  margin-inline: auto !important;
+  padding-block: 0 !important;
+  padding-inline: 2rem !important;
+}
+
+header > div:first-of-type {
+  backdrop-filter: blur(12px) !important;
+  background-color: var(--backdrop-color) !important;
+  border: 1px var(--border) solid;
+  border-radius: 999px;
+  height: 100% !important;
+  margin-inline: auto !important;
+  margin-top: 1rem !important;
+  max-width: 1536px;
+  padding-inline: 2rem !important;
+  width: auto !important;
+}
+
+#starlight__sidebar {
+  border-radius: 1.25rem;
+  margin-top: 2rem !important;
+}
+
+.content-panel:first-of-type {
+  margin-top: 2rem !important;
+}
+
+.right-sidebar {
+  top: 2rem !important;
+}
+
+#starlight__on-this-page--mobile {
+  border: none !important;
+}
+
+mobile-starlight-toc > nav {
+  border: none !important;
+  border-radius: 1rem;
+  margin-top: 2rem !important;
+}
+
+select {
+  background-image: none;
+  box-shadow: none;
+}
+
+select:focus-visible {
+  outline: -webkit-focus-ring-color auto 1px;
+}
+
+article.card {
+  border-radius: 1.25rem;
+}
+
+.pagination-links a:hover {
+  border-color: var(--sl-color-accent);
+}
+
+.sl-link-card:hover {
+  border-color: var(--sl-color-gray-4) !important;
+}
+
+/* Flat asides: a panel with a hairline and the accent edge, no gradients (§9.3). */
+.starlight-aside--tip,
+.starlight-aside--note {
+  --sl-color-asides-border: var(--sl-color-accent);
+  --sl-color-asides-text-accent: var(--sl-color-text-accent);
+  background: var(--sl-color-gray-6);
+  border: 1px solid var(--sl-color-gray-5);
+  border-inline-start: 0.25rem solid var(--sl-color-accent);
+  border-radius: 1.25rem;
+  color: var(--sl-color-text);
+}
+
+.starlight-aside__icon {
+  transform: scale(0.8);
+}
+
+.sl-markdown-content ul:not(:where(.not-content *)) {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.sl-markdown-content ul:not(:where(.not-content *)) > li {
+  padding-left: 1.75rem;
+  position: relative;
+}
+
+.sl-markdown-content li:not(:where(.not-content *)) > ul,
+.sl-markdown-content li + li:not(:where(.not-content *)) {
+  margin-top: 0.625rem;
+}
+
+.sl-markdown-content ul:not(:where(.not-content *)) > li:before {
+  background: var(--list-marker-color);
+  border-radius: 1px;
+  content: '';
+  height: 2px;
+  left: 2px;
+  position: absolute;
+  top: 13px;
+  width: 0.875rem;
+}
+
+@media screen and (max-width: 800px) {
+  mobile-starlight-toc > nav {
+    border-radius: 1rem;
+    margin-top: 3rem !important;
+  }
+
+  header > div:first-of-type {
+    padding-inline-end: 5rem !important;
+  }
+
+  starlight-menu-button > button {
+    right: 3rem !important;
+    top: 2.2rem !important;
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  header.header {
+    padding-inline: 1.5rem !important;
+  }
+}

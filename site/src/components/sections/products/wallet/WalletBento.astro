@@ -1,0 +1,26 @@
+---
+// ref: buckleson.com - bento card style
+import SectionHead from '@components/home/SectionHead.astro';
+import Glyph from '@components/ui/Glyph.astro';
+import { walletPage } from '@data/product-pages/hyper-wallet';
+
+const m = walletPage.more;
+---
+
+<section class="mx-auto max-w-[85rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20" aria-labelledby={m.id}>
+  <SectionHead index={m.index} label={m.label} claim={m.claim} payoff={m.payoff} id={m.id} />
+  <ul class="mt-10 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-12" data-reveal-group>
+    {m.items.map(item => (
+      <li class:list={['glass-card rounded-3xl p-7 transition duration-300 hover:-translate-y-0.5', item.span]} data-reveal-item>
+        <span class="grid size-11 place-items-center rounded-xl bg-card ring-1 ring-line"><Glyph icon={item.icon} class="size-5 text-ink" /></span>
+        <h3 id={item.id} class="mt-5 text-xl font-semibold text-ink">{item.title}</h3>
+        <p class="mt-2 max-w-[44ch] text-pretty text-muted">{item.text}</p>
+        {item.chips && (
+          <ul class="mt-5 flex flex-wrap gap-2">
+            {item.chips.map(c => <li class="rounded-full bg-card px-3 py-1 text-xs ring-1 ring-line">{c}</li>)}
+          </ul>
+        )}
+      </li>
+    ))}
+  </ul>
+</section>

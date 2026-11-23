@@ -1,0 +1,42 @@
+---
+// ref: necta.framer.website - light card register; figure is ours
+/**
+ * Inline SVG, not an isometric figure: a swap from token A to token B with
+ * three candidate routes through small chain nodes. The chosen route is drawn
+ * in the accent colour, with a dot travelling it. Decorative; one sr-only caption.
+ */
+interface Props {
+  caption: string;
+}
+
+const { caption } = Astro.props;
+const chosen = 'M70 120 C140 120 150 60 230 60 S320 120 410 120';
+---
+
+<figure class="glass-card rounded-3xl p-4 sm:p-6">
+  <svg viewBox="0 0 480 240" class="route-fig h-auto w-full" fill="none" aria-hidden="true">
+    <path d="M70 120 C150 120 150 20 240 20 S330 120 410 120" stroke="var(--line)" stroke-width="1.5" />
+    <path d="M70 120 C150 120 160 220 240 220 S330 120 410 120" stroke="var(--line)" stroke-width="1.5" />
+    <path class="route-path" d={chosen} pathLength="1" stroke="var(--accent-600)" stroke-width="2" stroke-linecap="round" />
+    {[[240, 20], [240, 220], [230, 60]].map(([x, y]) => <circle cx={x} cy={y} r="7" fill="var(--card)" stroke="var(--line)" stroke-width="1.5" />)}
+    <circle cx="230" cy="60" r="7" fill="var(--card)" stroke="var(--accent-600)" stroke-width="2" />
+    <circle class="route-dot" r="4" fill="var(--accent-600)">
+      <animateMotion dur="6s" repeatCount="indefinite" path={chosen} begin="1.4s" />
+    </circle>
+    <circle cx="48" cy="120" r="24" fill="var(--card)" stroke="var(--ink)" stroke-width="1.5" />
+    <text x="48" y="125" text-anchor="middle" font-size="14" font-weight="600" fill="var(--ink)">A</text>
+    <circle cx="432" cy="120" r="24" fill="var(--card)" stroke="var(--ink)" stroke-width="1.5" />
+    <text x="432" y="125" text-anchor="middle" font-size="14" font-weight="600" fill="var(--ink)">B</text>
+  </svg>
+  <figcaption class="sr-only">{caption}</figcaption>
+</figure>
+
+<style>
+  /* Reduced motion (default): path fully drawn, no travelling dot. */
+  .route-dot { display: none; }
+  @media (prefers-reduced-motion: no-preference) {
+    .route-dot { display: inline; }
+    .route-path { stroke-dasharray: 1; animation: route-draw 1.2s ease-out both; }
+    @keyframes route-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  }
+</style>

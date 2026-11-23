@@ -1,0 +1,56 @@
+---
+/** Breadcrumb above the title: the docs hub, then the product page this section documents. */
+const { entry, sidebar } = Astro.locals.starlightRoute;
+const section = entry.id.split('/')[0];
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+type Item = { type: 'link' | 'group'; label: string; isCurrent?: boolean; entries?: Item[] };
+const holdsCurrent = (item: Item): boolean =>
+  item.type === 'link' ? !!item.isCurrent : (item.entries ?? []).some(holdsCurrent);
+const group = (sidebar as Item[]).find(holdsCurrent);
+const product = section === 'guides' ? null : `${base}/products/${section}/`;
+---
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href={`${base}/docs/`}>Docs</a></li>
+    {group && <li>{product ? <a href={product}>{group.label}</a> : <span aria-current="location">{group.label}</span>}</li>}
+  </ol>
+</nav>
+<h1 id="_top">{entry.data.title}</h1>
+
+<style>
+  .crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: var(--sl-font-mono);
+    font-size: var(--sl-text-xs);
+    font-weight: 500;
+  }
+  .crumbs li + li::before {
+    content: '/';
+    margin-inline-end: 0.5rem;
+    color: var(--sl-color-gray-4);
+  }
+  .crumbs a,
+  .crumbs span {
+    color: var(--sl-color-gray-3);
+    text-decoration: none;
+  }
+  .crumbs a:hover {
+    color: var(--sl-color-text-accent);
+  }
+  h1 {
+    margin-top: 1rem;
+    font-family: var(--sl-font-display);
+    font-size: var(--sl-text-h1);
+    line-height: var(--sl-line-height-headings);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    color: var(--sl-color-white);
+  }
+</style>

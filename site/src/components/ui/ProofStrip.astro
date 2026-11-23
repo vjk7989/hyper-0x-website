@@ -1,0 +1,23 @@
+---
+/**
+ * A row of measured figures. Renders nothing while `items` is empty, so the
+ * page has no proof row until a real, dated measurement is supplied.
+ */
+interface Props {
+  items?: { value: string; label: string; basis: string; date: string }[];
+}
+
+const { items = [] } = Astro.props;
+---
+
+{items.length > 0 && (
+  <dl class="mx-auto grid max-w-[85rem] grid-cols-1 gap-6 px-4 py-10 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
+    {items.map(item => (
+      <div>
+        <dt class="text-4xl font-semibold text-ink">{item.value}</dt>
+        <dd class="mt-1 text-ink/85">{item.label}</dd>
+        <dd class="mt-1 font-mono text-xs text-muted">{item.basis} · {item.date}</dd>
+      </div>
+    ))}
+  </dl>
+)}

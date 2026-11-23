@@ -1,0 +1,311 @@
+---
+import BrandLogo from '@components/BrandLogo.astro';
+import ThemeIcon from '@components/ThemeIcon.astro';
+import Glyph from '@components/ui/Glyph.astro';
+import { megaMenus } from '@data/navigation';
+import { BOOKING_URL } from '@data/constants';
+import { localePath } from '@utils/locale';
+
+/**
+ * Site header: a floating, translucent pill a little below the top edge,
+ * with the logo on the left, the four menus centred in their own pill and
+ * the calls to action on the right. All menus share one mega panel that
+ * resizes between them. The bar hides while scrolling down and returns on
+ * scroll up. On phones the menu is a
+ * full-screen sheet with drill-down views and pinned calls to action.
+ * `part="mobile"` renders only that sheet: the layout places it at the end
+ * of the page so the header and hero reach the first paint sooner.
+ */
+interface Props {
+  part?: 'header' | 'mobile';
+}
+
+const { part = 'header' } = Astro.props;
+const { locale } = Astro.locals;
+const href = (path: string) => localePath(locale, path);
+const widths: Record<string, string> = {
+  products: 'w-[min(56rem,calc(100vw-2rem))]',
+  services: 'w-[min(42rem,calc(100vw-2rem))]',
+  resources: 'w-[min(44rem,calc(100vw-2rem))]',
+  pricing: 'w-[min(22rem,calc(100vw-2rem))]',
+  about: 'w-[min(22rem,calc(100vw-2rem))]',
+  contact: 'w-[min(24rem,calc(100vw-2rem))]',
+};
+---
+
+{part === 'header' && (
+<Fragment>
+<header class="site-header fixed inset-x-0 top-0 z-50 px-2 pt-2.5 sm:px-3" data-header>
+  <div class="header-bar mx-auto max-w-[85rem] rounded-full">
+    <nav class="flex h-14 items-center gap-2 ps-4 pe-2 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:ps-5" aria-label="Main">
+      <a href={href('/')} class="me-auto shrink-0 justify-self-start rounded-lg focus-visible:ring-3 focus-visible:ring-orange-500 focus-visible:outline-hidden" aria-label="Hyper 0x home">
+        <BrandLogo />
+      </a>
+      <ul class="nav-links hidden items-center gap-0.5 rounded-full p-1 lg:flex">
+        {megaMenus.map(menu => (
+          <li>
+            <button
+              type="button"
+              class="menu-trigger inline-flex items-center gap-1 rounded-full px-3.5 py-2 text-[0.94rem] font-medium text-ink/80 transition hover:bg-ink/5 hover:text-ink aria-expanded:bg-ink/6 aria-expanded:text-ink"
+              aria-expanded="false"
+              aria-controls="mega-panel"
+              data-menu-trigger={menu.id}
+            >
+              {menu.label}
+              <Glyph icon="caret-down" class="size-3.5 transition duration-200 [[aria-expanded=true]>&]:rotate-180" />
+            </button>
+          </li>
+        ))}
+      </ul>
+      <div class="flex items-center gap-2 justify-self-end">
+        <ThemeIcon />
+        <a href={BOOKING_URL} class="cta-pill hidden whitespace-nowrap sm:inline-flex">
+          <span>Contact us</span>
+          <span class="cta-chip"><Glyph icon="arrow-up-right" class="size-3.5" /></span>
+        </a>
+        <button type="button" class="grid size-10 place-items-center rounded-full text-ink hover:bg-ink/5 lg:hidden" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false" data-mobile-open>
+          <Glyph icon="list" class="size-6" />
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <div id="mega-panel" class="mega-panel pointer-events-none absolute top-full left-1/2 hidden pt-2 lg:block" data-panel>
+    <div class="mega-card overflow-hidden rounded-[1.6rem] border border-line bg-card shadow-[0_24px_60px_-24px_rgb(20_18_30/0.35)]" data-panel-card>
+      {megaMenus.map(menu => (
+        <div class:list={['mega-content p-3', widths[menu.id]]} data-menu={menu.id} hidden>
+          <div class="grid gap-x-2" style={`grid-template-columns: repeat(${menu.columns.length}, minmax(0, 1fr));`}>
+            {menu.columns.map((column, index) => (
+              <div class:list={['p-1', index > 0 && 'border-s border-line ps-3']} data-tone={index % 3}>
+                <p class="px-2 pt-1 pb-2 font-mono text-xs font-medium text-muted">{column.heading}</p>
+                <ul>
+                  {column.items.map(item => (
+                    <li>
+                      <a href={href(item.href)} class="group flex items-start gap-3 rounded-xl p-2.5 transition duration-200 hover:bg-ground">
+                        <span class="nav-icon grid size-10 shrink-0 place-items-center rounded-xl transition duration-300 group-hover:-rotate-6 group-hover:scale-105">
+                          <Glyph ui={item.icon} class="size-[1.3rem]" />
+                        </span>
+                        <span class="min-w-0">
+                          <span class="flex items-center gap-2 text-sm font-semibold text-ink">
+                            {item.title}
+                            {item.badge && <span class="rounded-md bg-orange-100 px-1.5 py-px text-[0.65rem] font-semibold text-orange-800 dark:bg-orange-950 dark:text-orange-200">{item.badge}</span>}
+                          </span>
+                          <span class="mt-0.5 block text-[0.8rem] leading-snug text-muted">{item.desc}</span>
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <div class="mt-2 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-ground px-4 py-3 text-sm">
+            <a href={href(menu.footer.primary.href)} class="inline-flex items-center gap-1.5 font-semibold text-orange-700 hover:underline dark:text-orange-300">
+              {menu.footer.primary.label}<Glyph icon="arrow-right" class="size-4" />
+            </a>
+            <span class="flex flex-wrap gap-4">
+              {menu.footer.links.map(link => <a href={href(link.href)} class="text-muted hover:text-ink">{link.label}</a>)}
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</header>
+<div class="h-[4.5rem]" aria-hidden="true"></div>
+</Fragment>
+)}
+
+{part === 'mobile' && (
+<div id="mobile-menu" class="mobile-menu fixed inset-0 z-[70] flex flex-col bg-ground lg:hidden" hidden data-mobile-menu>
+  <div class="flex h-16 items-center justify-between border-b border-line px-4">
+    <BrandLogo />
+    <button type="button" class="grid size-10 place-items-center rounded-full hover:bg-ink/5" aria-label="Close menu" data-mobile-close>
+      <Glyph icon="x" class="size-6" />
+    </button>
+  </div>
+  <div class="relative flex-1 overflow-hidden">
+    <ul class="mobile-view absolute inset-0 overflow-y-auto px-4 py-2" data-view="root">
+      {megaMenus.map(menu => (
+        <li class="border-b border-line">
+          <button type="button" class="flex w-full items-center justify-between py-4 text-lg font-semibold text-ink" data-open-view={menu.id}>
+            {menu.label}<Glyph icon="caret-right" class="size-5 text-muted" />
+          </button>
+        </li>
+      ))}
+      <li class="border-b border-line"><a href={href('/contact/')} class="block py-4 text-lg font-semibold text-ink">Contact</a></li>
+    </ul>
+    {megaMenus.map(menu => (
+      <div class="mobile-view absolute inset-0 overflow-y-auto px-4 py-2" data-view={menu.id} hidden>
+        <button type="button" class="flex items-center gap-1 py-3 text-sm font-semibold text-muted" data-back>
+          <Glyph icon="caret-left" class="size-4" />Back
+        </button>
+        {menu.columns.map((column, index) => (
+          <div class="mt-2" data-tone={index % 3}>
+            <p class="font-mono text-xs font-medium text-muted">{column.heading}</p>
+            <ul class="mt-1">
+              {column.items.map(item => (
+                <li>
+                  <a href={href(item.href)} class="flex items-center gap-3 rounded-xl py-3">
+                    <span class="nav-icon grid size-11 shrink-0 place-items-center rounded-xl"><Glyph ui={item.icon} class="size-6" /></span>
+                    <span>
+                      <span class="block font-semibold text-ink">{item.title}{item.badge && <span class="ms-2 text-xs font-medium text-orange-700 dark:text-orange-300">{item.badge}</span>}</span>
+                      <span class="block text-sm text-muted">{item.desc}</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+        <a href={href(menu.footer.primary.href)} class="mt-4 inline-flex items-center gap-1.5 py-2 font-semibold text-orange-700 dark:text-orange-300">
+          {menu.footer.primary.label}<Glyph icon="arrow-right" class="size-4" />
+        </a>
+      </div>
+    ))}
+  </div>
+  <div class="grid gap-2 border-t border-line p-4">
+    <a href={BOOKING_URL} class="rounded-full bg-orange-600 py-3 text-center font-semibold text-white dark:bg-orange-700">Contact us</a>
+  </div>
+</div>
+)}
+
+<style>
+  .site-header { transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1); }
+  .site-header.is-hidden { transform: translateY(calc(-100% - 0.75rem)); }
+  /* A frosted pill: translucent over the page, a hairline ring, a soft
+     shadow once the page scrolls under it. */
+  .header-bar {
+    background-color: color-mix(in oklab, var(--card) 45%, transparent);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7), 0 0 0 1px rgb(0 0 0 / 0.06);
+    backdrop-filter: blur(22px) saturate(1.8);
+    transition: background-color 300ms ease, box-shadow 300ms ease;
+  }
+  .site-header.is-scrolled .header-bar,
+  .site-header.has-menu .header-bar {
+    background-color: color-mix(in oklab, var(--card) 58%, transparent);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7), 0 0 0 1px rgb(0 0 0 / 0.07), 0 18px 40px -24px rgb(10 10 10 / 0.3);
+  }
+  /* Bold icons on a soft tinted tile; each menu column has its own colour. */
+  [data-tone] { --a: #2563eb; --t: #e7eeff; }
+  [data-tone='1'] { --a: #7c3aed; --t: #f0e9ff; }
+  [data-tone='2'] { --a: #059669; --t: #def6ec; }
+  .nav-icon { background: var(--t); color: var(--a); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--a) 16%, transparent); }
+  :global(.dark) .nav-icon { background: color-mix(in oklab, var(--a) 20%, #161616); color: color-mix(in oklab, var(--a) 65%, #fff); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--a) 30%, transparent); }
+  :global(.dark) .header-bar { box-shadow: 0 0 0 1px #2a2a2a; }
+  :global(.dark) .site-header.is-scrolled .header-bar { box-shadow: 0 0 0 1px #2e2e2e, 0 18px 40px -24px rgb(0 0 0 / 0.6); }
+  .nav-links { background: rgb(255 255 255 / 0.35); box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.05); }
+  :global(.dark) .nav-links { background: rgb(255 255 255 / 0.04); box-shadow: inset 0 0 0 1px #2a2a2a; }
+  .mega-panel { opacity: 0; transform: translate(-50%, -6px) scale(0.98); transform-origin: top center; transition: opacity 180ms ease, transform 220ms cubic-bezier(0.22, 1, 0.36, 1); }
+  .mega-panel.is-open { opacity: 1; transform: translate(-50%, 0) scale(1); pointer-events: auto; }
+  .mega-card { transition: width 220ms cubic-bezier(0.22, 1, 0.36, 1), height 220ms cubic-bezier(0.22, 1, 0.36, 1); }
+  .mega-content { animation: mega-in 220ms ease both; }
+  @keyframes mega-in { from { opacity: 0; transform: translateY(4px); } }
+  .mobile-view { transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1); }
+  @media (prefers-reduced-motion: reduce) {
+    .site-header, .mega-panel, .mega-card, .mobile-view { transition: none; }
+    .mega-content { animation: none; }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]')!;
+  const panel = header.querySelector<HTMLElement>('[data-panel]')!;
+  const card = header.querySelector<HTMLElement>('[data-panel-card]')!;
+  const triggers = [...header.querySelectorAll<HTMLButtonElement>('[data-menu-trigger]')];
+  let openId: string | null = null;
+  let closeTimer = 0;
+
+  // Hide on scroll down, show on scroll up.
+  let lastY = 0; // read on the first scroll, not at load (that would force a layout)
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    header.classList.toggle('is-scrolled', y > 8);
+    if (!openId) header.classList.toggle('is-hidden', y > lastY && y > 160);
+    lastY = y;
+  }, { passive: true });
+
+  function open(id: string) {
+    window.clearTimeout(closeTimer);
+    if (openId === id) return;
+    const content = card.querySelector<HTMLElement>(`[data-menu="${id}"]`)!;
+    const previous = openId ? card.querySelector<HTMLElement>(`[data-menu="${openId}"]`) : null;
+    const from = previous ? { w: card.offsetWidth, h: card.offsetHeight } : null;
+    card.querySelectorAll<HTMLElement>('[data-menu]').forEach(el => (el.hidden = el !== content));
+    // Morph the shared card from the previous menu's size to this one's.
+    card.style.width = '';
+    card.style.height = '';
+    const to = { w: card.offsetWidth, h: card.offsetHeight };
+    if (from) {
+      card.style.width = `${from.w}px`;
+      card.style.height = `${from.h}px`;
+      void card.offsetWidth;
+      card.style.width = `${to.w}px`;
+      card.style.height = `${to.h}px`;
+      window.setTimeout(() => { card.style.width = ''; card.style.height = ''; }, 240);
+    }
+    triggers.forEach(t => t.setAttribute('aria-expanded', String(t.dataset.menuTrigger === id)));
+    panel.classList.add('is-open');
+    header.classList.add('has-menu');
+    openId = id;
+  }
+
+  function close() {
+    triggers.forEach(t => t.setAttribute('aria-expanded', 'false'));
+    panel.classList.remove('is-open');
+    header.classList.remove('has-menu');
+    openId = null;
+  }
+  const closeSoon = () => { closeTimer = window.setTimeout(close, 160); };
+
+  triggers.forEach(trigger => {
+    const id = trigger.dataset.menuTrigger!;
+    trigger.addEventListener('mouseenter', () => open(id));
+    trigger.addEventListener('mouseleave', closeSoon);
+    trigger.addEventListener('click', () => (openId === id ? close() : open(id)));
+    trigger.addEventListener('keydown', event => {
+      if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        open(id);
+        card.querySelector<HTMLElement>(`[data-menu="${id}"] a`)?.focus();
+      }
+    });
+  });
+  panel.addEventListener('mouseenter', () => window.clearTimeout(closeTimer));
+  panel.addEventListener('mouseleave', closeSoon);
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape' || !openId) return;
+    const trigger = triggers.find(t => t.dataset.menuTrigger === openId);
+    close();
+    trigger?.focus();
+  });
+  document.addEventListener('click', event => {
+    if (openId && !header.contains(event.target as Node)) close();
+  });
+  panel.addEventListener('focusout', event => {
+    if (!header.contains(event.relatedTarget as Node)) close();
+  });
+
+  // Mobile sheet with drill-down views.
+  const sheet = document.querySelector<HTMLElement>('[data-mobile-menu]')!;
+  const openBtn = header.querySelector<HTMLButtonElement>('[data-mobile-open]')!;
+  const views = [...sheet.querySelectorAll<HTMLElement>('[data-view]')];
+  const show = (name: string) => views.forEach(view => (view.hidden = view.dataset.view !== name));
+  openBtn.addEventListener('click', () => {
+    show('root');
+    sheet.hidden = false;
+    openBtn.setAttribute('aria-expanded', 'true');
+    document.documentElement.style.overflow = 'hidden';
+    sheet.querySelector<HTMLElement>('[data-mobile-close]')?.focus();
+  });
+  const closeSheet = () => {
+    sheet.hidden = true;
+    openBtn.setAttribute('aria-expanded', 'false');
+    document.documentElement.style.overflow = '';
+    openBtn.focus();
+  };
+  sheet.querySelector('[data-mobile-close]')!.addEventListener('click', closeSheet);
+  sheet.querySelectorAll<HTMLElement>('[data-open-view]').forEach(btn => btn.addEventListener('click', () => show(btn.dataset.openView!)));
+  sheet.querySelectorAll('[data-back]').forEach(btn => btn.addEventListener('click', () => show('root')));
+  sheet.addEventListener('keydown', event => { if (event.key === 'Escape') closeSheet(); });
+</script>

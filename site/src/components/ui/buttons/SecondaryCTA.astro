@@ -1,0 +1,11 @@
+---
+/** Secondary call to action: an outlined pill next to PrimaryCTA. */
+interface Props {
+  title?: string;
+  url?: string;
+}
+
+const { title, url } = Astro.props;
+---
+
+<a href={url} class="cta-ghost text-ink focus-visible:ring-3 focus-visible:ring-orange-500/50 focus-visible:outline-hidden">{title}</a>

@@ -1,0 +1,85 @@
+---
+import SectionHead from '@components/home/SectionHead.astro';
+import Glyph from '@components/ui/Glyph.astro';
+import type { adePage } from '@data/product-pages/h0x-ade';
+
+// ref: kiloagent.framer.website - Real-Time Monitoring card; bento per CLAUDE.md 9.3
+interface Props {
+  page: typeof adePage;
+}
+
+const s = Astro.props.page.see;
+const card = 'rounded-3xl bg-card p-6 ring-1 ring-line sm:p-8';
+---
+
+<section aria-labelledby={s.id} class="mx-auto max-w-[85rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+  <SectionHead index="2" id={s.id} label={s.label} claim={s.claim} payoff={s.payoff} />
+  <div class="mt-10 grid gap-3 md:grid-cols-2 lg:grid-cols-12" data-reveal-group>
+    <div class:list={[card, 'md:col-span-2 lg:col-span-7 lg:row-span-2']} data-reveal-item>
+      <figure>
+        <figcaption class="sr-only">{s.console.caption}</figcaption>
+        <div aria-hidden="true" class="space-y-3 font-mono text-[0.75rem]">
+          <div class="rounded-2xl bg-ground p-4 ring-1 ring-line">
+            <p class="text-muted">{s.console.lanes[0]}</p>
+            {s.console.logs.map(log => <p class="mt-1 whitespace-pre text-ink/85">{log}</p>)}
+          </div>
+          <div class="rounded-2xl bg-ground p-4 ring-1 ring-line">
+            <p class="text-muted">{s.console.lanes[1]}</p>
+            {s.console.detections.map(d => <p class="mt-1 text-orange-300">{d}</p>)}
+          </div>
+          <div class="rounded-2xl bg-ground p-4 ring-1 ring-line">
+            <p class="text-muted">{s.console.lanes[2]}</p>
+            {s.console.spend.map(row => (
+              <div class="mt-2 flex items-center gap-3"><span class="w-16 text-ink/85">{row.agent}</span><span class="h-2 rounded-full bg-orange-400/80" style={`width:${row.w}%`}></span></div>
+            ))}
+          </div>
+        </div>
+      </figure>
+      <h3 id={s.a.id} class="mt-8 text-2xl font-semibold text-ink">{s.a.title}</h3>
+      <ul class="mt-4 space-y-3">
+        {s.a.bullets.map(b => (
+          <li class="flex gap-3 text-muted"><Glyph icon="check-circle" class="mt-0.5 size-5 shrink-0 text-orange-400" />{b}</li>
+        ))}
+      </ul>
+    </div>
+
+    <div class:list={[card, 'lg:col-span-5']} data-reveal-item>
+      <figure>
+        <figcaption class="sr-only">{s.b.caption}</figcaption>
+        <svg aria-hidden="true" viewBox="0 0 240 110" class="h-28 w-full" fill="none" stroke="var(--line)" stroke-width="1.5">
+          <circle cx="70" cy="55" r="44" />
+          <circle cx="196" cy="55" r="20" stroke="var(--accent-400)" />
+          <path d="M114 55h62" stroke="var(--accent-400)" stroke-dasharray="4 4" />
+          <text x="70" y="59" text-anchor="middle" fill="var(--muted)" stroke="none" font-size="12" font-family="monospace">finds</text>
+          <text x="196" y="59" text-anchor="middle" fill="var(--muted)" stroke="none" font-size="10" font-family="monospace">does</text>
+        </svg>
+      </figure>
+      <h3 id={s.b.id} class="mt-6 text-2xl font-semibold text-ink">{s.b.title}</h3>
+      <p class="mt-3 text-muted">{s.b.text}</p>
+    </div>
+
+    <div class:list={[card, 'lg:col-span-5']} data-reveal-item>
+      <figure>
+        <figcaption class="sr-only">{s.c.caption}</figcaption>
+        <svg aria-hidden="true" viewBox="0 0 240 110" class="h-28 w-full" fill="none" stroke="var(--line)" stroke-width="1.5">
+          <ellipse cx="120" cy="55" rx="78" ry="38" class="ade-loop" stroke="var(--accent-400)" stroke-dasharray="6 6" />
+          <g fill="var(--muted)" stroke="none" font-size="11" font-family="monospace" text-anchor="middle">
+            <text x="120" y="12">run</text>
+            <text x="214" y="59">receipt</text>
+            <text x="120" y="106">review</text>
+            <text x="26" y="59">rule</text>
+          </g>
+        </svg>
+      </figure>
+      <h3 id={s.c.id} class="mt-6 text-2xl font-semibold text-ink">{s.c.title}</h3>
+      <p class="mt-3 text-muted">{s.c.text}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    .ade-loop { animation: ade-dash 12s linear infinite; }
+    @keyframes ade-dash { to { stroke-dashoffset: -96; } }
+  }
+</style>

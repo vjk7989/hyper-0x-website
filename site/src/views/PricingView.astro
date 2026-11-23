@@ -1,0 +1,91 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import SectionHead from '@components/home/SectionHead.astro';
+import Glyph from '@components/ui/Glyph.astro';
+import PrimaryCTA from '@components/ui/buttons/PrimaryCTA.astro';
+import { BOOKING_URL } from '@data/constants';
+import { megaMenus } from '@data/navigation';
+import { servicePage, servicePages } from '@data/services';
+import { localePath } from '@utils/locale';
+
+/**
+ * Pricing. No prices are published (research/product-facts.md item 11), so
+ * this page states how an engagement starts and what its scope is made of,
+ * and invents no figure, tier or "from" price (R10.8, R11.4). The steps and
+ * the scope items are read from services.ts, so they follow the service pages.
+ */
+const steps = servicePage('forward-deployed-engineering')!.steps;
+
+const serviceNames = new Map(
+  megaMenus.filter(menu => menu.id === 'services').flatMap(menu => menu.columns.flatMap(column => column.items)).map(item => [item.href, item.title]),
+);
+const scope = servicePages.map(page => ({
+  id: page.id,
+  name: serviceNames.get(`/services/${page.id}/`) ?? page.id,
+  href: localePath('en', `/services/${page.id}/`),
+  items: page.deliverables.map(item => item.title),
+}));
+
+const published = [
+  { term: 'Prices', detail: 'Not published. We do not list a price, a tier or a starting figure for any service or product.' },
+  { term: 'Public layer 1 fees', detail: 'A fee model exists for the public Hyper 0x layer 1. No rate or figure is published, and neither is how fees are calculated.' },
+  { term: 'Success measures', detail: 'Agreed before a pilot starts, so both sides know what the pilot has to show.' },
+];
+
+const link = 'inline-flex items-center gap-1.5 font-medium text-ink transition hover:text-orange-700 dark:hover:text-orange-300';
+---
+
+<MainLayout title="Hyper 0x pricing" seoTitle="Hyper 0x Pricing: How an Engagement Starts" description="Hyper 0x does not publish prices. Every engagement starts with a 30-minute call, then a pilot on your own L2. See what is and is not published." kind={{ type: 'WebPage' }}>
+  <div class="mx-auto max-w-[85rem] px-4 pt-12 pb-16 sm:px-6 lg:px-8 lg:pt-16">
+    <div class="max-w-2xl">
+      <p class="font-mono text-xs font-medium text-muted">Pricing</p>
+      <h1 id="pricing" class="mt-3 text-4xl leading-[1.04] font-semibold text-ink sm:text-5xl">Hyper 0x pricing, and how an engagement starts</h1>
+      <p class="mt-4 max-w-[58ch] text-pretty text-muted">Hyper 0x does not publish prices. Every engagement starts with a 30-minute call with an engineer, then a pilot on your own L2, then production. This page, checked in November 2026, says what we do publish and what the scope of an engagement is made of.</p>
+      <div class="mt-6" data-reveal><PrimaryCTA title="Book a 30-minute call" url={BOOKING_URL} /></div>
+    </div>
+  </div>
+
+  <section class="mx-auto max-w-[85rem] scroll-mt-24 px-4 pb-16 sm:px-6 lg:px-8" aria-labelledby="start">
+    <SectionHead id="start" index="01" label="How it starts" claim="Call, pilot," payoff="then production." body="An engagement starts with a 30-minute call. We study your use case and agree on what success means, then run a scoped pilot before anything goes to production." />
+    <ol class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4 md:gap-5">
+      {steps.map((step, index) => (
+        <li class="rounded-[1.6rem] bg-card p-6 ring-1 ring-line" data-reveal>
+          <span class="grid size-12 place-items-center rounded-2xl bg-ink/5 text-ink"><Glyph icon={step.icon} class="size-6" /></span>
+          <h3 id={`step-${index + 1}`} class="mt-5 text-xl font-semibold text-ink">{step.title}</h3>
+          <p class="mt-2 text-pretty text-muted">{step.text}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="mx-auto max-w-[85rem] scroll-mt-24 px-4 pb-16 sm:px-6 lg:px-8" aria-labelledby="published">
+    <SectionHead id="published" index="02" label="What we publish" claim="What is public," payoff="and what is not." body="We state what is not published rather than leave it unsaid, so nothing here can be mistaken for a quote." />
+    <dl class="mt-10 grid gap-4 md:grid-cols-3 md:gap-5">
+      {published.map(item => (
+        <div class="rounded-[1.6rem] bg-card p-6 ring-1 ring-line sm:p-7" data-reveal>
+          <dt class="text-xl font-semibold text-ink">{item.term}</dt>
+          <dd class="mt-2 text-pretty text-muted">{item.detail}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <section class="mx-auto max-w-[85rem] scroll-mt-24 px-4 pb-16 sm:px-6 lg:px-8" aria-labelledby="scope">
+    <SectionHead id="scope" index="03" label="Scope" claim="Scope is set" payoff="in the first call." body="What you pay for depends on what we build and run with you. Each service page lists what it delivers, and these lists are the parts an engagement is scoped from." />
+    <div class="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 md:gap-5">
+      {scope.map(service => (
+        <section class="rounded-[1.6rem] bg-card p-6 ring-1 ring-line sm:p-7" aria-labelledby={`scope-${service.id}`} data-reveal>
+          <h3 id={`scope-${service.id}`} class="text-xl font-semibold text-ink">{service.name}</h3>
+          <ul class="mt-4 space-y-2 text-muted">
+            {service.items.map(item => <li class="flex gap-2.5"><Glyph icon="check-circle" class="mt-0.5 size-5 shrink-0 text-ink" />{item}</li>)}
+          </ul>
+          <a href={service.href} class={`${link} mt-5`}>See the {service.name} service<Glyph icon="arrow-right" class="size-4" /></a>
+        </section>
+      ))}
+    </div>
+    <div class="mt-8 flex flex-wrap gap-3" data-reveal>
+      <PrimaryCTA title="Book a 30-minute call" url={BOOKING_URL} />
+      <a href={localePath('en', '/contact/')} class={`${link} px-4 py-3`}>Talk to an engineer<Glyph icon="arrow-right" class="size-4" /></a>
+    </div>
+  </section>
+</MainLayout>

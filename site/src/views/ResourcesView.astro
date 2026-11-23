@@ -1,0 +1,97 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import SectionHead from '@components/home/SectionHead.astro';
+import Diagram from '@components/ui/Diagram.astro';
+import Glyph from '@components/ui/Glyph.astro';
+import PrimaryCTA from '@components/ui/buttons/PrimaryCTA.astro';
+import { architecture } from '@data/architecture';
+import { BOOKING_URL } from '@data/constants';
+import { decisions } from '@data/decisions';
+import { siblingSites } from '@data/navigation';
+import { entriesFor, pathFor } from '@utils/content';
+import { getCollection } from 'astro:content';
+import { localePath } from '@utils/locale';
+
+/**
+ * Resources (CLAUDE.md R11.7): how the chain is built at a high level, the
+ * decisions and what each one cost. The diagram and layer list come from
+ * architecture.ts, the decisions from decisions.ts, and the links out are read
+ * from the blog and docs collections, so none of them can drift.
+ */
+const chainTags = new Set(['Layer 2', 'Scaling', 'Cryptography', 'Post-quantum security', 'Interoperability', 'Custom blockchains', 'Settlement']);
+const articles = (await entriesFor('blog', 'en'))
+  .filter(entry => entry.data.tags.some(tag => chainTags.has(tag)))
+  .slice(0, 6)
+  .map(entry => ({ title: entry.data.title, href: pathFor(entry) }));
+
+const docs = (await getCollection('docs'))
+  .filter(entry => entry.id.startsWith('hyper-0x/'))
+  .sort((a, b) => (a.data.sidebar.order ?? 0) - (b.data.sidebar.order ?? 0))
+  .map(entry => ({ title: entry.data.title, href: localePath('en', `/${entry.id}/`) }));
+
+const link = 'inline-flex items-center gap-1.5 font-medium text-ink transition hover:text-orange-700 dark:hover:text-orange-300';
+---
+
+<MainLayout title="Hyper 0x resources" seoTitle="Hyper 0x Resources: How the Chain Is Built" description="How Hyper 0x is built and why: the architecture, six engineering decisions with what each one cost, and the docs and articles that go deeper." kind={{ type: 'CollectionPage' }}>
+  <div class="mx-auto max-w-[85rem] px-4 pt-12 pb-16 sm:px-6 lg:px-8 lg:pt-16">
+    <div class="max-w-2xl">
+      <p class="font-mono text-xs font-medium text-muted">Resources</p>
+      <h1 id="resources" class="mt-3 text-4xl leading-[1.04] font-semibold text-ink sm:text-5xl">How Hyper 0x is built, and why</h1>
+      <p class="mt-4 max-w-[58ch] text-pretty text-muted">Hyper 0x is a blockchain built so that teams can run AI agents with a gate, custody and a receipt for every action. This page explains the architecture and six decisions behind it, as the engineers who build it described them in November 2026. Each decision states what it cost as well as what it bought.</p>
+    </div>
+  </div>
+
+  <section class="mx-auto max-w-[85rem] scroll-mt-24 px-4 pb-16 sm:px-6 lg:px-8" aria-labelledby="architecture">
+    <SectionHead id="architecture" index="01" label="Architecture" claim="Three layers," payoff="one record." body="Buckleson is the parent company and builds the infrastructure. Hyper 0x is the blockchain, and PAVii is the AI layer. An action flows from the agent through the gate and custody, and settles through your private L2 to the Hyper 0x layer 1." />
+    <div class="mt-10 grid gap-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]" data-reveal>
+      <Diagram name="hyper0x" />
+      <dl class="grid content-start gap-3 rounded-[1.6rem] bg-card p-6 ring-1 ring-line sm:p-7">
+        {architecture.nodes.map(node => (
+          <div class="border-b border-line pb-3 last:border-0 last:pb-0">
+            <dt class="font-semibold text-ink">{node.label}</dt>
+            <dd class="text-muted">{node.sub}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[85rem] scroll-mt-24 px-4 pb-16 sm:px-6 lg:px-8" aria-labelledby="decisions">
+    <SectionHead id="decisions" index="02" label="Decisions" claim="Six decisions," payoff="and what each cost." body="Every architectural choice buys something and charges for it. These six shape most of what Hyper 0x is, with the charge stated. None carries a measured figure, because none is published." />
+    <div class="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
+      {decisions.map(decision => (
+        <article class="rounded-[1.6rem] bg-card p-6 ring-1 ring-line sm:p-7" aria-labelledby={`decision-${decision.id}`} data-reveal>
+          <h3 id={`decision-${decision.id}`} class="text-2xl font-semibold text-ink">{decision.title}</h3>
+          <dl class="mt-5 space-y-4">
+            <div><dt class="font-mono text-xs font-medium text-muted">Chosen</dt><dd class="mt-1 text-ink">{decision.chose}</dd></div>
+            <div><dt class="font-mono text-xs font-medium text-muted">Over</dt><dd class="mt-1 text-ink">{decision.instead}</dd></div>
+            <div><dt class="font-mono text-xs font-medium text-muted">What it bought</dt><dd class="mt-1 text-ink">{decision.bought}</dd></div>
+            <div><dt class="font-mono text-xs font-medium text-muted">What it cost</dt><dd class="mt-1 text-muted">{decision.cost}</dd></div>
+          </dl>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[85rem] scroll-mt-24 px-4 pb-16 sm:px-6 lg:px-8" aria-labelledby="deeper">
+    <SectionHead id="deeper" index="03" label="Go deeper" claim="Read the detail," payoff="in docs and articles." body="The docs describe the chain part by part. The articles argue the choices above, including what each one costs." />
+    <div class="mt-10 grid gap-4 md:grid-cols-2 md:gap-5">
+      <section class="rounded-[1.6rem] bg-card p-6 ring-1 ring-line sm:p-7" aria-labelledby="deeper-docs" data-reveal>
+        <h3 id="deeper-docs" class="text-2xl font-semibold text-ink">The chain, in the docs</h3>
+        <ul class="mt-5 space-y-2.5">
+          {docs.map(page => <li><a href={page.href} class={link}>{page.title}<Glyph icon="arrow-right" class="size-4" /></a></li>)}
+          <li><a href={localePath('en', '/docs/')} class={link}>All Hyper 0x documentation<Glyph icon="arrow-right" class="size-4" /></a></li>
+        </ul>
+      </section>
+      <section class="rounded-[1.6rem] bg-card p-6 ring-1 ring-line sm:p-7" aria-labelledby="deeper-articles" data-reveal>
+        <h3 id="deeper-articles" class="text-2xl font-semibold text-ink">Articles on the chain</h3>
+        <ul class="mt-5 space-y-2.5">
+          {articles.map(article => <li><a href={article.href} class={link}>{article.title}<Glyph icon="arrow-right" class="size-4" /></a></li>)}
+          <li><a href={localePath('en', '/blog/')} class={link}>All Hyper 0x articles<Glyph icon="arrow-right" class="size-4" /></a></li>
+        </ul>
+        <p class="mt-5 text-sm text-muted">Also from the group: {siblingSites.links.map((sibling, index) => (<>{index > 0 && ' and '}<a href={sibling.href} class="font-medium text-ink underline underline-offset-4">{sibling.label}</a></>))}.</p>
+      </section>
+    </div>
+    <div class="mt-8" data-reveal><PrimaryCTA title="Ask an engineer the awkward question" url={BOOKING_URL} /></div>
+  </section>
+</MainLayout>

@@ -1,0 +1,50 @@
+---
+title: H0x-ADE Overview
+description: 'H0x-ADE is a gateway that checks AI agent calls. Six gates check every agent call, and signed receipts on Hyper 0x record each decision.'
+head:
+  - tag: title
+    content: 'H0x-ADE Overview: Gateway for AI Agents | Hyper 0x Docs'
+sidebar:
+  order: 1
+---
+
+H0x-ADE is a gateway that checks what AI agents do. An AI agent is an AI model that uses tools to act. For example, an agent can read a file, send an email or call an API. H0x-ADE sits between your agents and your systems. Every call from the agent passes through H0x-ADE first.
+
+H0x-ADE supports Claude, Claude Code, Codex, ChatGPT, Grok, OpenCode and your own agents. You connect them through one gateway.
+
+## How it works
+
+H0x-ADE checks each call against six gates. A gate is a check that a call must pass. If a call breaks a rule, the gate refuses it. Allowed calls go through.
+
+| Gate | What it checks |
+| --- | --- |
+| Injection | Hidden instructions in text, such as a web page or a file |
+| Privacy | Personal data and secrets in prompts and outputs |
+| Supply chain | New packages and MCP servers (services that give agents tools) |
+| Budget | Token use, which is the amount of text the model reads and writes |
+| Egress | Where an agent can send data and what it can do |
+| Output | Scripts and secrets in the reply, before it reaches a user |
+
+The rules sit on Hyper 0x. H0x-ADE stores the egress rules as a smart contract. A smart contract is a program on the chain. Nobody can change it without a record.
+
+## How one agent call flows
+
+1. **The agent makes a call.** For example, it asks for a customer record. The call goes to the H0x-ADE gateway.
+2. **Injection check.** H0x-ADE looks for injected instructions. It treats the text as data, not as commands.
+3. **Privacy check.** H0x-ADE removes personal data and secrets before the model sees them.
+4. **Egress check.** The Hyper 0x contract decides if the action can reach your system.
+5. **Your system answers.** The allowed call reaches your tools, data or APIs.
+6. **Output check.** H0x-ADE removes scripts and secrets from the reply.
+7. **Receipt.** H0x-ADE writes a signed receipt on Hyper 0x. The receipt records the call and the decision.
+
+The budget gate watches the token count during the whole flow. It cuts the context when the context grows too large.
+
+## Receipts that show every change
+
+Each receipt holds a fingerprint of the receipt before it. A fingerprint is a short code made from the data, called a hash. This is a hash chain. If someone deletes or edits a receipt, the chain breaks. The break shows exactly which entry is missing.
+
+H0x-ADE anchors the chain on Hyper 0x. Auditors, billing teams and dispute teams can check the record. Read the [features page](../features/) for more details on each part.
+
+:::note
+H0x-ADE can also stop an agent. An agent moves from observed, to restricted, to stopped. A person can stop any agent at any time.
+:::

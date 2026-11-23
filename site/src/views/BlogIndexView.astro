@@ -1,0 +1,250 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import SectionHead from '@components/home/SectionHead.astro';
+import CardPost from '@components/ui/cards/CardPost.astro';
+import Glyph from '@components/ui/Glyph.astro';
+import PrimaryCTA from '@components/ui/buttons/PrimaryCTA.astro';
+import { BOOKING_URL } from '@data/constants';
+import { categories, categoryById, categoryOf, readingPaths } from '@utils/blog';
+import { entriesFor, pathFor, slugOf } from '@utils/content';
+import { getCopy } from '@/copy';
+import { localePath, type MarketingLocale } from '@utils/locale';
+
+/**
+ * Blog index: a header, a filter bar (topics with counts, and a search box),
+ * every post as a bento grid of glass cards that reflows as you filter, then
+ * reading paths: short ordered catalogues for a goal.
+ */
+interface Props {
+  locale: MarketingLocale;
+}
+
+const { locale } = Astro.props;
+const copy = getCopy(locale).blogIndex;
+// Newest first; among posts from the same day, alternate topics so the
+// grid never shows a run of one colour.
+const sorted = await entriesFor('blog', locale);
+const posts: typeof sorted = [];
+const pool = [...sorted];
+while (pool.length) {
+  const day = pool[0].data.pubDate.getTime();
+  const last = posts.length ? categoryOf(posts[posts.length - 1]).id : '';
+  const pick = pool.findIndex(post => post.data.pubDate.getTime() === day && categoryOf(post).id !== last);
+  posts.push(pool.splice(pick >= 0 ? pick : 0, 1)[0]);
+}
+const bySlug = Object.fromEntries(posts.map(post => [slugOf(post), post]));
+const counts = Object.fromEntries(categories.map(c => [c.id, posts.filter(post => categoryOf(post).id === c.id).length]));
+// Cell sizes repeat in sevens: a wide card, then six, with one more wide.
+const PATTERN = ['wide', 'std', 'std', 'std', 'std', 'wide', 'std'] as const;
+---
+
+<MainLayout title={copy.title} seoTitle={copy.seoTitle} description={copy.metaDescription} ogImage="/og/blog.png" kind={{ type: 'CollectionPage' }}>
+  <div class="relative isolate">
+  <div class="blog-backdrop" aria-hidden="true"><span></span><span></span></div>
+  <section class="mx-auto grid max-w-[85rem] grid-cols-1 gap-8 px-4 pt-12 sm:px-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-end lg:px-8 lg:pt-16">
+    <div>
+      <p class="font-mono text-xs font-medium text-muted">Blog</p>
+      <h1 class="mt-3 text-5xl leading-[1] font-semibold text-balance text-ink sm:text-6xl">{copy.heading}</h1>
+      <p class="mt-5 max-w-[60ch] text-lg text-pretty text-muted">{copy.subTitle}</p>
+    </div>
+    <div class="flex flex-wrap items-center gap-3 lg:justify-end">
+      <p class="glass-tint inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-ink"><Glyph ui="news" class="size-5 text-ink" />{posts.length} guides · {categories.length} topics</p>
+      <a href={localePath(locale, '/rss.xml')} class="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-ink ring-1 ring-line transition hover:ring-orange-500"><Glyph ui="announcement" class="size-5 text-ink" />RSS feed</a>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[85rem] px-4 pt-10 sm:px-6 lg:px-8" aria-labelledby="topics-title">
+    <h2 id="topics-title" class="font-mono text-xs font-medium text-muted">Browse by topic</h2>
+    <ul class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {categories.map((c, i) => {
+        const inTopic = posts.filter(post => categoryOf(post).id === c.id);
+        const minutes = inTopic.reduce((sum, post) => sum + post.data.readTime, 0);
+        // The subjects a topic covers: its most used tags, minus the topic itself.
+        const tagCount = new Map<string, number>();
+        inTopic.flatMap(post => post.data.tags).forEach(tag => tagCount.set(tag, (tagCount.get(tag) ?? 0) + 1));
+        const subjects = [...tagCount.entries()].filter(([tag]) => tag !== c.label).sort((a, b) => b[1] - a[1]).slice(0, i === 0 ? 6 : 4).map(([tag]) => tag);
+        return (
+          <li class:list={[i === 0 && 'sm:col-span-2']}>
+            <button type="button" class="topic-tile glass-card group flex h-full w-full flex-col rounded-[1.8rem] p-6 text-left" data-topic-tile={c.id}>
+              <span class="flex w-full items-start justify-between gap-4">
+                <span class="topic-icon grid size-14 place-items-center rounded-2xl"><Glyph ui={c.icon} class="size-7" /></span>
+                <span class="rounded-full bg-white/60 px-3 py-1 font-mono text-xs font-semibold text-ink ring-1 ring-line dark:bg-card">{inTopic.length} articles · {minutes} min</span>
+              </span>
+              <span class="mt-5 text-xl font-semibold text-ink">{c.label}</span>
+              <span class="mt-1.5 text-sm text-pretty text-muted">{c.blurb}</span>
+              <span class="mt-4 flex flex-wrap gap-1.5">
+                {subjects.map(tag => <span class="rounded-full bg-white/55 px-2.5 py-0.5 text-xs font-medium text-ink/75 ring-1 ring-line dark:bg-white/5">{tag}</span>)}
+              </span>
+              <span class:list={['mt-5 grid gap-2', i === 0 && 'sm:grid-cols-2']}>
+                {inTopic.slice(0, i === 0 ? 4 : 2).map(post => (
+                  <span class="flex items-start gap-2 text-sm leading-snug text-ink/85"><span class="topic-bullet mt-1.5 size-1.5 shrink-0 rounded-full"></span>{post.data.title}</span>
+                ))}
+              </span>
+              <span class="topic-more mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold">Show all {inTopic.length} articles<Glyph icon="arrow-right" class="size-4 transition group-hover:translate-x-1" /></span>
+            </button>
+          </li>
+        );
+      })}
+    </ul>
+  </section>
+  </div>
+
+  <section class="mx-auto max-w-[85rem] scroll-mt-24 px-4 pt-10 pb-16 sm:px-6 lg:px-8" aria-label="All articles" data-blog id="articles">
+    <div class="blog-filter glass-card sticky top-[4.75rem] z-20 flex flex-col gap-3 rounded-[1.6rem] p-2.5 sm:rounded-full lg:flex-row lg:items-center">
+      <div class="flex gap-1.5 overflow-x-auto [scrollbar-width:none]" role="group" aria-label="Topics">
+        <button type="button" class="topic-chip" aria-pressed="true" data-topic="all"><Glyph ui="grid" class="size-[1.15rem]" />All<span class="topic-count">{posts.length}</span></button>
+        {categories.map(c => (
+          <button type="button" class="topic-chip" aria-pressed="false" data-topic={c.id}><Glyph ui={c.icon} class="size-[1.15rem]" />{c.label}<span class="topic-count">{counts[c.id]}</span></button>
+        ))}
+      </div>
+      <label class="relative flex min-w-0 items-center lg:ms-auto lg:w-56 lg:shrink-0">
+        <span class="sr-only">Search articles</span>
+        <Glyph icon="magnifying-glass" class="pointer-events-none absolute left-3.5 size-4 text-muted" />
+        <input type="search" placeholder="Search articles" class="w-full rounded-full border-0 bg-card py-2.5 ps-10 pe-4 text-sm text-ink ring-1 ring-line placeholder:text-muted focus:ring-2 focus:ring-orange-500" data-search-input />
+      </label>
+    </div>
+    <p class="mt-5 text-sm text-muted" aria-live="polite" data-result>{posts.length} articles</p>
+
+    <ul class="post-grid mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3" data-grid>
+      {posts.map((post, i) => (
+        <li class:list={['post-cell', PATTERN[i % PATTERN.length] === 'wide' && 'is-wide']} data-cell>
+          <CardPost post={post} size={PATTERN[i % PATTERN.length]} headingLevel="h2" />
+        </li>
+      ))}
+    </ul>
+    <div class="glass-tint mt-4 rounded-[1.6rem] p-10 text-center" hidden data-empty>
+      <Glyph ui="search-ai" class="mx-auto size-10" />
+      <p class="mt-3 font-semibold text-ink">No articles match that search.</p>
+      <button type="button" class="mt-3 text-sm font-semibold text-orange-700 underline-offset-4 hover:underline dark:text-orange-300" data-clear>Show all articles</button>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[85rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20" aria-labelledby="paths-title">
+    <SectionHead index="01" label="Reading paths" claim="Not sure where to start?" payoff="Follow a path." body="Short sets of articles for one goal, in order. Each article adds to the one before it." id="paths-title" />
+    <ol class="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2" data-reveal-group>
+      {readingPaths.map(path => {
+        const items = path.slugs.map(slug => bySlug[slug]).filter(Boolean);
+        const minutes = items.reduce((sum, post) => sum + post.data.readTime, 0);
+        const category = categoryById(path.category);
+        return (
+          <li class="glass-card flex flex-col rounded-[1.8rem] p-6 sm:p-7" data-reveal-item>
+            <div class="flex items-start justify-between gap-4">
+              <span class="topic-icon grid size-14 place-items-center rounded-2xl"><Glyph ui={path.icon} class="size-7" /></span>
+              <span class="rounded-full bg-card px-3 py-1 text-xs font-semibold text-muted ring-1 ring-line">{items.length} articles · {minutes} min</span>
+            </div>
+            <h3 class="mt-5 text-2xl font-semibold text-balance text-ink">{path.title}</h3>
+            <p class="mt-2 text-pretty text-muted">{path.text}</p>
+            <ol class="mt-5 grid gap-1.5">
+              {items.map((post, n) => (
+                <li>
+                  <a href={pathFor(post)} class="group flex items-center gap-3 rounded-xl px-2 py-2 transition hover:bg-card">
+                    <span class="grid size-7 shrink-0 place-items-center rounded-full bg-orange-600 font-mono text-xs font-semibold text-white">{n + 1}</span>
+                    <span class="min-w-0 flex-1 truncate text-sm font-medium text-ink">{post.data.title}</span>
+                    <Glyph icon="arrow-right" class="size-4 shrink-0 text-muted transition group-hover:translate-x-1 group-hover:text-ink" />
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </li>
+        );
+      })}
+    </ol>
+  </section>
+
+  <section class="px-2 pb-6 sm:px-3">
+    <div class="on-sheet rounded-[2rem] bg-sheet px-6 py-16 text-center text-white" data-reveal>
+      <h2 class="mx-auto max-w-2xl text-3xl font-semibold text-balance sm:text-5xl"><span class="block">Want this built</span><span class="mark">for your team?</span></h2>
+      <p class="mx-auto mt-4 max-w-xl text-pretty text-white/70">Talk to the engineers who wrote these guides. Thirty minutes is enough to discuss your use case.</p>
+      <div class="mt-8"><PrimaryCTA title="Book a call" url={BOOKING_URL} /></div>
+    </div>
+  </section>
+</MainLayout>
+
+<style>
+  .topic-chip {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 0.45rem;
+    border-radius: 999px;
+    padding: 0.45rem 0.7rem 0.45rem 0.5rem;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--ink);
+    transition: background-color 200ms ease, box-shadow 200ms ease;
+  }
+  .topic-chip:hover { background: color-mix(in oklab, var(--card) 80%, transparent); }
+  .topic-chip[aria-pressed='true'] { background: var(--card); box-shadow: 0 0 0 1.5px var(--accent-500), 0 6px 16px -10px rgb(40 40 110 / 0.5); }
+  .topic-count { border-radius: 999px; padding: 0 0.45rem; font: 600 0.7rem/1.6 var(--font-mono, ui-monospace, monospace); color: var(--muted); background: color-mix(in oklab, var(--ink) 6%, transparent); }
+  .post-grid { grid-auto-flow: dense; }
+  /* Behind the header and topic bento: a faint dot grid and two soft gray
+     shapes, so the frosted glass cards have something to blur. */
+  .blog-backdrop { position: absolute; inset: 0 0 -4rem; z-index: -1; overflow: hidden; pointer-events: none; background-image: radial-gradient(#d4d4d8 1px, transparent 1.3px); background-size: 18px 18px; mask-image: linear-gradient(#000 55%, transparent); }
+  .blog-backdrop span { position: absolute; border-radius: 999px; filter: blur(40px); background: #e4e4e7; }
+  .blog-backdrop span:first-child { width: 34rem; height: 22rem; left: -6rem; top: 14rem; }
+  .blog-backdrop span:last-child { width: 30rem; height: 26rem; right: -4rem; top: 26rem; background: #ececf0; }
+  :global(.dark) .blog-backdrop { background-image: radial-gradient(#262626 1px, transparent 1.3px); }
+  :global(.dark) .blog-backdrop span { background: #161616; }
+  /* Topic icons: one colour (black, white in dark mode) on a frosted tile. */
+  .topic-icon { background: rgb(255 255 255 / 0.7); color: var(--ink); box-shadow: inset 0 1px 0 #fff, 0 0 0 1px rgb(0 0 0 / 0.07), 0 8px 18px -12px rgb(0 0 0 / 0.3); }
+  :global(.dark) .topic-icon { background: #1b1b1b; box-shadow: 0 0 0 1px #2c2c2c; }
+  .topic-tile { transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 300ms ease; }
+  .topic-tile:hover { transform: translateY(-3px); }
+  .topic-tile[aria-pressed='true'] { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.9), 0 0 0 2px var(--accent-500), 0 18px 36px -24px var(--accent-600); }
+  .topic-bullet { background: var(--ink); opacity: 0.55; }
+  .topic-more { color: var(--accent-700); }
+  :global(.dark) .topic-more { color: var(--accent-300); }
+  @media (prefers-reduced-motion: reduce) { .topic-tile { transition: none; } .topic-tile:hover { transform: none; } }
+  .post-cell > :global(*) { height: 100%; }
+  /* Cards below the fold skip style and layout until they come near. */
+  .post-cell { content-visibility: auto; contain-intrinsic-size: auto 29rem; }
+  @media (min-width: 768px) { .post-cell.is-wide { grid-column: span 2; } }
+</style>
+
+<script>
+  // Filter by topic and search; the grid re-picks which cards are wide so
+  // the bento stays even. The topic lives in the URL hash (#topic=...).
+  const PATTERN = ['wide', 'std', 'std', 'std', 'std', 'wide', 'std'];
+  document.querySelectorAll<HTMLElement>('[data-blog]').forEach(root => {
+    const chips = [...root.querySelectorAll<HTMLButtonElement>('[data-topic]')];
+    const input = root.querySelector<HTMLInputElement>('[data-search-input]')!;
+    const cells = [...root.querySelectorAll<HTMLElement>('[data-cell]')];
+    const result = root.querySelector<HTMLElement>('[data-result]')!;
+    const empty = root.querySelector<HTMLElement>('[data-empty]')!;
+    let topic = 'all';
+
+    const apply = () => {
+      const query = input.value.trim().toLowerCase();
+      let shown = 0;
+      for (const cell of cells) {
+        const card = cell.querySelector<HTMLElement>('[data-post]')!;
+        const match = (topic === 'all' || card.dataset.category === topic) && (!query || card.dataset.search!.includes(query));
+        cell.hidden = !match;
+        if (!match) continue;
+        const size = PATTERN[shown % PATTERN.length];
+        cell.classList.toggle('is-wide', size === 'wide');
+        card.dataset.size = size;
+        shown++;
+      }
+      chips.forEach(chip => chip.setAttribute('aria-pressed', String(chip.dataset.topic === topic)));
+      document.querySelectorAll<HTMLElement>('[data-topic-tile]').forEach(tile => tile.setAttribute('aria-pressed', String(tile.dataset.topicTile === topic)));
+      result.textContent = `${shown} ${shown === 1 ? 'article' : 'articles'}`;
+      empty.hidden = shown > 0;
+    };
+    const setTopic = (next: string, push = true) => {
+      topic = chips.some(chip => chip.dataset.topic === next) ? next : 'all';
+      if (push) history.replaceState(null, '', topic === 'all' ? location.pathname : `#topic=${topic}`);
+      apply();
+    };
+    chips.forEach(chip => chip.addEventListener('click', () => setTopic(chip.dataset.topic!)));
+    const tiles = [...document.querySelectorAll<HTMLButtonElement>('[data-topic-tile]')];
+    tiles.forEach(tile => tile.addEventListener('click', () => {
+      setTopic(tile.dataset.topicTile!);
+      root.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    }));
+    input.addEventListener('input', apply);
+    root.querySelector('[data-clear]')?.addEventListener('click', () => { input.value = ''; setTopic('all'); });
+    const fromHash = location.hash.match(/topic=([a-z-]+)/)?.[1];
+    if (fromHash) setTopic(fromHash, false);
+  });
+</script>

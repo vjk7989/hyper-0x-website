@@ -1,0 +1,37 @@
+---
+// ref: necta.framer.website - light card register; figure is ours
+import SectionHead from '@components/home/SectionHead.astro';
+import RouteFigure from './RouteFigure.astro';
+import { walletPage } from '@data/product-pages/hyper-wallet';
+
+const r = walletPage.route;
+const pill = [
+  'ring-1 ring-line text-muted',
+  'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200',
+  'bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-200',
+];
+---
+
+<section class="mx-auto max-w-[85rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20" aria-labelledby={r.id}>
+  <SectionHead index={r.index} label={r.label} claim={r.claim} payoff={r.payoff} id={r.id} />
+  <div class="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-center">
+    <div data-reveal><RouteFigure caption={r.figureCaption} /></div>
+    <ol class="space-y-6" data-reveal-group>
+      {r.steps.map((s, i) => (
+        <li class="flex gap-4" data-reveal-item>
+          <span class="grid size-9 shrink-0 place-items-center rounded-full bg-card font-mono text-sm ring-1 ring-line" aria-hidden="true">{i + 1}</span>
+          <div>
+            <h3 id={s.id} class="text-lg font-semibold text-ink">{s.title}</h3>
+            <p class="mt-1 text-pretty text-muted">{s.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+  <div class="mt-10 flex flex-wrap items-center gap-3" data-reveal>
+    <ul class="flex flex-wrap gap-2">
+      {r.states.map((s, i) => <li class:list={['rounded-full px-3.5 py-1.5 text-sm font-medium', pill[i]]}>{s}</li>)}
+    </ul>
+    <p class="text-muted">{r.status}</p>
+  </div>
+</section>

@@ -1,0 +1,167 @@
+---
+import SectionHead from '@components/home/SectionHead.astro';
+import Glyph from '@components/ui/Glyph.astro';
+import ProductArt from '@components/ui/ProductArt.astro';
+import ProductLogo from '@components/ui/ProductLogo.astro';
+import { entriesFor, pathFor, slugOf } from '@utils/content';
+
+/**
+ * Products as an accordion: side by side on wide screens (hover, focus or
+ * click a collapsed tab to open it), stacked on narrower ones (tap a row).
+ * Each tab carries the product's logo; the open panel shows what the product
+ * is, its top features and its animated scene. One set of markup serves both
+ * layouts, so every scene is in the page once.
+ */
+interface Props {
+  index: string;
+  label: string;
+  claim: string;
+  payoff: string;
+  body: string;
+  cta: { title: string; url: string };
+}
+
+const { index, label, claim, payoff, body, cta } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const products = await entriesFor('products', 'en');
+type Art = 'hyper-0x' | 'pavii' | 'hyper-wallet' | 'h0x-pay' | 'hyperrun';
+// Under each tagline: how it works in two sentences, and one technology fact.
+const explain: Record<string, { text: string; stat: string; statLabel: string }> = {
+  'hyper-0x': {
+    text: 'Each application runs on its own L2, a private blockchain with its own rules. Every L2 settles on the shared Hyper 0x L1 (the main chain), where transactions are final in one pass.',
+    stat: '1 pass',
+    statLabel: 'to final, never reordered',
+  },
+  pavii: {
+    text: 'H0x-ADE is a gateway between your agents and your systems. Every prompt and tool call goes through six gates. A call that clears every check goes through. A call the gate judges malicious is refused and leaves a receipt on Hyper 0x.',
+    stat: '6 gates',
+    statLabel: 'on every agent call',
+  },
+  'hyper-wallet': {
+    text: 'One non-custodial app (you hold your own keys) for every major chain. Swaps take the best route, and MEV protection limits how far bots can trade ahead of you. Both sides of a trade settle at once.',
+    stat: '1 fee',
+    statLabel: 'per trade, not two',
+  },
+  'h0x-pay': {
+    text: 'You pay and get paid in crypto as usual. Your plan puts a small part of every payment into tokenized gold. Each payment settles on Hyper 0x.',
+    stat: 'Gold first',
+    statLabel: 'then index funds',
+  },
+  hyperrun: {
+    text: 'Players compete in ranked matches in a realistic shooter. The game signs every result before any payout, so players, fans and sponsors are paid from a signed record.',
+    stat: 'Signed',
+    statLabel: 'result before every payout',
+  },
+};
+---
+
+<section class="mx-auto max-w-[85rem] px-4 py-20 sm:px-6 lg:px-8 lg:py-28" id="products">
+  <SectionHead index={index} label={label} claim={claim} payoff={payoff} body={body} cta={cta} />
+
+  <div class="mt-12 flex flex-col gap-3 xl:h-[34rem] xl:flex-row" data-accordion>
+    {products.map((product, index) => {
+      const id = `product-${slugOf(product)}`;
+      return (
+        <article class:list={['acc-panel relative overflow-hidden rounded-[1.6rem]', index === 0 && 'is-open', 'ring-1 ring-line']} data-panel>
+          <button type="button" class="acc-tab z-10 flex w-full items-center gap-3 px-5 py-4 text-left xl:absolute xl:inset-0 xl:flex-col xl:justify-between xl:px-0 xl:py-6" aria-expanded={index === 0 ? 'true' : 'false'} aria-controls={id} data-tab>
+            <span class="grid size-10 shrink-0 place-items-center overflow-hidden rounded-full bg-current/10"><ProductLogo product={slugOf(product)} class="size-6" /></span>
+            <span class="acc-vertical font-display text-lg font-semibold whitespace-nowrap">{product.data.title}</span>
+            <span class="acc-plus ms-auto grid size-8 shrink-0 place-items-center rounded-full bg-current/10 xl:ms-0"><Glyph icon="plus" class="size-4" /></span>
+          </button>
+          <div id={id} class="acc-body accent-warm gap-6 px-5 pb-5 sm:px-7 sm:pb-7 xl:h-full xl:grid-cols-[minmax(0,4fr)_minmax(0,7fr)] xl:p-6">
+            <div class="flex flex-col">
+              <div class="hidden items-center gap-3 xl:flex">
+                <span class="grid size-12 shrink-0 place-items-center overflow-hidden rounded-2xl bg-white/10 ring-1 ring-white/15"><ProductLogo product={slugOf(product)} class="size-7" /></span>
+                <h3 class="text-[1.75rem] leading-tight font-semibold">{product.data.title}</h3>
+              </div>
+              <p class="font-medium text-pretty opacity-90 xl:mt-4">{product.data.tagline}</p>
+              <p class="mt-5 font-mono text-xs font-medium opacity-60">How it works</p>
+              <p class="mt-1.5 text-sm leading-relaxed text-pretty opacity-75">{explain[slugOf(product)]?.text}</p>
+              <ul class="mt-5 space-y-2 text-sm">
+                {product.data.features.slice(0, 3).map(feature => (
+                  <li class="flex items-center gap-2.5">
+                    <span class="grid size-7 shrink-0 place-items-center rounded-lg bg-current/10">{feature.icon ? <Glyph icon={feature.icon} class="size-4" /> : <Glyph icon="check" class="size-4" />}</span>
+                    {feature.title}
+                  </li>
+                ))}
+              </ul>
+              <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 xl:mt-auto">
+                <p class="flex items-baseline gap-2"><span class="font-display text-2xl font-semibold text-orange-300">{explain[slugOf(product)]?.stat}</span><span class="text-xs opacity-60">{explain[slugOf(product)]?.statLabel}</span></p>
+                <a href={pathFor(product)} class="inline-flex w-fit items-center gap-2 rounded-full bg-current/10 px-4 py-2 text-sm font-semibold hover:bg-current/15">
+                  Explore {product.data.title}<Glyph icon="arrow-right" class="size-4" />
+                </a>
+              </div>
+            </div>
+            <div class="relative aspect-[440/360] overflow-hidden rounded-[1.2rem] bg-[#0c0c0c] ring-1 ring-white/10 xl:aspect-auto xl:h-full">
+              {index === 0 ? (
+                <ProductArt product={slugOf(product) as Art} fill />
+              ) : (
+                <div class="absolute inset-0" data-pa-lazy={`${base}/scenes/${slugOf(product)}.txt`}></div>
+              )}
+            </div>
+          </div>
+        </article>
+      );
+    })}
+  </div>
+</section>
+
+<style>
+  .acc-panel { background: var(--ground); color: var(--ink); }
+  .acc-panel.is-open { background: var(--sheet); color: #fff; }
+  .acc-body { display: none; }
+  .acc-panel.is-open .acc-body { display: grid; }
+  .acc-panel.is-open .acc-plus { transform: rotate(45deg); }
+  @media (min-width: 1280px) {
+    .acc-panel { flex: 0 0 5.5rem; transition: flex-grow 600ms cubic-bezier(0.22, 1, 0.36, 1), flex-basis 600ms cubic-bezier(0.22, 1, 0.36, 1); }
+    .acc-panel.is-open { flex: 1 1 0; }
+    .acc-panel.is-open .acc-tab { opacity: 0; pointer-events: none; }
+    .acc-body { display: grid; opacity: 0; visibility: hidden; transform: translateY(10px); min-width: 44rem; transition: opacity 300ms ease, transform 400ms cubic-bezier(0.22, 1, 0.36, 1); }
+    .acc-panel.is-open .acc-body { opacity: 1; visibility: visible; transform: none; transition-delay: 200ms; }
+    .acc-vertical { writing-mode: vertical-rl; transform: rotate(180deg); }
+  }
+  @media (prefers-reduced-motion: reduce) { .acc-panel, .acc-body { transition: none; } }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-accordion]').forEach(root => {
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')];
+    const wide = window.matchMedia('(min-width: 1280px)');
+    const open = (panel: HTMLElement) => {
+      panels.forEach(p => {
+        const on = p === panel;
+        p.classList.toggle('is-open', on);
+        p.querySelector('[data-tab]')!.setAttribute('aria-expanded', String(on));
+      });
+      load(panel);
+      document.dispatchEvent(new Event('pa:refresh'));
+    };
+    // Scenes of closed panels load when their panel first opens; their text
+    // is fetched ahead, once the page is idle, so opening feels instant.
+    const cache = new Map<string, Promise<string>>();
+    const fetchScene = (src: string) => {
+      if (!cache.has(src)) cache.set(src, fetch(src).then(r => (r.ok ? r.text() : '')).catch(() => ''));
+      return cache.get(src)!;
+    };
+    const load = async (panel: HTMLElement) => {
+      const holder = panel.querySelector<HTMLElement>('[data-pa-lazy]');
+      if (!holder) return;
+      const src = holder.dataset.paLazy!;
+      holder.removeAttribute('data-pa-lazy');
+      const html = await fetchScene(src);
+      if (!html) return;
+      holder.outerHTML = html;
+      const scene = panel.querySelector<HTMLElement>('[data-pa]');
+      scene?.dispatchEvent(new Event('pa:add', { bubbles: true }));
+      document.dispatchEvent(new Event('pa:refresh'));
+    };
+    const idle = (fn: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 3000 }) : setTimeout(fn, 1500));
+    window.addEventListener('load', () => idle(() => root.querySelectorAll<HTMLElement>('[data-pa-lazy]').forEach(h => fetchScene(h.dataset.paLazy!))), { once: true });
+    panels.forEach(panel => {
+      const tab = panel.querySelector<HTMLElement>('[data-tab]')!;
+      tab.addEventListener('click', () => open(panel));
+      tab.addEventListener('focus', () => open(panel));
+      panel.addEventListener('mouseenter', () => { if (wide.matches) open(panel); });
+    });
+  });
+</script>

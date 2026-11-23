@@ -1,0 +1,107 @@
+---
+import PrimaryCTA from '@components/ui/buttons/PrimaryCTA.astro';
+import { BOOKING_URL } from '@data/constants';
+import { localePath } from '@utils/locale';
+
+/**
+ * Contact page body. There is no backend: booking goes to Cal.com, and the
+ * form composes an email in the visitor's mail app.
+ */
+const copy = Astro.locals.copy.contact;
+const field =
+  'block w-full rounded-lg border border-line bg-card px-4 py-3 text-ink placeholder:text-muted focus:border-orange-500 focus:ring-orange-500';
+const label = 'mb-2 block text-sm font-semibold text-ink';
+const link =
+  'text-orange-700 underline decoration-orange-300 underline-offset-4 dark:text-orange-300 dark:decoration-orange-700';
+---
+
+<section class="mx-auto max-w-[85rem] px-4 pt-12 pb-20 sm:px-6 lg:px-8 lg:pt-20">
+  <div class="max-w-3xl" data-reveal>
+    <h1 class="text-5xl leading-[1] font-semibold text-balance text-ink sm:text-6xl">
+      {copy.heading}
+    </h1>
+    <p class="mt-5 max-w-[60ch] text-lg text-pretty text-muted">{copy.subTitle}</p>
+  </div>
+
+  <div class="mt-12 grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+    <div class="space-y-8" data-reveal>
+      <div class="on-sheet rounded-[2rem] bg-sheet p-8 text-white">
+        <h2 class="text-2xl font-bold">{copy.bookTitle}</h2>
+        <p class="mt-2 text-pretty text-white/70">{copy.bookContent}</p>
+        <div class="mt-6"><PrimaryCTA title={copy.bookBtn} url={BOOKING_URL} /></div>
+      </div>
+      <dl class="space-y-6">
+        <div>
+          <dt class="font-semibold text-ink">{copy.emailHeading}</dt>
+          <dd class="mt-1"><a href="mailto:vijay@buckleson.com" class={link}>vijay@buckleson.com</a></dd>
+        </div>
+        <div>
+          <dt class="font-semibold text-ink">{copy.docsHeading}</dt>
+          <dd class="mt-1"><a href={localePath('en', '/guides/intro/')} class={link}>{copy.docsLink}</a></dd>
+        </div>
+      </dl>
+    </div>
+
+    <form class="rounded-3xl bg-card p-6 ring-1 ring-line sm:p-8" data-mail-form data-reveal novalidate>
+      <h2 class="text-2xl font-bold text-ink">{copy.formTitle}</h2>
+      <div class="mt-6 grid gap-5 sm:grid-cols-2">
+        <div>
+          <label for="contact-name" class={label}>{copy.name}</label>
+          <input id="contact-name" name="name" autocomplete="name" required class={field} />
+        </div>
+        <div>
+          <label for="contact-company" class={label}>{copy.company}</label>
+          <input id="contact-company" name="company" autocomplete="organization" class={field} />
+        </div>
+        <div class="sm:col-span-2">
+          <label for="contact-email" class={label}>{copy.email}</label>
+          <input id="contact-email" name="email" type="email" autocomplete="email" required class={field} />
+        </div>
+        <div class="sm:col-span-2">
+          <label for="contact-topic" class={label}>{copy.topic}</label>
+          <select id="contact-topic" name="topic" class={field}>
+            {copy.topics.map(topic => <option>{topic}</option>)}
+          </select>
+        </div>
+        <div class="sm:col-span-2">
+          <label for="contact-details" class={label}>{copy.details}</label>
+          <textarea id="contact-details" name="details" rows="5" required class={field}></textarea>
+        </div>
+      </div>
+      <p class="mt-4 text-sm text-muted">{copy.formNote}</p>
+      <p class="mt-2 hidden text-sm font-medium text-red-700 dark:text-red-400" data-mail-error role="alert"></p>
+      <div class="mt-6"><PrimaryCTA title={copy.send} type="submit" /></div>
+    </form>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('[data-mail-form]').forEach(form => {
+    const error = form.querySelector<HTMLElement>('[data-mail-error]')!;
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const invalid = form.querySelector<HTMLInputElement>(':invalid');
+      if (invalid) {
+        const name = form.querySelector(`label[for="${invalid.id}"]`)?.textContent ?? 'This field';
+        error.textContent = invalid.validity.typeMismatch
+          ? 'Please enter a valid email address.'
+          : `${name} is required.`;
+        error.classList.remove('hidden');
+        invalid.focus();
+        return;
+      }
+      error.classList.add('hidden');
+      const data = new FormData(form);
+      const value = (key: string) => String(data.get(key) ?? '').trim();
+      const subject = `${value('topic')}: ${value('company') || value('name')}`;
+      const body = [
+        value('details'),
+        '',
+        `Name: ${value('name')}`,
+        `Company: ${value('company')}`,
+        `Email: ${value('email')}`,
+      ].join('\n');
+      window.location.href = `mailto:vijay@buckleson.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+  });
+</script>

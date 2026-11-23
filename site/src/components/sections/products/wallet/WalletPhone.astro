@@ -1,0 +1,98 @@
+---
+// ref: necta.framer.website - phone mock held by a CSS bezel, rebuilt as HTML and inline SVG
+/**
+ * A phone with a static screen. Every screen is HTML and inline SVG, hidden
+ * from assistive tech, with one sr-only caption. Amounts are round samples and
+ * no screen shows a saving, a percentage, a rating, a user count or a name.
+ */
+interface Props {
+  screen: 'portfolio' | 'swap' | 'markets' | 'brand';
+  accent?: 100 | 300 | 500 | 700;
+  class?: string;
+}
+
+const { screen, accent = 500, class: className } = Astro.props;
+const captions = {
+  portfolio: 'Hyper Wallet portfolio screen: a total balance and a list of coins.',
+  swap: 'Hyper Wallet swap screen: pay with one token, receive another, and a button to confirm.',
+  markets: 'Hyper Wallet markets screen: a list of coins, tokenized assets and prediction markets.',
+  brand: 'A white-label wallet screen with a blank logo square labelled Your brand.',
+};
+const coins = [
+  { n: 'Bitcoin', v: '1.00' },
+  { n: 'Ethereum', v: '10.00' },
+  { n: 'Solana', v: '100.00' },
+];
+const markets = ['Coins', 'Tokenized gold', 'Stocks', 'Predictions'];
+---
+
+<figure class:list={['wallet-phone mx-auto aspect-[9/19] w-[clamp(15rem,24vw,19rem)] rounded-[2.6rem] bg-sheet p-2', className]}>
+  <div class="flex h-full flex-col overflow-hidden rounded-[2.1rem] bg-card text-ink" aria-hidden="true">
+    <div class="mx-auto mt-2 h-4 w-16 shrink-0 rounded-full bg-sheet"></div>
+    {screen === 'brand' && (
+      <div class="mt-2 h-14 shrink-0" style={`background:var(--accent-${accent})`}>
+        <p class="px-4 pt-4 text-xs font-semibold text-white">Your brand</p>
+      </div>
+    )}
+    <div class="flex flex-1 flex-col gap-3 p-4 text-xs">
+      {screen === 'portfolio' && (
+        <>
+          <p class="font-mono text-muted">Total balance</p>
+          <p class="text-3xl font-semibold">$ 1,000.00</p>
+          <svg viewBox="0 0 200 48" class="h-12 w-full" fill="none"><path d="M0 40 C30 36 40 16 70 22 S120 38 150 20 S185 8 200 6" stroke="var(--accent-600)" stroke-width="2" stroke-linecap="round" /></svg>
+          <ul class="divide-y divide-line">
+            {coins.map(c => (
+              <li class="flex items-center justify-between py-2.5">
+                <span class="flex items-center gap-2"><span class="size-6 rounded-full bg-panel ring-1 ring-line"></span>{c.n}</span>
+                <span class="font-mono">{c.v}</span>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+      {screen === 'swap' && (
+        <>
+          <p class="font-mono text-muted">Swap</p>
+          <div class="rounded-2xl bg-panel p-3"><p class="text-muted">You pay</p><p class="mt-1 flex justify-between text-xl font-semibold"><span>1.00</span><span class="text-sm">ETH</span></p></div>
+          <div class="mx-auto -my-5 grid size-8 place-items-center rounded-full bg-card ring-1 ring-line">
+            <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 3v10M4 9l4 4 4-4" /></svg>
+          </div>
+          <div class="rounded-2xl bg-panel p-3"><p class="text-muted">You receive</p><p class="mt-1 flex justify-between text-xl font-semibold"><span>10.00</span><span class="text-sm">SOL</span></p></div>
+          <p class="flex justify-between text-muted"><span>Route</span><span>Best route</span></p>
+          <p class="flex justify-between text-muted"><span>Fee</span><span>One fee</span></p>
+          <div class="mt-auto rounded-full py-3 text-center font-semibold text-white" style="background:var(--accent-600)">Swap</div>
+        </>
+      )}
+      {screen === 'markets' && (
+        <>
+          <p class="font-mono text-muted">Markets</p>
+          <ul class="flex flex-wrap gap-1.5">
+            {markets.map((m, i) => <li class:list={['rounded-full px-2.5 py-1 ring-1 ring-line', i === 0 && 'bg-ink text-ground']}>{m}</li>)}
+          </ul>
+          <ul class="divide-y divide-line">
+            {['Bitcoin', 'Tokenized gold', 'Index fund', 'Prediction market'].map(n => (
+              <li class="flex items-center justify-between py-2.5">
+                <span class="flex items-center gap-2"><span class="size-6 rounded-full bg-panel ring-1 ring-line"></span>{n}</span>
+                <svg viewBox="0 0 40 16" class="h-4 w-10" fill="none"><path d="M0 12 L10 8 L20 10 L30 4 L40 6" stroke="var(--accent-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+      {screen === 'brand' && (
+        <>
+          <div class="-mt-9 grid size-14 place-items-center rounded-2xl bg-card ring-1 ring-line"><span class="size-8 rounded-lg border border-dashed border-line"></span></div>
+          <p class="font-semibold">Wallet</p>
+          <div class="h-8 rounded-xl bg-panel"></div>
+          <div class="h-8 rounded-xl bg-panel"></div>
+          <div class="h-8 rounded-xl bg-panel"></div>
+        </>
+      )}
+    </div>
+  </div>
+  <figcaption class="sr-only">{captions[screen]}</figcaption>
+</figure>
+
+<style>
+  .wallet-phone { box-shadow: 0 40px 80px -40px rgb(0 0 0 / 0.35); }
+</style>

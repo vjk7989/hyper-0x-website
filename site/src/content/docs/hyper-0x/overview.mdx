@@ -1,0 +1,56 @@
+---
+title: Overview
+description: 'What Hyper 0x is: a permissioned blockchain with private L2 chains for each customer, final transactions, and post-quantum-resistant encryption.'
+head:
+  - tag: title
+    content: 'Hyper 0x Overview: The Chain Behind Us | Hyper 0x Docs'
+sidebar:
+  order: 0
+---
+
+Hyper 0x is a blockchain. A blockchain is a shared record of transactions. Many computers keep the same copy, so no single party can change it in secret. Buckleson built Hyper 0x from scratch. It runs every Buckleson product.
+
+Hyper 0x is a **permissioned L1**. An L1 is a base chain. It does not settle to another chain. "Permissioned" means that only named institutions run the validators. Validators are the computers that agree on the order of transactions.
+
+## Main parts
+
+| Part | What it does |
+| --- | --- |
+| [Consensus](../consensus/) | Puts transactions in one order. No leader sets the order. A transaction is final once the validators agree. |
+| [Encryption](../encryption/) | Encrypts data with a post-quantum-resistant key exchange and four layers of encryption. |
+| [L2s and scaling](../l2-scaling/) | Gives each customer a private chain with its own rules. Each L2 settles to the L1. |
+| [Bridges, SDKs and contracts](../bridges-contracts/) | Links Hyper 0x to other chains. Runs smart contracts, which are programs that run on the chain. |
+
+## How a transaction flows
+
+1. **Signing:** the sender signs the transaction with its private key. Only the key holder can create this signature.
+2. **Rules check:** the chain checks limits, identity (KYC) checks and approvals before the transaction runs. KYC means "know your customer". It is a check of who a customer is.
+3. **Ordering on the L2:** the sequencer of the customer L2 puts the transaction in a block. A block closes when it is full or when its time runs out.
+4. **Agreement:** the validators share signed events and agree on the order. The order uses the median time at which validators received the transaction.
+5. **Settlement:** the L2 posts a summary of its state to the L1 in batches. The L1 keeps the final record.
+
+:::note
+Hyper 0x also supports L3 chains, which run on top of an L2. An L3 settles on its L2, and the L2 settles on the L1.
+:::
+
+## Why Buckleson built its own chain
+
+When a company uses a public chain, it depends on that chain's fees and outages. Buckleson owns Hyper 0x. So it can design the chain for business needs. The main benefits are:
+
+- **Final in one pass:** a transaction does not reverse once it is final.
+- **Post-quantum-resistant:** the keys resist attacks from future quantum computers, which are computers that use quantum physics to solve some problems much faster.
+- **Private by customer:** each customer gets its own L2, with its own sequencer, rules and bridge.
+- **Compliance as code:** the rules run on the chain itself, before each transaction runs.
+
+## Encryption in four layers
+
+Hyper 0x encrypts data in four places. The four places are the network, the server, the shared ledger and backups. If one layer fails, the next layer still encrypts the data. Read the [encryption page](../encryption/) for the details.
+
+## Products on Hyper 0x
+
+- **H0x-ADE** runs its security checks and receipts on Hyper 0x.
+- **Hyper Wallet** signs and settles its transactions on Hyper 0x.
+- **H0X Pay** settles its payments on Hyper 0x.
+- **HyperRun** settles its rewards on Hyper 0x.
+
+Read the [introduction](../../guides/intro/) for a wider view of how the layers fit together.

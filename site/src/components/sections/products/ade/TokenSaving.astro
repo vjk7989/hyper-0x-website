@@ -1,0 +1,34 @@
+---
+import SectionHead from '@components/home/SectionHead.astro';
+import Glyph from '@components/ui/Glyph.astro';
+import ProofStrip from '@components/ui/ProofStrip.astro';
+import Transcript from './Transcript.astro';
+import type { adePage } from '@data/product-pages/h0x-ade';
+
+// ref: kiloagent.framer.website - heading + checklist + framed app mockup split; herdr.dev - prompt-to-result transcript
+interface Props {
+  page: typeof adePage;
+}
+
+const { page } = Astro.props;
+const t = page.tokens;
+---
+
+<section aria-labelledby={t.id} class="mx-auto max-w-[85rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+  <SectionHead index="1" id={t.id} label={t.label} claim={t.claim} payoff={t.payoff} />
+  <div class="mt-10 grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+    <div data-reveal>
+      <p class="text-lg text-pretty text-muted">{t.body}</p>
+      <ul class="mt-8 space-y-5">
+        {t.rows.map(row => (
+          <li class="flex gap-3">
+            <Glyph icon="check-circle" class="mt-0.5 size-6 shrink-0 text-orange-400" />
+            <p><strong class="font-semibold text-ink">{row.title}</strong><span class="block text-muted">{row.text}</span></p>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <Transcript transcript={t.transcript} />
+  </div>
+  <ProofStrip items={page.tokenMeasurement} />
+</section>

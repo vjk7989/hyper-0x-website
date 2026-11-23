@@ -1,0 +1,42 @@
+---
+title: H0x-ADE Features
+description: 'H0x-ADE features: connect any agent, check for injection, limit data leaks, check packages, control egress, keep receipts and a kill switch.'
+head:
+  - tag: title
+    content: 'H0x-ADE Features: Gates and Receipts | Hyper 0x Docs'
+sidebar:
+  order: 2
+---
+
+H0x-ADE gives AI agents one set of controls. This page lists the main features. Each feature maps to one or more of the six gates.
+
+## Connect any agent
+
+H0x-ADE connects to Claude, Claude Code, Codex, ChatGPT, Grok, OpenCode and custom agents. You use one gateway for all of them. You can connect the subscriptions that you already have.
+## Check for prompt injection
+
+Prompt injection is an attack. A hidden instruction in a web page, a file or a tool output tries to take control of the agent. H0x-ADE treats all untrusted text as data. A detector finds injected instructions. A contract on Hyper 0x then refuses the call that follows them.
+
+## Limit data leaks
+
+The privacy gate removes personal data and secrets before a model can see them. It replaces each item with a placeholder. The same gate also checks what leaves the model. So a secret is checked before it can leave by accident in a reply.
+
+## Check new packages and servers
+
+An agent can add a new package or connect a new MCP server. Either one can be malicious. H0x-ADE requires one of three checks first. The first is an allow-list, a list of approved items. The second is a pinned hash, a fixed fingerprint of one version. The third is a sandbox test, which runs code in an isolated place.
+
+## Control what agents can send
+
+The egress rules decide where an agent can send data and what it can do. The rules are a smart contract on Hyper 0x. Only approved rules can change them. An agent, a compromised server or an insider cannot edit the rules in secret.
+
+## Hash-linked receipts
+
+Every decision leaves a signed receipt. H0x-ADE links each receipt to the one before it with a hash. It anchors the chain on Hyper 0x. If an entry goes missing, you see the gap at once. This helps with audits, billing and disputes.
+
+## Fewer tokens and budgets
+
+Each agent can have a budget. The budget gate sets limits on token use. H0x-ADE also compacts the tool data from MCP servers, so the model reads less text. On a measured Claude Code task, agents used 30 to 60 percent fewer tokens.
+
+## Kill switch for rogue agents
+
+An agent that breaks rules does not keep full access. H0x-ADE moves it from observed, to restricted, to stopped. A person can stop any agent at any time.

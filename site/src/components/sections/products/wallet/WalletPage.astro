@@ -1,0 +1,32 @@
+---
+// ref: necta.framer.website - light consumer product page, composed from the section components below
+import ProductFaq from '@components/ui/ProductFaq.astro';
+import FinalCta from '@components/home/FinalCta.astro';
+import WalletHero from './WalletHero.astro';
+import WalletJobs from './WalletJobs.astro';
+import WalletRoute from './WalletRoute.astro';
+import WalletBento from './WalletBento.astro';
+import WalletKeys from './WalletKeys.astro';
+import WalletSdk from './WalletSdk.astro';
+import { walletPage } from '@data/product-pages/hyper-wallet';
+import { getCopy } from '@/copy';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  product: CollectionEntry<'products'>;
+}
+
+const { product } = Astro.props;
+const data = product.data;
+const f = walletPage.final;
+const email = getCopy('en').home.finalCta.email;
+---
+
+<WalletHero cta={data.cta} docsUrl={data.learnMore[0].url} />
+<WalletJobs />
+<WalletRoute />
+<WalletBento />
+<WalletKeys />
+<WalletSdk />
+<ProductFaq id="hyper-wallet-questions" title="Hyper Wallet" faqs={data.faqs} learnMore={data.learnMore} />
+<FinalCta id="put-hyper-wallet" claim={f.claim} payoff={f.payoff} text={f.text} btn={f.btn} email={email} />

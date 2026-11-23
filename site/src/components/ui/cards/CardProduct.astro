@@ -1,0 +1,49 @@
+---
+import Glyph from '@components/ui/Glyph.astro';
+import ProductArt from '@components/ui/ProductArt.astro';
+import ProductMock from '@components/ui/ProductMock.astro';
+import type { CollectionEntry } from 'astro:content';
+import { pathFor, slugOf } from '@utils/content';
+
+/**
+ * A clickable product card (the original ScrewFast layout): the product in
+ * use (its live mock; Hyper 0x shows its chain scene) fills the card, a shade
+ * rises from the bottom and the name and one-line description sit at the
+ * bottom left. `wide` spans two columns.
+ */
+interface Props {
+  product: CollectionEntry<'products'>;
+  wide?: boolean;
+}
+
+const { product, wide = false } = Astro.props;
+type Art = 'hyper-0x' | 'h0x-ade' | 'hyper-wallet' | 'h0x-pay' | 'hyperrun';
+const slug = slugOf(product) as Art;
+---
+
+<a
+  href={pathFor(product)}
+  data-astro-prefetch
+  class:list={[
+    'group relative flex h-80 items-end overflow-hidden rounded-[1.6rem] ring-1 ring-line outline-hidden focus-visible:ring-3 focus-visible:ring-orange-500 md:h-[26rem]',
+    wide && 'md:col-span-2',
+  ]}
+  data-reveal
+>
+  <div class="absolute inset-0 bg-[#0c0c0c]"></div>
+  <div class="absolute inset-x-4 top-4 bottom-20 overflow-hidden rounded-[1.2rem] transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]">
+    {slug === 'hyper-0x' ? <ProductArt product="hyper-0x" fill play="hover" /> : <ProductMock kind={slug} class="h-full" />}
+  </div>
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-black/90 to-transparent"></div>
+  <span class="relative flex w-full items-end justify-between gap-4 p-5 md:p-6">
+    <span>
+      <span class="flex items-center gap-2 text-xl font-semibold text-white md:text-2xl">
+        {product.data.title}
+      </span>
+      <span class="mt-1 block max-w-md text-sm text-white/75">{product.data.tagline}</span>
+    </span>
+    <span class="grid size-10 shrink-0 place-items-center rounded-full bg-white/15 text-white transition duration-300 group-hover:rotate-45 group-hover:bg-white group-hover:text-black">
+      <Glyph icon="arrow-up-right" class="size-4" />
+    </span>
+  </span>
+</a>

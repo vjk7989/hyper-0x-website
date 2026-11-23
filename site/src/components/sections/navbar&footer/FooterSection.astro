@@ -1,0 +1,88 @@
+---
+import socialIcons from '@data/social-icons.json';
+import { SOCIAL } from '@data/constants';
+import BrandLogo from '@components/BrandLogo.astro';
+import Glyph from '@components/ui/Glyph.astro';
+import { BOOKING_URL, SITE } from '@data/constants';
+import { footerColumns, siblingSites } from '@data/navigation';
+import { localePath } from '@utils/locale';
+
+/** Footer: who we are, link columns, and a giant wordmark lit by the cursor. */
+const { locale, copy: t } = Astro.locals;
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-auto px-2 pb-2 sm:px-3 sm:pb-3">
+  <div class="overflow-hidden rounded-[2rem] bg-card ring-1 ring-line">
+    <div class="mx-auto grid max-w-[85rem] gap-12 px-5 pt-14 sm:px-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+      <div class="max-w-sm">
+        <BrandLogo />
+        <p class="mt-4 text-pretty text-muted">{t.site.description}</p>
+        <p class="mt-4 text-sm text-pretty text-muted">{siblingSites.statement}</p>
+        <ul class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+          {siblingSites.links.map(link => <li><a href={link.href} class="text-ink/80 underline underline-offset-2 transition hover:text-orange-700 dark:hover:text-orange-300">{link.label}</a></li>)}
+        </ul>
+        <a href={BOOKING_URL} class="cta-pill mt-6"><span>Book a call</span><span class="cta-chip"><Glyph icon="arrow-up-right" class="size-3.5" /></span></a>
+        <ul class="mt-6 flex flex-wrap gap-1.5" aria-label="Buckleson on social media">
+          {SOCIAL.map(item => {
+            const icon = (socialIcons as Record<string, { viewBox: string; paths: string[] }>)[item.key];
+            return (
+              <li>
+                <a href={item.url} target="_blank" rel="noopener me" aria-label={`Buckleson on ${item.label}`} class="grid size-10 place-items-center rounded-full text-ink/75 ring-1 ring-line transition hover:bg-ink hover:text-ground hover:ring-ink">
+                  <svg viewBox={icon.viewBox} class="size-[1.05rem]" fill="currentColor" aria-hidden="true">{icon.paths.map(d => <path d={d} />)}</svg>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      <div class="grid grid-cols-2 gap-8 sm:grid-cols-3">
+        {footerColumns.map(column => (
+          <div>
+            <p class="font-mono text-xs font-medium text-muted">{column.title}</p>
+            <ul class="mt-4 space-y-2.5">
+              {column.links.map(link => (
+                <li><a href={localePath(locale, link.path)} class="text-ink/80 transition hover:text-orange-700 dark:hover:text-orange-300">{link.label}</a></li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="wordmark relative mt-10 select-none px-3" data-wordmark aria-hidden="true">
+      <p class="font-display text-[clamp(4rem,19vw,17rem)] leading-[0.8] font-semibold tracking-[-0.06em] text-ink/9">Buckleson</p>
+      <p class="wordmark-lit absolute inset-x-3 top-0 font-display text-[clamp(4rem,19vw,17rem)] leading-[0.8] font-semibold tracking-[-0.06em] text-orange-500">Buckleson</p>
+    </div>
+
+    <div class="mx-auto flex max-w-[85rem] flex-wrap items-center justify-between gap-3 border-t border-line px-5 py-5 text-sm text-muted sm:px-8">
+      <p>© {year} {SITE.title}. Blockchain infrastructure, built on Hyper 0x.</p>
+      <span class="flex gap-5">
+        <a href="mailto:vijay@buckleson.com" class="hover:text-ink">vijay@buckleson.com</a>
+        <a href={localePath(locale, '/rss.xml')} class="hover:text-ink">RSS</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* A solid accent copy of the wordmark, revealed around the cursor. */
+  .wordmark-lit {
+    -webkit-mask-image: radial-gradient(circle 14rem at var(--x, 50%) var(--y, 160%), #000, transparent 70%);
+    mask-image: radial-gradient(circle 14rem at var(--x, 50%) var(--y, 160%), #000, transparent 70%);
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-wordmark]').forEach(mark => {
+    if (!window.matchMedia('(hover: hover)').matches) return;
+    mark.addEventListener('pointermove', event => {
+      const r = mark.getBoundingClientRect();
+      mark.style.setProperty('--x', `${event.clientX - r.left}px`);
+      mark.style.setProperty('--y', `${event.clientY - r.top}px`);
+    });
+    mark.addEventListener('pointerleave', () => {
+      mark.style.setProperty('--y', '160%');
+    });
+  });
+</script>

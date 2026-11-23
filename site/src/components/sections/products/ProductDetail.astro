@@ -1,0 +1,174 @@
+---
+import PrimaryCTA from '@components/ui/buttons/PrimaryCTA.astro';
+import SecondaryCTA from '@components/ui/buttons/SecondaryCTA.astro';
+import SectionHead from '@components/home/SectionHead.astro';
+import ProductArt from '@components/ui/ProductArt.astro';
+import ProductMock from '@components/ui/ProductMock.astro';
+import FeatureBento from '@components/ui/FeatureBento.astro';
+import FlowStack from '@components/ui/FlowStack.astro';
+import ThreatGrid from '@components/ui/ThreatGrid.astro';
+import IsoFigure from '@components/ui/IsoFigure.astro';
+import Diagram from '@components/ui/Diagram.astro';
+import ProductFaq from '@components/ui/ProductFaq.astro';
+import Glyph from '@components/ui/Glyph.astro';
+import type { CollectionEntry } from 'astro:content';
+import { flows, type FlowName } from '@data/explainers';
+import { localePath } from '@utils/locale';
+import { slugOf } from '@utils/content';
+
+/**
+ * Product page, one long read: the product in use beside its name, the
+ * features as a bento grid, then "how it works" as a layered stack that a
+ * request travels through. H0x-ADE adds the ten agent risks and how each is
+ * checked; Hyper 0x adds its two labelled figures, each beside the claim it
+ * explains. Specifications, FAQ and
+ * a call to action close the page.
+ */
+interface Props {
+  product: CollectionEntry<'products'>;
+}
+
+const { product } = Astro.props;
+const data = product.data;
+const slug = slugOf(product) as 'hyper-0x' | 'h0x-ade' | 'hyper-wallet' | 'h0x-pay' | 'hyperrun';
+const href = (url: string) => localePath('en', url);
+
+const extras: Record<typeof slug, { flow: FlowName; highlight?: { value: string; label: string }; chips: string[] }> = {
+  'hyper-0x': { flow: 'hyper0x', highlight: { value: '1 pass', label: 'to a final record, never reordered' }, chips: ['aBFT consensus', 'Post-quantum-resistant', 'Private L2s', 'EVM · Solana · Sui bridges'] },
+  'h0x-ade': { flow: 'pavii', chips: ['Claude', 'Claude Code', 'Codex', 'ChatGPT', 'Grok', 'OpenCode', 'Custom agents'] },
+  'hyper-wallet': { flow: 'wallet', highlight: { value: '1 fee', label: 'per trade, with no wallet fee on top' }, chips: ['Bitcoin', 'Ethereum', 'Solana', 'Tron', 'TON', 'XRP', 'Stellar', 'Sui'] },
+  'h0x-pay': { flow: 'pay', chips: ['Gold first', 'Index funds next', 'Crypto payments'] },
+  hyperrun: { flow: 'run', chips: ['Play', 'Predict', 'Earn', 'Sponsor'] },
+};
+const extra = extras[slug];
+const flow = flows[extra.flow];
+const features = data.features.map(f => ({ icon: f.icon, title: f.title, text: f.subTitle }));
+let n = 0;
+const next = () => String(++n).padStart(2, '0');
+---
+
+<section class="mx-auto flex max-w-[85rem] flex-col px-4 pt-10 pb-12 sm:px-6 lg:px-8 lg:pt-14">
+  <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
+    <div id="fadeInUp">
+      <p class="font-mono text-xs font-medium text-muted">{slug === 'hyper-0x' ? 'The blockchain' : 'Product'}</p>
+      <h1 class="mt-4 text-5xl leading-[0.98] font-semibold text-ink sm:text-6xl lg:text-7xl">{data.title}</h1>
+      <p class="mt-4 max-w-md text-xl font-medium text-pretty text-ink/85">{data.tagline}</p>
+      <p id="fadeText" class="mt-5 max-w-[52ch] leading-relaxed text-pretty text-muted">{data.summary}</p>
+      {slug === 'hyper-0x' && <p class="mt-3 max-w-[52ch] leading-relaxed text-pretty text-muted">It exists so teams can run AI agents with a gate that decides before each action, custody that holds the keys, and a receipt on the chain for every action.</p>}
+      <div class="mt-7 flex flex-wrap gap-3">
+        <PrimaryCTA title={data.cta.title} url={href(data.cta.url)} />
+        <SecondaryCTA title="How it works" url="#how-it-works" />
+        {data.website && <SecondaryCTA title={data.website.title} url={data.website.url} />}
+      </div>
+    </div>
+    <div id="fadeInMoveRight" class="will-change-transform">
+      {slug === 'hyper-0x'
+        ? <div class="overflow-hidden rounded-[1.8rem] ring-1 ring-line"><ProductArt product="hyper-0x" class="aspect-[440/360]" /></div>
+        : <ProductMock kind={slug} class="min-h-[24rem] ring-1 ring-line sm:min-h-[27rem]" />}
+    </div>
+  </div>
+</section>
+
+<section class="mx-auto max-w-[85rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20" aria-labelledby="features-title">
+  <SectionHead index={next()} label="Features" claim={`What ${data.title}`} payoff="can do for you." id="features-title" />
+  <FeatureBento class="mt-10" items={features} highlight={extra.highlight} chips={extra.chips} />
+</section>
+
+{slug === 'hyper-0x' && (
+  <section class="mx-auto max-w-[85rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20" aria-labelledby="l2-title">
+    <SectionHead
+      index={next()}
+      label="Your chain"
+      claim="One L1, an L2"
+      payoff="for each use case."
+      body="Each application runs on its own L2 module. You can add or remove one and the others do not change. Every L2 settles on the Hyper 0x L1."
+      id="l2-title"
+    />
+    <div class="mt-10"><IsoFigure name="chain-rack" /></div>
+  </section>
+)}
+
+<section id="how-it-works" class="mx-auto max-w-[85rem] scroll-mt-24 px-4 py-14 sm:px-6 lg:px-8 lg:py-20" aria-labelledby="how-title">
+  <SectionHead
+    index={next()}
+    label="How it works"
+    claim={`Follow one ${flow.unit}`}
+    payoff={`through ${data.title}.`}
+    body={`Each layer has one job. Watch a ${flow.unit} pass through them, and see where a bad one is refused and why.`}
+    id="how-title"
+  />
+  <FlowStack name={extra.flow} class="mt-10" />
+</section>
+
+{slug === 'h0x-ade' && (
+  <section class="mx-auto max-w-[85rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20" aria-labelledby="threats-title">
+    <SectionHead
+      index={next()}
+      label="Threats"
+      claim="Ten attacks on AI agents,"
+      payoff="and how H0x-ADE checks each one."
+      body="For each attack, we say plainly what the blockchain adds: a real check, help with part of the job, or only evidence after the attack."
+      id="threats-title"
+    />
+    <ThreatGrid class="mt-10" />
+  </section>
+)}
+
+{slug === 'hyper-0x' && (
+  <section class="mx-auto max-w-[85rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20" aria-labelledby="inside-title">
+    <SectionHead
+      index={next()}
+      label="Encryption"
+      claim="Four layers"
+      payoff="of encryption."
+      body="Records stay encrypted in transit, in use, on the ledger and at rest. The owner key stays in a hardware security module (HSM)."
+      id="inside-title"
+    />
+    <div class="mt-10"><IsoFigure name="cipher-tower" /></div>
+  </section>
+)}
+
+<section class="mx-auto max-w-[85rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20" aria-labelledby="specs-title">
+  <SectionHead index={next()} label={data.details.title} claim="What runs" payoff="inside it." id="specs-title" />
+  <ul class="mt-10 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3" data-reveal-group>
+    {data.details.items.map((item, i) => (
+      <li class="glass-card rounded-[1.4rem] p-6" data-reveal-item>
+        <p class="flex items-center gap-2 font-mono text-xs text-muted"><Glyph icon="check-circle" class="size-4 text-ink" />{String(i + 1).padStart(2, '0')}</p>
+        <h3 class="mt-3 font-semibold text-ink">{item.title}</h3>
+        <p class="mt-1.5 text-sm leading-relaxed text-pretty text-muted">{item.subTitle}</p>
+      </li>
+    ))}
+  </ul>
+  <details class="group mt-8">
+    <summary class="inline-flex cursor-pointer list-none items-center gap-2 text-sm font-semibold text-orange-700 dark:text-orange-300">
+      <Glyph icon="caret-down" class="size-4 transition group-open:rotate-180" />Full architecture diagram
+    </summary>
+    <Diagram name={data.diagram} class="mt-4" caption={`${data.title} architecture. Select the diagram to open it full size.`} />
+  </details>
+</section>
+
+<ProductFaq id={`${data.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}-questions`} title={data.title} faqs={data.faqs} learnMore={data.learnMore} />
+
+<section class="px-2 pb-6 sm:px-3">
+  <div class="on-sheet rounded-[2rem] bg-sheet px-6 py-16 text-center text-white" data-reveal>
+    <h2 class="mx-auto max-w-2xl text-3xl font-semibold text-balance sm:text-5xl">
+      <span class="block">{`Use ${data.title}`}</span>
+      <span class="mark">in your business.</span>
+    </h2>
+    <p class="mx-auto mt-4 max-w-xl text-pretty text-white/70">A 30-minute call with a Buckleson engineer. Tell us what you want to build. We will show you how it runs on Hyper 0x.</p>
+    <div class="mt-8"><PrimaryCTA title={data.cta.title} url={href(data.cta.url)} /></div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+
+  // Intro: the text is visible from the first paint and only settles into
+  // place; the visual fades in beside it.
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    gsap
+      .timeline({ defaults: { ease: 'power3.out' } })
+      .from('#fadeInUp', { y: 22, duration: 0.9 }, 0)
+      .from('#fadeInMoveRight', { autoAlpha: 0, x: 48, scale: 0.97, duration: 1 }, 0.1);
+  }
+</script>

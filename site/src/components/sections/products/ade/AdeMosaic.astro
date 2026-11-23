@@ -1,0 +1,65 @@
+---
+// ref: herdr.dev - tilted window mosaic bleeding off the right edge; windows are our own CSS
+// Decorative. Every string is generic sample text, never a figure, rating or customer.
+const bars = [78, 54, 36, 22];
+---
+
+<div aria-hidden="true" class="ade-mosaic relative">
+  <div class="grid grid-cols-3 gap-3 font-mono text-[0.7rem] leading-relaxed">
+    <div class="ade-col-a flex flex-col gap-3">
+      <div class="win">
+        <p class="win-title">terminal</p>
+        <p class="text-muted">$ ade run fix-parser</p>
+        <p>read_file dates.ts</p>
+        <p>run_tests billing</p>
+        <p class="text-orange-400">patch ready</p>
+      </div>
+      <div class="win">
+        <p class="win-title">agents</p>
+        <p>agent-a  running</p>
+        <p>agent-b  idle</p>
+        <p>agent-c  running</p>
+      </div>
+    </div>
+    <div class="flex flex-col gap-3 pt-10">
+      <div class="win">
+        <p class="win-title">gate decisions</p>
+        <p><span class="text-orange-400">Allowed</span>  read_file</p>
+        <p><span class="text-muted">Masked</span>  http_post</p>
+        <p><span class="text-ink">Denied</span>  shell_exec</p>
+      </div>
+    </div>
+    <div class="ade-col-b flex flex-col gap-3">
+      <div class="win">
+        <p class="win-title">token spend by tool</p>
+        {bars.map((w, i) => (
+          <div class="mt-1.5 flex items-center gap-2"><span class="w-9 text-muted">tool {String.fromCharCode(97 + i)}</span><span class="h-1.5 rounded-full bg-orange-400/80" style={`width:${w}%`}></span></div>
+        ))}
+      </div>
+      <div class="win">
+        <p class="win-title">receipts</p>
+        <p>a3f9..c1  read_file</p>
+        <p>7be2..90  http_post</p>
+        <p>d41c..5a  shell_exec</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ade-mosaic {
+    width: 150%;
+    transform: rotate(-6deg);
+    mask-image: linear-gradient(to right, #000 55%, transparent 95%), linear-gradient(to bottom, #000 70%, transparent);
+    mask-composite: intersect;
+  }
+  @media (min-width: 1024px) { .ade-mosaic { width: 130%; } }
+  /* Edge: --muted at 30% over the ground (about #383838 in dark, 1.69:1). Top highlight and soft drop shadow separate each window from the ground. */
+  .win { border-radius: 1rem; background: var(--card); box-shadow: 0 0 0 1px color-mix(in srgb, var(--muted) 30%, transparent), inset 0 1px 0 color-mix(in srgb, var(--ink) 14%, transparent), 0 14px 30px -12px color-mix(in srgb, var(--ink) 35%, transparent); padding: 0.85rem 0.9rem; }
+  .win-title { margin-bottom: 0.4rem; color: var(--muted); }
+  @media (prefers-reduced-motion: no-preference) {
+    .ade-col-a { animation: ade-drift 14s ease-in-out infinite alternate; }
+    .ade-col-b { animation: ade-drift 14s ease-in-out infinite alternate-reverse; }
+    @keyframes ade-drift { from { transform: translateY(-6px); } to { transform: translateY(6px); } }
+  }
+</style>

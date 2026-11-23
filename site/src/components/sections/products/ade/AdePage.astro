@@ -1,0 +1,37 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import FinalCta from '@components/home/FinalCta.astro';
+import ProductFaq from '@components/ui/ProductFaq.astro';
+import { getCopy } from '@/copy';
+import AdeHero from './AdeHero.astro';
+import AdeParts from './AdeParts.astro';
+import PillarNav from './PillarNav.astro';
+import TokenSaving from './TokenSaving.astro';
+import Observability from './Observability.astro';
+import SecurityTable from './SecurityTable.astro';
+import ChainJobs from './ChainJobs.astro';
+import { adePage as page } from '@data/product-pages/h0x-ade';
+
+// ref: herdr.dev, kiloagent.framer.website, buckleson.com - page order and register, see research/product-page-spec.md section 1
+// The scoped `dark` class gives the dark register in both site themes. `dark:` utilities
+// must go on children: the variant matches descendants of `.dark`, never the element itself.
+interface Props {
+  product: CollectionEntry<'products'>;
+}
+
+const { product } = Astro.props;
+const data = product.data;
+const finalCta = getCopy('en').home.finalCta;
+---
+
+<div class="dark mx-2 overflow-clip rounded-[2rem] bg-ground text-ink sm:mx-3">
+  <AdeHero page={page} cta={data.cta} docs={data.learnMore[0]} />
+  <AdeParts page={page} />
+  <PillarNav page={page} />
+  <TokenSaving page={page} />
+  <Observability page={page} />
+  <SecurityTable page={page} />
+  <ChainJobs page={page} />
+  <ProductFaq id="h0x-ade-questions" title={data.title} faqs={data.faqs} learnMore={data.learnMore} />
+</div>
+<FinalCta id="run-your-agents" claim={page.cta.claim} payoff={page.cta.payoff} text={page.cta.text} btn={data.cta.title} email={finalCta.email} />

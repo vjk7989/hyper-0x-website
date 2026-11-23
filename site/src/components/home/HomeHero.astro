@@ -1,0 +1,116 @@
+---
+import Glyph from '@components/ui/Glyph.astro';
+import IsoFigure from '@components/ui/IsoFigure.astro';
+
+/**
+ * Home hero on light drafting paper. Left: who we are, in one headline whose
+ * last line rotates through who we build for, a one-sentence summary, calls
+ * to action and the four domains. Right: Fig 1, the data vault, showing a
+ * record kept encrypted in transit, in use, on the ledger and at rest.
+ */
+interface Props {
+  badge: string;
+  lead: string;
+  phrases: string[];
+  intro: string;
+  primary: { title: string; url: string };
+  secondary: { title: string; url: string };
+  chips: string[];
+}
+
+const { badge, lead, phrases, intro, primary, secondary, chips } = Astro.props;
+const chipIcons = ['stack', 'diamond', 'wallet', 'shield-check'];
+---
+
+<section class="hero relative mx-2 -mt-16 overflow-hidden rounded-[2rem] ring-1 ring-line sm:mx-3 sm:-mt-[3.75rem]" data-hero>
+  <div aria-hidden="true" class="hero-paper pointer-events-none absolute inset-0"></div>
+
+  <div class="relative mx-auto grid max-w-[90rem] grid-cols-[minmax(0,1fr)] items-center gap-10 px-5 pt-20 pb-10 sm:px-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-8 lg:pt-[4.5rem] lg:pb-14">
+    <div class="lg:ps-2">
+      <p class="inline-flex items-center gap-2 rounded-full bg-card px-3 py-1.5 text-xs font-medium text-ink/80 ring-1 ring-line" data-hero-in>
+        <span class="relative flex size-2"><span class="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500/60"></span><span class="relative inline-flex size-2 rounded-full bg-emerald-500"></span></span>
+        {badge}
+      </p>
+      <h1 class="mt-6 text-[2.4rem] leading-[0.98] font-semibold text-ink sm:text-[3.4rem] lg:text-[3.3rem] xl:text-[3.8rem]">
+        <span class="block">{lead}</span>
+        <span class="block min-h-[1.05em]" data-typer={phrases.length > 1 ? JSON.stringify(phrases) : undefined}>
+          <span class="mark" data-typer-text>{phrases[0]}</span>{phrases.length > 1 && <span class="typer-caret" aria-hidden="true"></span>}
+        </span>
+      </h1>
+      <p class="mt-5 max-w-[30rem] text-base leading-relaxed text-pretty text-muted sm:text-lg">{intro.replaceAll('Hyper 0x', 'Hyper\u00A00X')}</p>
+      <div class="mt-8 flex flex-wrap gap-3" data-hero-in>
+        <a href={primary.url} class="cta-pill"><span>{primary.title}</span><span class="cta-chip"><Glyph icon="arrow-up-right" class="size-3.5" /></span></a>
+        <a href={secondary.url} class="cta-ghost text-ink">{secondary.title}</a>
+      </div>
+      <ul class="mt-8 flex flex-wrap gap-1.5 sm:mt-10 sm:gap-2" data-hero-in>
+        {chips.map((chip, index) => (
+          <li class="inline-flex items-center gap-1.5 rounded-full bg-card px-2.5 py-1.5 text-xs text-ink/85 ring-1 ring-line sm:gap-2 sm:px-3.5 sm:py-2 sm:text-sm">
+            <Glyph icon={chipIcons[index]} class="size-3.5 text-ink sm:size-4" />{chip}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div data-hero-figure>
+      <IsoFigure name="data-vault" tone="hero" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { background: color-mix(in oklab, var(--card) 68%, transparent); }
+  /* Drafting paper: a fine neutral dot grid, fading out under the copy. */
+  .hero-paper {
+    background: radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--ink) 13%, transparent) 1px, transparent 1.2px) 0 0 / 22px 22px;
+    mask-image: linear-gradient(100deg, rgb(0 0 0 / 0.35) 10%, #000 55%);
+  }
+  .typer-caret {
+    display: inline-block;
+    width: 0.06em;
+    height: 0.82em;
+    margin-left: 0.08em;
+    vertical-align: -0.06em;
+    background: var(--accent-600);
+    animation: typer-blink 1s steps(1) infinite;
+  }
+  :global(.dark) .typer-caret { background: var(--accent-400); }
+  @keyframes typer-blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .typer-caret { animation: none; } }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll<HTMLElement>('[data-hero]').forEach(hero => {
+    // Rotating last line: type, pause, erase, next.
+    const typer = hero.querySelector<HTMLElement>('[data-typer]');
+    if (typer && !reduced) {
+      const phrases: string[] = JSON.parse(typer.dataset.typer!);
+      const out = typer.querySelector<HTMLElement>('[data-typer-text]')!;
+      let index = 0;
+      let shown = phrases[0].length;
+      let erasing = true;
+      const tick = () => {
+        if (erasing) {
+          shown--;
+          if (shown <= 0) { erasing = false; index = (index + 1) % phrases.length; }
+        } else shown++;
+        out.textContent = phrases[index].slice(0, Math.max(shown, 0)) || ' ';
+        let delay = erasing ? 30 : 60;
+        if (!erasing && shown >= phrases[index].length) { erasing = true; delay = 2000; }
+        window.setTimeout(tick, delay);
+      };
+      window.setTimeout(tick, 2400);
+    }
+    if (reduced) return;
+
+    // On load: the badge, buttons and chips rise in and the figure settles
+    // onto the paper. The headline and intro are visible from the first
+    // paint (they are the page's largest text).
+    const intro = gsap.timeline({ defaults: { ease: 'expo.out' } });
+    intro.from(hero.querySelectorAll('[data-hero-in]'), { y: 24, opacity: 0, duration: 0.9, stagger: 0.08 });
+    intro.from(hero.querySelector('[data-hero-figure]'), { y: 40, opacity: 0, duration: 1.2 }, 0.15);
+  });
+</script>

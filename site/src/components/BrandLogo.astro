@@ -1,0 +1,13 @@
+---
+import { Image } from 'astro:assets';
+import mark from '@images/brand/hyper-0x.png';
+
+const { class: className } = Astro.props;
+---
+
+<span class:list={['inline-flex items-center gap-2', className]}>
+  <Image src={mark} alt="" width={36} height={36} densities={[1, 2]} class="size-9 rounded-md" />
+  <span class="text-lg font-bold tracking-tight text-ink">
+    Hyper 0x
+  </span>
+</span>

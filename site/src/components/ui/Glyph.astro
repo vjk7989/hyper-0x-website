@@ -1,0 +1,44 @@
+---
+import { brand, glyph, mingcuteFor, uiSymbol, type BrandKey } from '@utils/glyphs';
+
+/**
+ * An inline icon for HTML: a bold MingCute icon (`ui`, or `icon` with an older
+ * name that maps to one), a Phosphor duotone icon (`icon` with no MingCute
+ * match) or a brand logo (`brand`).
+ * Decorative unless `title` is given.
+ */
+interface Props {
+  icon?: string;
+  ui?: string;
+  brand?: BrandKey;
+  class?: string;
+  title?: string;
+}
+
+const { icon, ui, brand: brandKey, class: className, title } = Astro.props;
+// One icon style for the whole site: older names map to MingCute where it
+// has a good match. UI icons are drawn once per page in UiSprite and used
+// here; fragments rendered outside a page (no middleware locals) inline them.
+const uiName = ui ?? (icon ? mingcuteFor(icon) : undefined);
+const tinted = uiName ? uiSymbol(uiName) : undefined;
+const sprite = Boolean(Astro.locals?.locale);
+if (uiName && sprite) (Astro.locals.uiIcons ??= new Set()).add(uiName);
+const logo = brandKey ? brand(brandKey) : undefined;
+const a11y = title ? { role: 'img' as const, 'aria-label': title } : { 'aria-hidden': 'true' as const };
+---
+
+{icon && !tinted && (
+  <svg class={className} viewBox="0 0 256 256" fill="currentColor" {...a11y} set:html={glyph(icon)} />
+)}
+{tinted && (sprite ? (
+  <svg class={className} viewBox={`0 0 ${tinted.size} ${tinted.size}`} fill="none" {...a11y}><use href={`#ui-${uiName}`} /></svg>
+) : (
+  <svg class={className} viewBox={`0 0 ${tinted.size} ${tinted.size}`} fill="none" {...a11y} set:html={tinted.body} />
+))}
+{logo && (logo.path ? (
+  <svg class={className} viewBox="0 0 24 24" fill="currentColor" {...a11y}><path d={logo.path} fill-rule={logo.rule} /></svg>
+) : (
+  <svg class={className} viewBox="0 0 24 24" {...a11y}>
+    <text x="12" y="16" text-anchor="middle" font-size="11" font-weight="700" fill="currentColor">{logo.monogram}</text>
+  </svg>
+))}

@@ -1,0 +1,50 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import Glyph from '@components/ui/Glyph.astro';
+
+/**
+ * Investor deck for Pavii. Shared by link only: noindex and kept out of the
+ * sitemap. The PDF lives in public/pitch-deck/ and is shown inline with a
+ * download link, a booking link and the founder's email.
+ */
+const pdf = '/pitch-deck/Pavii-Investor-Deck.pdf';
+const cal = 'https://cal.com/buckleson-group/30min';
+const mail = 'mailto:vijay@buckleson.com?subject=Pavii%20investor%20deck';
+---
+
+<MainLayout
+  title="Pitch deck"
+  seoTitle="Pavii investor deck | Hyper 0x"
+  description="The Pavii investor deck: blockchain-backed security and observability for AI agents, built by Buckleson on Hyper 0x."
+  noindex
+>
+  <section class="mx-auto max-w-[85rem] px-5 pt-14 pb-10 sm:px-8 lg:pt-20" aria-labelledby="deck-title">
+    <p class="inline-flex items-center gap-2 rounded-full bg-ground px-3 py-1.5 font-mono text-xs font-medium text-muted ring-1 ring-line">
+      <span class="size-2 rounded-full bg-violet-600"></span>Investor deck · Seed round
+    </p>
+    <h1 id="deck-title" class="mt-6 max-w-[48rem] text-4xl leading-[1.05] font-semibold text-balance text-ink sm:text-5xl">
+      Pavii: security and proof for AI agents
+    </h1>
+    <p class="mt-5 max-w-[42rem] text-lg leading-relaxed text-pretty text-muted">
+      Buckleson is the company. Pavii is the product: it checks every AI agent action before it runs. Hyper 0x is our blockchain: it keeps a record of each action that nobody can change.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a href={pdf} download class="cta-pill"><span>Download the deck (PDF)</span><span class="cta-chip"><Glyph icon="download-simple" class="size-3.5" /></span></a>
+      <a href={cal} class="cta-ghost text-ink" target="_blank" rel="noopener">Book a 30-minute call</a>
+      <a href={mail} class="cta-ghost text-ink">Email Vijay</a>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[85rem] px-5 pb-20 sm:px-8" aria-label="Deck viewer">
+    <div class="overflow-hidden rounded-[1.6rem] bg-card ring-1 ring-line">
+      <object data={`${pdf}#view=FitH`} type="application/pdf" class="block aspect-[16/9] w-full" aria-label="Pavii investor deck">
+        <div class="p-8 text-muted">
+          Your browser cannot show the PDF here. <a href={pdf} class="text-ink underline">Open the deck</a>.
+        </div>
+      </object>
+    </div>
+    <p class="mt-4 text-sm text-muted">
+      Proprietary and confidential. Questions? Write to <a href={mail} class="text-ink underline">vijay@buckleson.com</a> or call +91 79818 47657.
+    </p>
+  </section>
+</MainLayout>

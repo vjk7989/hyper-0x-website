@@ -1,0 +1,43 @@
+name: Deploy to GitHub Pages
+
+# The source repo is private. This builds the site and pushes only the built
+# files (dist) to the public repo buckleson/buckleson-site, which GitHub Pages
+# serves at hyper0x.org. The public repo keeps one commit, no history.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: touch dist/.nojekyll
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          deploy_key: ${{ secrets.SITE_DEPLOY_KEY }}
+          external_repository: buckleson/buckleson-site
+          publish_branch: main
+          publish_dir: ./dist
+          cname: hyper0x.org
+          force_orphan: true
+          user_name: buckleson
+          user_email: buckleson@users.noreply.github.com
+          commit_message: Deploy hyper0x.org

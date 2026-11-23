@@ -1,0 +1,99 @@
+---
+import Analytics from '@components/Analytics.astro';
+import UiSprite from '@components/ui/UiSprite.astro';
+import Meta from '@components/Meta.astro';
+import Navbar from '@components/sections/navbar&footer/Navbar.astro';
+import FooterSection from '@components/sections/navbar&footer/FooterSection.astro';
+import { buildPageMetadata, type Faq, type PageKind } from '@utils/metadata';
+import '@styles/global.css';
+
+/**
+ * Marketing-page layout. A page tells it what the page *is* (title,
+ * description, section, kind); the layout derives the whole `<head>` from
+ * that via `buildPageMetadata()` and wraps the content in Navbar +
+ * FooterSection. The locale is the one resolved from the URL by the
+ * middleware (`Astro.locals.locale`), the single source for the whole tree.
+ */
+interface Props {
+  /** Short page name (breadcrumbs, default title). Omit on the home page. */
+  title?: string;
+  /** Full `<title>` when it should differ from `<title> | Hyper 0x`. */
+  seoTitle?: string;
+  description?: string;
+  ogTitle?: string;
+  /** Social image path, e.g. `/og/products-pavii.png`. */
+  ogImage?: string;
+  kind?: PageKind;
+  faqs?: Faq[];
+  noindex?: boolean;
+  hideFooter?: boolean;
+}
+
+const {
+  title,
+  seoTitle,
+  description,
+  ogTitle,
+  ogImage,
+  kind,
+  faqs,
+  noindex,
+  hideFooter = false,
+} = Astro.props;
+const { locale, copy: t } = Astro.locals;
+
+const metadata = buildPageMetadata({
+  locale,
+  pathname: Astro.url.pathname,
+  title,
+  seoTitle,
+  description,
+  ogTitle,
+  ogImage,
+  kind,
+  faqs,
+  noindex,
+});
+---
+
+<html
+  lang={metadata.lang}
+  class="scroll-pt-24 motion-safe:scroll-smooth"
+>
+  <head>
+    <Meta metadata={metadata} />
+    <script is:inline>
+      // Light is the default. Only a stored 'dark' choice turns dark on, before first paint.
+      try {
+        if (localStorage.getItem('hs_theme') === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+      } catch (e) {}
+    </script>
+    <script>
+      import '@scripts/reveal.ts';
+      import '@scripts/motion.ts';
+    </script>
+    <Analytics />
+  </head>
+  <body class="flex min-h-screen flex-col overflow-x-clip bg-ground text-ink selection:bg-orange-200 selection:text-neutral-900">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-100 focus:rounded-lg focus:bg-orange-200 focus:px-4 focus:py-2 focus:text-neutral-800"
+    >
+      {t.layout.skipToContent}
+    </a>
+    {/*
+    Setting up the main structure of the page.
+    The Navbar is placed at the top, with a slot for the main content and FooterSection at the bottom.
+    */}
+    <Navbar />
+    <div class="w-full grow">
+      <main id="main-content">
+        <slot />
+      </main>
+    </div>
+    {!hideFooter && <FooterSection />}
+    <Navbar part="mobile" />
+    <UiSprite />
+  </body>
+</html>

@@ -1,0 +1,91 @@
+---
+import Icon from '@components/ui/icons/Icon.astro';
+import type { IconName } from '@components/ui/icons/icons';
+
+const { copy: t } = Astro.locals;
+const { pageTitle, title = t.share.share } = Astro.props;
+
+interface Props {
+  pageTitle: string;
+  title?: string;
+}
+
+type SocialPlatform = {
+  name: string;
+  url: string;
+  icon: IconName;
+};
+
+const encodedUrl = encodeURIComponent(Astro.url.href);
+const encodedTitle = encodeURIComponent(pageTitle);
+
+const socialPlatforms: SocialPlatform[] = [
+  {
+    name: 'Facebook',
+    url: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+    icon: 'facebook',
+  },
+  {
+    name: 'X',
+    url: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
+    icon: 'x',
+  },
+  {
+    name: 'LinkedIn',
+    url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}&title=${encodedTitle}`,
+    icon: 'linkedIn',
+  },
+];
+---
+
+<details class="share relative inline-block" data-share>
+  <summary class="inline-flex cursor-pointer list-none items-center gap-x-2 rounded-lg px-4 py-3 text-sm font-medium text-muted transition duration-300 hover:bg-ground hover:text-ink">
+    <Icon name="share" class="h-4 w-4" />
+    {title}
+  </summary>
+  <div class="absolute right-0 bottom-full z-10 mb-2 w-72 max-w-[calc(100vw-2rem)] divide-y divide-line rounded-2xl bg-card p-2 shadow-md ring-1 ring-line">
+    <div class="py-2 first:pt-0 last:pb-0">
+      {socialPlatforms.map(platform => (
+        <a
+          class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-ink hover:bg-ground focus:bg-ground focus:outline-hidden"
+          href={platform.url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon name={platform.icon} class="size-4 shrink-0" />
+          {t.share.shareOn(platform.name)}
+        </a>
+      ))}
+    </div>
+    <div class="py-2 first:pt-0 last:pb-0">
+      <button type="button" class="group inline-flex w-full items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-ink hover:bg-ground focus:bg-ground focus:outline-hidden" data-copy-link data-copied={t.share.copied}>
+        <Icon name="clipboard" class="h-4 w-4 transition group-hover:rotate-6" />
+        <span data-copy-text>{t.share.copyLink}</span>
+      </button>
+    </div>
+  </div>
+</details>
+
+<script>
+  // Copy the page link; the label confirms for a moment.
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-link]').forEach(button => {
+    button.addEventListener('click', async () => {
+      const label = button.querySelector<HTMLElement>('[data-copy-text]');
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+      } catch {
+        return;
+      }
+      if (!label) return;
+      const before = label.textContent;
+      label.textContent = button.dataset.copied ?? before;
+      setTimeout(() => (label.textContent = before), 1200);
+    });
+  });
+  // Close the menu when clicking elsewhere.
+  document.addEventListener('click', event => {
+    document.querySelectorAll<HTMLDetailsElement>('[data-share][open]').forEach(menu => {
+      if (!menu.contains(event.target as Node)) menu.open = false;
+    });
+  });
+</script>

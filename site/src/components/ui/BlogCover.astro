@@ -1,0 +1,106 @@
+---
+import { glyph } from '@utils/glyphs';
+
+/**
+ * Cover art for a blog post, drawn in code: the post's topic as a large icon
+ * on a tile, ringed by its related ideas, on the accent-tinted dot paper.
+ * Every post gets its own icon set (looked up by slug, with a stable
+ * fallback), and the art follows the theme. With `label`, the topic is
+ * written on the left and the art moves right.
+ */
+interface Props {
+  seed: string;
+  label: string;
+  class?: string;
+  /** Fill a positioned parent (cover-style) instead of sizing itself. */
+  fill?: boolean;
+}
+
+const { seed, label, class: className, fill = false } = Astro.props;
+
+const TOPICS: Record<string, [string, string[]]> = {
+  'account-abstraction-no-seed-phrases': ['fingerprint', ['key', 'user-circle', 'lock-key']],
+  'asset-tokenization-guide': ['coins', ['buildings', 'diamond', 'chart-line-up']],
+  'atomic-settlement': ['arrows-left-right', ['check-circle', 'scales', 'lightning']],
+  'dynamic-blocks': ['stack', ['chart-line-up', 'lightning', 'cube']],
+  'how-to-choose-a-blockchain-development-company': ['buildings', ['handshake', 'check-circle', 'cube']],
+  'how-to-launch-a-crypto-wallet': ['wallet', ['currency-circle-dollar', 'key', 'globe-hemisphere-west']],
+  'how-to-secure-ai-agents': ['shield-check', ['robot', 'warning-octagon', 'lock-key']],
+  'post-quantum-resistant-blockchain': ['atom', ['lock-key', 'key', 'shield-check']],
+  'private-l2-vs-public-blockchain': ['tree-structure', ['lock-key', 'globe-hemisphere-west', 'cube']],
+  'proof-of-execution-ai': ['receipt', ['robot', 'check-circle', 'link-simple']],
+  'layer-1-vs-layer-2-blockchain': ['stack', ['cube', 'link-simple', 'lightning']],
+  'permissioned-vs-permissionless-blockchain': ['users-three', ['bank', 'key', 'globe-hemisphere-west']],
+  'blockchain-finality-explained': ['check-circle', ['clock', 'cube', 'lightning']],
+  'blockchain-data-encryption-four-layers': ['lock-key', ['vault', 'key', 'cpu']],
+  'what-is-prompt-injection': ['warning-octagon', ['robot', 'chat-circle-text', 'shield-check']],
+  'ai-agent-tool-calling-security': ['wrench', ['robot', 'plugs', 'shield-check']],
+  'stop-llm-data-leaks-pii-redaction': ['eye-slash', ['user-circle', 'database', 'lock-key']],
+  'mcp-server-security-risks': ['plugs', ['robot', 'warning-octagon', 'shield-check']],
+  'custodial-vs-non-custodial-wallet': ['key', ['wallet', 'bank', 'user-circle']],
+  'what-is-a-wallet-sdk': ['code', ['wallet', 'plugs', 'cube']],
+  'multi-chain-crypto-wallet-guide': ['link-simple', ['wallet', 'globe-hemisphere-west', 'arrows-left-right']],
+  'what-is-micro-investing': ['chart-line-up', ['coins', 'currency-circle-dollar', 'wallet']],
+  'tokenized-gold-explained': ['diamond', ['coins', 'vault', 'scales']],
+  'blockchain-payments-for-merchants': ['storefront', ['credit-card', 'check-circle', 'currency-circle-dollar']],
+  'play-to-earn-games-explained': ['game-controller', ['trophy', 'coins', 'users-three']],
+  'esports-prediction-on-blockchain': ['trophy', ['crosshair', 'check-circle', 'scales']],
+  'web3-gaming-wallets': ['joystick', ['wallet', 'fingerprint', 'key']],
+};
+const FALLBACK = ['cube', 'stack', 'lock-key', 'link-simple', 'shield-check', 'coins'];
+
+// Stable small numbers from the slug, for the fallback icon and the tilt.
+let h = 2166136261;
+for (const ch of seed) h = Math.imul(h ^ ch.charCodeAt(0), 16777619);
+const pick = (n: number) => ((h >>>= 0) % n + n) % n;
+const [main, satellites] = TOPICS[seed] ?? [FALLBACK[pick(FALLBACK.length)], ['lock-key', 'link-simple', 'cube']];
+
+const W = 800;
+const H = 450;
+const cx = label ? 560 : 400;
+const cy = 225;
+const tilt = (pick(7) - 3) * 4;
+const orbit = [150, 205];
+const angles = [-150, -30, 90].map(a => ((a + tilt) * Math.PI) / 180);
+const sats = satellites.map((icon, i) => ({ icon, x: cx + Math.cos(angles[i]) * orbit[1], y: cy + Math.sin(angles[i]) * orbit[1] * 0.78 }));
+const icon = (name: string) => glyph(name);
+---
+
+<svg
+  class:list={['blog-cover block', fill ? 'absolute inset-0 size-full' : 'h-auto w-full', className]}
+  viewBox={`0 0 ${W} ${H}`}
+  role={label ? 'img' : undefined}
+  aria-label={label ? `${label} illustration` : undefined}
+  aria-hidden={label ? undefined : 'true'}
+  preserveAspectRatio="xMidYMid slice"
+>
+  <defs>
+    <pattern id="bc-dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.3" class="fill-orange-200 dark:fill-white/8" /></pattern>
+  </defs>
+  <rect width={W} height={H} class="fill-orange-50 dark:fill-[#0d0d0d]" />
+  <rect width={W} height={H} fill="url(#bc-dots)" />
+  <circle cx={cx} cy={cy} r="250" class="fill-orange-100/70 dark:fill-orange-950/40" />
+
+  <g class="fill-none stroke-orange-300 dark:stroke-orange-900" stroke-width="2">
+    {orbit.map((r, i) => <ellipse cx={cx} cy={cy} rx={r} ry={r * 0.78} stroke-dasharray={i ? '3 9' : undefined} opacity={i ? 0.9 : 0.6} />)}
+    {sats.map(s => <line x1={cx} y1={cy} x2={s.x} y2={s.y} opacity="0.55" />)}
+  </g>
+
+  {sats.map(s => (
+    <g>
+      <circle cx={s.x} cy={s.y} r="34" class="fill-white stroke-orange-200 dark:fill-[#171717] dark:stroke-white/10" stroke-width="2" />
+      <svg x={s.x - 18} y={s.y - 18} width="36" height="36" viewBox="0 0 256 256" fill="currentColor" class="text-ink/70" set:html={icon(s.icon)} />
+    </g>
+  ))}
+
+  <rect x={cx - 78} y={cy - 70} width="156" height="156" rx="38" class="fill-orange-900/10 dark:fill-black/40" />
+  <rect x={cx - 78} y={cy - 78} width="156" height="156" rx="38" class="fill-white stroke-orange-200 dark:fill-[#1b1b1b] dark:stroke-white/12" stroke-width="2" />
+  <svg x={cx - 48} y={cy - 48} width="96" height="96" viewBox="0 0 256 256" fill="currentColor" class="text-orange-600 dark:text-orange-400" set:html={icon(main)} />
+
+  {label && (
+    <g>
+      <text x="48" y="96" class="fill-orange-700 dark:fill-orange-300" font-size="20" font-weight="600" letter-spacing="2">BUCKLESON · GUIDE</text>
+      <text x="48" y={H - 52} class="fill-ink" font-size="38" font-weight="700">{label}</text>
+    </g>
+  )}
+</svg>

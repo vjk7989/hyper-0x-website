@@ -1,0 +1,9 @@
+---
+// ref: the marketing site's head script (MainLayout) — same storage key, light by default.
+---
+
+{/* Inlined to set the theme before paint. Light unless the visitor chose dark on this site. */}
+<script is:inline>
+  document.documentElement.dataset.theme =
+    typeof localStorage !== 'undefined' && localStorage.getItem('hs_theme') === 'dark' ? 'dark' : 'light';
+</script>

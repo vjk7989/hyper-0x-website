@@ -1,0 +1,22 @@
+---
+import Glyph from '@components/ui/Glyph.astro';
+
+/**
+ * The call-to-action pill with a round arrow chip. Renders an `<a>` when given
+ * a `url`, otherwise a `<button>`. Other attributes are forwarded.
+ */
+interface Props {
+  title?: string;
+  url?: string;
+  noArrow?: boolean;
+  [attribute: string]: unknown;
+}
+
+const { title, url, noArrow, class: extraClass, ...rest } = Astro.props;
+const Element = url ? 'a' : 'button';
+---
+
+<Element class:list={['cta-pill focus-visible:ring-3 focus-visible:ring-orange-500/50 focus-visible:outline-hidden', noArrow && 'pe-4', extraClass as string | undefined]} href={url} {...rest}>
+  <span>{title}</span>
+  {!noArrow && <span class="cta-chip"><Glyph icon="arrow-up-right" class="size-3.5" /></span>}
+</Element>

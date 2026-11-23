@@ -1,0 +1,38 @@
+---
+import type { adePage } from '@data/product-pages/h0x-ade';
+
+// ref: kiloagent.framer.website - segmented control, rebuilt as a sticky anchor nav (all four pillars stay in the HTML)
+interface Props {
+  page: typeof adePage;
+}
+
+const { nav } = Astro.props.page;
+---
+
+<div class="flex justify-center overflow-x-auto px-4 py-4 lg:sticky lg:top-[5rem] lg:z-20">
+  <nav aria-label={nav.label} class="rounded-full bg-card p-1 ring-1 ring-line">
+    <ul class="flex gap-1 whitespace-nowrap">
+      {nav.links.map(link => (
+        <li><a href={link.href} data-pillar class="block rounded-full px-4 py-2 text-sm font-medium text-ink/85 transition aria-[current=true]:bg-ink aria-[current=true]:text-ground">{link.label}</a></li>
+      ))}
+    </ul>
+  </nav>
+</div>
+
+<script>
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-pillar]')];
+  const sectionOf = (link: HTMLAnchorElement) => document.querySelector(`[aria-labelledby="${link.hash.slice(1)}"]`);
+  const seen = new Map<Element, boolean>();
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => seen.set(entry.target, entry.isIntersecting));
+      const active = links.find(link => seen.get(sectionOf(link)!));
+      links.forEach(link => link.setAttribute('aria-current', String(link === active)));
+    },
+    { rootMargin: '-30% 0px -50% 0px' }
+  );
+  links.forEach(link => {
+    const section = sectionOf(link);
+    if (section) observer.observe(section);
+  });
+</script>

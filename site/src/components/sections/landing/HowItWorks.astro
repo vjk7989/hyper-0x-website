@@ -1,0 +1,97 @@
+---
+import Glyph from '@components/ui/Glyph.astro';
+import SystemDiagram from '@components/ui/SystemDiagram.astro';
+import SectionHead from '@components/home/SectionHead.astro';
+import type { SystemName } from '@data/systems';
+
+/** Tabbed animated system diagrams: pick a flow, watch it run. */
+interface Props {
+  index: string;
+  label: string;
+  claim: string;
+  payoff: string;
+  body: string;
+  tabs: { label: string; icon: string; system: SystemName }[];
+}
+
+const { index, label, claim, payoff, body, tabs } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<section id="how-it-works" class="mx-auto max-w-[85rem] scroll-mt-24 px-4 py-20 sm:px-6 lg:px-8 lg:py-28" data-how>
+  <SectionHead index={index} label={label} claim={claim} payoff={payoff} body={body} />
+  <div class="mt-10 flex" data-reveal>
+    <div role="tablist" aria-label={label} class="glass-tint flex flex-wrap gap-1.5 rounded-full p-1.5">
+      {tabs.map((tab, i) => (
+        <button
+          type="button"
+          role="tab"
+          id={`how-tab-${tab.system}`}
+          aria-controls={`how-panel-${tab.system}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          class="how-tab inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-muted transition hover:text-ink aria-selected:bg-sheet aria-selected:text-white dark:aria-selected:bg-orange-700"
+        >
+          <Glyph icon={tab.icon} class="size-4" />
+          {tab.label}
+        </button>
+      ))}
+    </div>
+  </div>
+  <div class="mt-6" data-reveal>
+    {tabs.map((tab, i) => (
+      <div role="tabpanel" id={`how-panel-${tab.system}`} aria-labelledby={`how-tab-${tab.system}`} hidden={i !== 0}>
+        {i === 0 ? <SystemDiagram name={tab.system} /> : <div class="aspect-[900/420] rounded-[1.6rem] bg-sheet" data-sd-lazy={`${base}/systems/${tab.system}.txt`}></div>}
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  // Hidden tabs fetch their diagram after load (or at once when picked), so
+  // the first paint carries only the first diagram.
+  const cache = new Map<string, Promise<string>>();
+  const fetchDiagram = (url: string) => {
+    if (!cache.has(url)) cache.set(url, fetch(url).then(r => (r.ok ? r.text() : '')));
+    return cache.get(url)!;
+  };
+  const fill = async (holder: HTMLElement) => {
+    const html = await fetchDiagram(holder.dataset.sdLazy!);
+    if (!html || !holder.isConnected) return;
+    const tpl = document.createElement('template');
+    tpl.innerHTML = html;
+    const figure = tpl.content.firstElementChild as HTMLElement | null;
+    if (!figure) return;
+    holder.replaceWith(figure);
+    figure.dispatchEvent(new Event('sd:add', { bubbles: true }));
+  };
+  const fillAll = () => document.querySelectorAll<HTMLElement>('[data-sd-lazy]').forEach(fill);
+  const idle = (fn: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 2500 }) : setTimeout(fn, 300));
+  if (document.readyState === 'complete') idle(fillAll);
+  else window.addEventListener('load', () => idle(fillAll), { once: true });
+
+  document.querySelectorAll<HTMLElement>('[data-how]').forEach(root => {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const select = (tab: HTMLButtonElement) => {
+      tabs.forEach(other => {
+        const on = other === tab;
+        other.setAttribute('aria-selected', String(on));
+        other.tabIndex = on ? 0 : -1;
+        const panel = root.querySelector<HTMLElement>(`#${other.getAttribute('aria-controls')}`)!;
+        panel.hidden = !on;
+        const holder = on && panel.querySelector<HTMLElement>('[data-sd-lazy]');
+        if (holder) fill(holder);
+      });
+    };
+    tabs.forEach((tab, index) => {
+      tab.tabIndex = index === 0 ? 0 : -1;
+      tab.addEventListener('click', () => select(tab));
+      tab.addEventListener('keydown', event => {
+        const step = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
+        if (!step) return;
+        const next = tabs[(index + step + tabs.length) % tabs.length];
+        select(next);
+        next.focus();
+      });
+    });
+  });
+</script>

@@ -1,0 +1,62 @@
+---
+title: 'Hyper Wallet & SDKs'
+seoTitle: 'Hyper Wallet & White-Label Wallet SDK | Hyper 0x'
+description: 'Hyper Wallet is a non-custodial, multi-chain crypto wallet and exchange in one app, with white-label SDKs to launch your own neobank or payment gateway.'
+order: 3
+status: 'live'
+tagline: 'A wallet and an exchange in one app, plus SDKs to launch your own'
+summary: |
+  Hyper Wallet is one non-custodial app to hold, swap and trade crypto and tokenized assets on many chains. Users pay one fee, not two. The same wallet is also available as SDKs. Banks and fintechs use them to launch their own wallet, neobank or payment gateway on Hyper 0x.
+diagram: 'wallet'
+features:
+  - title: 'Multi-chain, non-custodial'
+    icon: 'key-round'
+    subTitle: 'Use Bitcoin, Ethereum and other EVM chains, Solana, Tron, TON, XRP, Stellar, Sui and more. Your keys stay on your device.'
+  - title: 'Swap and trade in one place'
+    icon: 'repeat'
+    subTitle: 'Swap from any coin page on the best route. Each swap has MEV protection, and both sides settle at the same time.'
+  - title: 'Perps, pre-IPO and index funds'
+    icon: 'chart-candlestick'
+    subTitle: 'Trade perpetual futures. Invest in tokenized pre-IPO stocks and index funds from the same app.'
+  - title: 'Markets beyond coins'
+    icon: 'layout-grid'
+    subTitle: 'See coins, pump.fun tokens, tokenized assets such as gold and stocks, and Polymarket prediction markets.'
+  - title: 'Deposit from exchanges'
+    icon: 'download'
+    subTitle: 'Add funds from Binance or Coinbase on any coin page. The app fills in your address for you.'
+  - title: 'White-label SDKs'
+    icon: 'code'
+    subTitle: 'Put wallets, payments and a payment gateway with your brand into your own app or game.'
+details:
+  title: 'Under the hood'
+  items:
+    - title: 'On-chain order book'
+      subTitle: 'A central limit order book runs inside Hyper 0x consensus. Every validator calculates the same fills, so nobody can trade ahead of an order.'
+    - title: 'Atomic settlement'
+      subTitle: 'Both sides of a trade settle in one step, or neither side settles. No side is left exposed.'
+    - title: 'One fee, not two'
+      subTitle: 'Users pay one transaction cost. They do not pay an exchange fee and then a wallet fee.'
+    - title: 'dApps and NFTs'
+      subTitle: 'Connect to dApps through WalletConnect. Keep your NFTs next to your coins.'
+    - title: 'Simple status'
+      subTitle: 'Users see only three states: pending, confirmed or failed. They do not compare records across apps.'
+cta:
+  title: 'Talk to us about the SDKs'
+  url: 'https://cal.com/buckleson-group/30min'
+learnMore:
+  - title: 'Read the Hyper Wallet & SDKs docs'
+    url: '/hyper-wallet/overview/'
+  - title: 'How to launch your own crypto wallet'
+    url: '/blog/how-to-launch-a-crypto-wallet/'
+  - title: 'Atomic settlement: both legs or neither'
+    url: '/blog/atomic-settlement/'
+  - title: 'Account abstraction without seed phrases'
+    url: '/blog/account-abstraction-no-seed-phrases/'
+faqs:
+  - question: 'Is Hyper Wallet custodial?'
+    answer: 'No. Hyper Wallet is non-custodial: the private keys stay on the device of the user. A business that needs custody can add it through the SDKs.'
+  - question: 'Which blockchains does Hyper Wallet support?'
+    answer: 'Hyper Wallet supports Bitcoin, Litecoin, Bitcoin Cash, Dash, Ethereum and other EVM chains, Solana, Tron, TON, XRP, Stellar and Sui. Hyper 0x bridges connect it to more chains.'
+  - question: 'Can I launch my own branded wallet?'
+    answer: 'Yes. With the Hyper Wallet SDKs, banks, fintechs and apps put the wallet, payments and a payment gateway into their own app, with their own brand.'
+---

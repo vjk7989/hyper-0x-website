@@ -1,0 +1,29 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import ProductDetail from '@components/sections/products/ProductDetail.astro';
+import AdePage from '@components/sections/products/ade/AdePage.astro';
+import WalletPage from '@components/sections/products/wallet/WalletPage.astro';
+import type { CollectionEntry } from 'astro:content';
+import { slugOf } from '@utils/content';
+
+/** One product page. */
+interface Props {
+  product: CollectionEntry<'products'>;
+}
+
+const { product } = Astro.props;
+const slug = slugOf(product);
+---
+
+<MainLayout
+  title={product.data.title}
+  seoTitle={product.data.seoTitle}
+  description={product.data.description}
+  ogImage={`/og/products-${slug}.png`}
+  kind={{ type: 'Product', status: product.data.status }}
+  faqs={product.data.faqs}
+>
+  {slug === 'h0x-ade' ? <AdePage product={product} />
+    : slug === 'hyper-wallet' ? <WalletPage product={product} />
+    : <ProductDetail product={product} />}
+</MainLayout>
