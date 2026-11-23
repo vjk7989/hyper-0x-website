@@ -4,7 +4,7 @@
  * yet issued, so analytics is off until the founder supplies one. (The old
  * value belonged to Buckleson's property and must not receive hyper0x.org traffic.)
  */
-export const ANALYTICS_ID = '';
+export const ANALYTICS_ID = 'G-R76GD6N8W3';
 
 /** Every "book a call" button links here. */
 export const BOOKING_URL = 'https://cal.com/buckleson-group/30min';
