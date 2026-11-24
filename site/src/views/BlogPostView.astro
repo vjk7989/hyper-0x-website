@@ -2,6 +2,7 @@
 import MainLayout from '@/layouts/MainLayout.astro';
 import BlogArt from '@components/ui/BlogArt.astro';
 import CardPost from '@components/ui/cards/CardPost.astro';
+import ArticleDiagram from '@components/ui/ArticleDiagram.astro';
 import CompareFlow from '@components/ui/CompareFlow.astro';
 import Diagram from '@components/ui/Diagram.astro';
 import IsoFigure from '@components/ui/IsoFigure.astro';
@@ -123,6 +124,8 @@ const next = inPath ? bySlug[inPath.path.slugs[inPath.index + 1]] : undefined;
       <div class="prose prose-lg prose-neutral dark:prose-invert prose-headings:font-semibold max-w-none text-pretty prose-headings:scroll-mt-28 prose-headings:tracking-tight prose-a:text-orange-700 prose-a:decoration-orange-300 prose-a:underline-offset-4 dark:prose-a:text-orange-300 dark:prose-a:decoration-orange-700">
         <Content />
       </div>
+
+      <ArticleDiagram slug={slug} class="mt-14" />
 
       {data.diagram && (
         <section class="cv-lazy mt-14" aria-labelledby="architecture-title">

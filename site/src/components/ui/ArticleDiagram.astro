@@ -1,0 +1,141 @@
+---
+import { articleDiagrams, type DiagramArrow, type DiagramNode } from '@data/article-diagrams';
+import { headingSlug } from '@utils/utils';
+
+/**
+ * A diagram drawn under a blog post, registered by slug in
+ * @data/article-diagrams. Renders nothing when the slug has none, as
+ * CompareFlow does.
+ *
+ * The SVG is hidden from assistive tech; the caption, which comes first and
+ * answers the heading, carries the meaning. Colours and fonts are the site's
+ * variables, so the drawing follows the theme. The viewBox width is the
+ * minimum rendered width, so text never shrinks under 11px: on a narrow
+ * screen the figure scrolls sideways inside a focusable region.
+ *
+ * Motion: each part fades in, in step order, once, when the figure scrolls
+ * into view. Only opacity and transform change. Without JavaScript, or
+ * under reduced motion, the complete drawing shows at once.
+ * ref: diagram-design skill (.agents/skills/diagram-design), for the node,
+ * arrow and label rules. Motion follows this site's own conventions instead.
+ */
+interface Props {
+  slug: string;
+  class?: string;
+}
+
+const { slug, class: className } = Astro.props;
+const diagram = articleDiagrams[slug];
+
+const R = 8;
+const toward = (from: [number, number], to: [number, number]): [number, number] => {
+  const dx = to[0] - from[0];
+  const dy = to[1] - from[1];
+  const len = Math.abs(dx) + Math.abs(dy);
+  const k = Math.min(R, len / 2) / len;
+  return [from[0] + dx * k, from[1] + dy * k];
+};
+/** Path through corner points with rounded elbows. Throws on a diagonal. */
+const pathOf = (pts: DiagramArrow['points']) => {
+  pts.forEach((p, i) => {
+    if (i > 0 && p[0] !== pts[i - 1][0] && p[1] !== pts[i - 1][1]) throw new Error(`Diagonal arrow in diagram "${slug}"`);
+  });
+  let d = `M${pts[0][0]} ${pts[0][1]}`;
+  for (let i = 1; i < pts.length; i++) {
+    const next = pts[i + 1];
+    if (!next) {
+      d += ` L${pts[i][0]} ${pts[i][1]}`;
+    } else {
+      const a = toward(pts[i], pts[i - 1]);
+      const b = toward(pts[i], next);
+      d += ` L${a[0]} ${a[1]} Q${pts[i][0]} ${pts[i][1]} ${b[0]} ${b[1]}`;
+    }
+  }
+  return d;
+};
+const maskWidth = (text: string) => Math.ceil((text.length * 6.9 + 16) / 4) * 4;
+const subY = (node: DiagramNode, i: number) => node.y + 42 + i * 14;
+
+const id = diagram ? headingSlug(diagram.title) : '';
+const head = `ad-head-${slug}`;
+const headAccent = `ad-head-accent-${slug}`;
+---
+
+{diagram && (
+  <section class:list={['ad', className]} aria-labelledby={id} data-article-diagram>
+    <h2 id={id} class="scroll-mt-28 text-2xl font-semibold text-balance text-ink">{diagram.title}</h2>
+    <figure class="mt-4">
+      <figcaption class="max-w-[60ch] text-pretty text-muted">{diagram.caption}</figcaption>
+      <div class="ad-scroll mt-6" role="region" tabindex="0" aria-label={`${diagram.title}. Scrolls sideways on a narrow screen.`}>
+        <svg viewBox={`0 0 ${diagram.width} ${diagram.height}`} style={`min-width:${diagram.width}px`} class="ad-svg" aria-hidden="true" focusable="false">
+          <defs>
+            <marker id={head} markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4 L0 8 Z" class="ad-head" /></marker>
+            <marker id={headAccent} markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4 L0 8 Z" class="ad-head ad-head-accent" /></marker>
+          </defs>
+          {diagram.arrows.map(arrow => (
+            <g class="ad-s" style={`--s:${arrow.step}`}>
+              <path d={pathOf(arrow.points)} class:list={['ad-line', arrow.accent && 'is-accent', arrow.leader && 'is-leader']} marker-end={arrow.leader ? undefined : `url(#${arrow.accent ? headAccent : head})`} />
+              {arrow.label && (
+                <>
+                  <rect x={arrow.label.x - maskWidth(arrow.label.text) / 2} y={arrow.label.y - 8} width={maskWidth(arrow.label.text)} height="16" class="ad-mask" />
+                  <text x={arrow.label.x} y={arrow.label.y + 4} text-anchor="middle" class="ad-arrow-label">{arrow.label.text}</text>
+                </>
+              )}
+            </g>
+          ))}
+          {diagram.nodes.map(node => (
+            <g class="ad-s" style={`--s:${node.step}`}>
+              <rect x={node.x} y={node.y} width={node.w} height={node.h} rx="6" class={`ad-node tone-${node.tone}`} />
+              <text x={node.x + node.w / 2} y={node.y + 24} text-anchor="middle" class="ad-name">{node.label}</text>
+              {node.sub?.map((line, i) => <text x={node.x + node.w / 2} y={subY(node, i)} text-anchor="middle" class:list={['ad-sub', node.tone === 'callout' && 'is-callout']}>{line}</text>)}
+            </g>
+          ))}
+        </svg>
+      </div>
+    </figure>
+  </section>
+)}
+
+<style>
+  .ad-scroll { overflow-x: auto; }
+  .ad-scroll:focus-visible { outline: 2px solid var(--accent-600); outline-offset: 4px; border-radius: 6px; }
+  .ad-svg { display: block; width: 100%; height: auto; }
+
+  .ad-line { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+  .ad-line.is-accent { stroke: var(--accent-600); }
+  .ad-line.is-leader { stroke-dasharray: 4 4; }
+  .ad-head { fill: var(--muted); }
+  .ad-head-accent { fill: var(--accent-600); }
+  .ad-mask { fill: var(--ground); }
+  .ad-arrow-label { font: 400 11px var(--font-mono); fill: var(--muted); }
+
+  .ad-node { stroke-width: 1; }
+  .tone-focal { fill: color-mix(in oklch, var(--accent-600) 8%, transparent); stroke: var(--accent-600); stroke-width: 1.2; }
+  .tone-ink { fill: var(--ground); stroke: var(--ink); }
+  .tone-input { fill: color-mix(in srgb, var(--muted) 10%, transparent); stroke: var(--muted); }
+  .tone-store { fill: color-mix(in srgb, var(--ink) 5%, transparent); stroke: var(--muted); }
+  .tone-external { fill: color-mix(in srgb, var(--ink) 3%, transparent); stroke: color-mix(in srgb, var(--ink) 30%, transparent); }
+  .tone-callout { fill: color-mix(in oklch, var(--accent-600) 8%, transparent); stroke: var(--accent-600); stroke-dasharray: 4 4; }
+  .ad-name { font: 600 13px var(--font-sans); fill: var(--ink); }
+  .ad-sub { font: 400 11px var(--font-mono); fill: var(--muted); }
+  .ad-sub.is-callout { fill: var(--ink); }
+
+  /* Armed by the script, then played once. Only opacity and transform move. */
+  .ad[data-armed] .ad-s { opacity: 0; }
+  .ad[data-play] .ad-s { animation: ad-in 1000ms ease-out both; animation-delay: calc(var(--s) * 1600ms); }
+  @keyframes ad-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .ad .ad-s { opacity: 1 !important; animation: none !important; transform: none !important; } }
+</style>
+
+<script>
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll<HTMLElement>('[data-article-diagram]').forEach(section => {
+      section.setAttribute('data-armed', '');
+      new IntersectionObserver((entries, observer) => {
+        if (!entries.some(entry => entry.isIntersecting)) return;
+        section.setAttribute('data-play', '');
+        observer.disconnect();
+      }, { threshold: 0.3 }).observe(section);
+    });
+  }
+</script>

@@ -23,7 +23,7 @@ interface Props {
 const { claim, payoff, body, cta } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const products = await entriesFor('products', 'en');
-type Art = 'hyper-0x' | 'pavii' | 'hyper-wallet' | 'h0x-pay';
+type Art = 'hyper-0x' | 'h0x-ade' | 'hyper-wallet' | 'h0x-pay';
 // Under each tagline: how it works in two sentences, and one technology fact.
 const explain: Record<string, { text: string; stat: string; statLabel: string }> = {
   'hyper-0x': {

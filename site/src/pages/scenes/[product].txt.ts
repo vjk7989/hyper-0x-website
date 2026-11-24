@@ -7,7 +7,7 @@ import ProductArt from '@components/ui/ProductArt.astro';
  * the scenes of closed panels only when they open (the page already carries
  * the scene styles and script through the first, open panel).
  */
-const products = ['hyper-0x', 'pavii', 'hyper-wallet', 'h0x-pay'] as const;
+const products = ['hyper-0x', 'h0x-ade', 'hyper-wallet', 'h0x-pay'] as const;
 
 export const getStaticPaths: GetStaticPaths = () => products.map(product => ({ params: { product } }));
 
