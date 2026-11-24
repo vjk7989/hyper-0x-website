@@ -86,9 +86,9 @@ One day, the treasury officer loses a laptop. With MPC, the team refreshes the s
 
 ## How does Hyper 0x handle wallet keys and approvals?
 
-[Hyper 0x](../../products/hyper-0x/), the Buckleson blockchain, puts approval rules on the chain. It runs compliance as code: the chain checks limits, KYC and maker-checker approvals before a transaction executes. So a large or unusual transfer waits for a second person. With account abstraction, users sign in with a face scan or a passkey, not a seed phrase.
+[Hyper 0x](../../blockchain/), the Buckleson blockchain, puts approval rules on the chain. It runs compliance as code: the chain checks limits, KYC and maker-checker approvals before a transaction executes. So a large or unusual transfer waits for a second person. With account abstraction, users sign in with a face scan or a passkey, not a seed phrase.
 
-[Hyper Wallet](../../products/hyper-wallet/) is a non-custodial wallet and exchange in one app. Non-custodial means that the private keys stay on the device of the user. It runs on many chains. Banks and fintechs use the Hyper Wallet SDKs to launch their own wallet, neobank or payment gateway on Hyper 0x. A business that needs custody can add it through the SDKs. See [what a wallet SDK is](../what-is-a-wallet-sdk/) for how SDKs work.
+[Hyper Wallet](../../wallet/) is a non-custodial wallet and exchange in one app. Non-custodial means that the private keys stay on the device of the user. It runs on many chains. Banks and fintechs use the Hyper Wallet SDKs to launch their own wallet, neobank or payment gateway on Hyper 0x. A business that needs custody can add it through the SDKs. See [what a wallet SDK is](../what-is-a-wallet-sdk/) for how SDKs work.
 
 Our [wallet and exchange services](../../services/wallets-exchanges/) build the same kind of wallet for you, with no seed phrases, maker-checker approvals and compliance as code. For build versus white-label, read [how to launch a crypto wallet](../how-to-launch-a-crypto-wallet/).
 

@@ -16,6 +16,7 @@ import { categoryOf, pathOf } from '@utils/blog';
 import { BOOKING_URL } from '@data/constants';
 import { localePath } from '@utils/locale';
 
+import { headingSlug } from '@utils/utils';
 /**
  * One blog post. A header card (title, lead, author, cover art), then the
  * "without / with Hyper 0x" diagram, then three columns on wide screens: the
@@ -71,7 +72,7 @@ const next = inPath ? bySlug[inPath.path.slugs[inPath.index + 1]] : undefined;
           <span aria-hidden="true">/</span>
           <a href={`${localePath('en', '/blog/')}#topic=${category.id}`} class="inline-flex items-center gap-1.5 rounded-full bg-card px-2.5 py-1 text-xs font-semibold text-ink ring-1 ring-line hover:ring-orange-500"><Glyph ui={category.icon} class="size-4 text-ink" />{category.label}</a>
         </nav>
-        <h1 class="mt-5 text-4xl leading-[1.04] font-semibold text-balance text-ink sm:text-5xl">{data.title}</h1>
+        <h1 id={`${headingSlug(data.title)}-title`} class="scroll-mt-24 mt-5 text-4xl leading-[1.04] font-semibold text-balance text-ink sm:text-5xl">{data.title}</h1>
         <p class="mt-5 max-w-[60ch] text-lg leading-relaxed text-pretty text-muted">{data.description}</p>
         <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-muted">
           <span class="flex items-center gap-3">
@@ -79,11 +80,11 @@ const next = inPath ? bySlug[inPath.path.slugs[inPath.index + 1]] : undefined;
             <span>
               <span class="block font-semibold text-ink">{data.author}</span>
               <time datetime={data.pubDate.toISOString()}>{formatDate(data.pubDate, locale)}</time>
-              {data.updatedDate && <span> · Updated <time datetime={data.updatedDate.toISOString()}>{formatDate(data.updatedDate, locale)}</time></span>}
+              {data.updatedDate && <span class="block">Updated <time datetime={data.updatedDate.toISOString()}>{formatDate(data.updatedDate, locale)}</time></span>}
             </span>
           </span>
           <span class="inline-flex items-center gap-1.5"><Glyph icon="clock" class="size-4" />{data.readTime} min read</span>
-          {inPath && <span class="inline-flex items-center gap-1.5 rounded-full bg-card px-3 py-1 text-xs font-semibold text-ink ring-1 ring-line"><Glyph ui={inPath.path.icon} class="size-4 text-ink" />Part {inPath.index + 1} of {inPath.path.slugs.length} · {inPath.path.title}</span>}
+          {inPath && <span class="inline-flex items-center gap-1.5 rounded-full bg-card px-3 py-1 text-xs font-semibold text-ink ring-1 ring-line"><Glyph ui={inPath.path.icon} class="size-4 text-ink" />Part {inPath.index + 1} of {inPath.path.slugs.length}<span class="border-l border-line pl-1.5">{inPath.path.title}</span></span>}
         </div>
       </div>
       <div class="relative min-h-[15rem] sm:min-h-[19rem] lg:min-h-full"><BlogArt post={post} chip /></div>

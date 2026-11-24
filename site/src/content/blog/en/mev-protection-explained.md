@@ -79,7 +79,7 @@ No single setting removes MEV. A good wallet combines several layers.
 
 ## How do Hyper Wallet and Hyper 0x limit MEV on swaps?
 
-[Hyper Wallet](../../products/hyper-wallet/) is a non-custodial wallet and exchange in one app. Non-custodial means that the private keys stay on the device of the user. Users sign in with passkeys instead of seed phrases. Each swap in Hyper Wallet has MEV protection. Swaps take the best route, and both sides settle at the same time.
+[Hyper Wallet](../../wallet/) is a non-custodial wallet and exchange in one app. Non-custodial means that the private keys stay on the device of the user. Users sign in with passkeys instead of seed phrases. Each swap in Hyper Wallet has MEV protection. Swaps take the best route, and both sides settle at the same time.
 
 On Hyper 0x, the Buckleson blockchain, the checks go deeper. A central limit order book runs inside Hyper 0x consensus. A central limit order book is a list of buy and sell orders that the system matches by price and time. Consensus is the process that validators use to agree on the state of the chain. Every validator calculates the same fills, so nobody can trade ahead of an order.
 

@@ -46,7 +46,7 @@ export const compareExtra3: Record<string, Compare> = {
   },
 
   'what-is-a-blockchain-bridge': {
-    title: 'How stolen keys drain a bridge vault, and how chain rules stop it',
+    title: 'How stolen keys drain a bridge vault, and how chain rules limit it',
     without: {
       packet: 'Release the full vault',
       nodes: [
@@ -85,7 +85,7 @@ export const compareExtra3: Record<string, Compare> = {
   },
 
   'web3-game-economy-design': {
-    title: 'How unfunded rewards inflate a game, and how a funded pool stops it',
+    title: 'How unfunded rewards inflate a game, and how a funded pool limits it',
     without: {
       packet: 'Daily quest rewards',
       nodes: [
@@ -108,7 +108,7 @@ export const compareExtra3: Record<string, Compare> = {
       nodes: [
         { icon: 'ticket', label: 'Entry fees', sub: 'Fill the prize pool' },
         { icon: 'trophy', label: 'Ranked match', sub: 'Wins earn rewards' },
-        { icon: 'quill-pen', label: 'Signed result', sub: 'HyperRun', guard: true },
+        { icon: 'quill-pen', label: 'Signed result', sub: 'The game', guard: true },
         { icon: 'file-locked', label: 'Rewards contract', sub: 'On Hyper 0x', guard: true },
         { icon: 'wallet-4', label: 'Winner wallet', sub: 'Paid from the pool' },
       ],
@@ -116,7 +116,7 @@ export const compareExtra3: Record<string, Compare> = {
       steps: [
         'Entry fees and cosmetic sales fill a fixed weekly prize pool.',
         'Players earn for wins and rankings, not for hours or logins.',
-        'In HyperRun, the game signs every result before any payout.',
+        'The game signs every result before any payout.',
         'A rewards contract on Hyper 0x will pay the winners from the published rules.',
       ],
     },

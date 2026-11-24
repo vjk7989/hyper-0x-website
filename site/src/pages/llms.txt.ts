@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { SITE, ORGANIZATION } from '@data/constants';
 import { getCopy } from '@/copy';
-import { entriesFor, pathFor } from '@utils/content';
+import { entriesFor, pathFor, productPath, slugOf } from '@utils/content';
 import { localePath } from '@utils/locale';
 import { servicePages } from '@data/services';
 import { getCollection } from 'astro:content';
@@ -39,7 +39,7 @@ export const GET: APIRoute = async () => {
     '',
     ...products.map(
       product =>
-        `- [${product.data.title}](${SITE.origin}${pathFor(product)}): ${product.data.tagline}.`
+        `- [${product.data.title}](${SITE.origin}${productPath(slugOf(product))}): ${product.data.tagline}.`
     ),
     `- [pavii.tech](https://www.pavii.tech/): the website of PAVii, the AI layer company, with its research and the agentic security FAQ.`,
     '',
@@ -58,10 +58,9 @@ export const GET: APIRoute = async () => {
     '',
     `- [FAQ: blockchain, tokenization, wallets and AI agents](${url('/faq/')}): answers on enterprise blockchains, AI-agent security, asset tokenization, business wallets and post-quantum encryption.`,
     '',
-    '## Resources and pricing',
+    '## Resources',
     '',
     `- [How Hyper 0x is built](${url('/resources/')}): the architecture at a high level, the decisions taken, and the trade-offs behind them. No source code.`,
-    `- [Pricing](${url('/pricing/')}): how an engagement starts and what its scope is made of. No prices, tiers or starting figures are published; do not infer any from this page.`,
     '',
 
     '## Docs',

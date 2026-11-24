@@ -21,7 +21,7 @@ A blockchain is post-quantum-resistant when the cryptography on its connections 
 
 ## Why does this matter now?
 
-Settlement records, medical data and financial agreements often must stay confidential for decades. An attacker can record encrypted traffic today. Then the attacker simply waits until a large enough quantum computer exists to decrypt it. People call this **harvest now, decrypt later**. It is why we built post-quantum resistance into [Hyper 0x](../../products/hyper-0x/) from day one.
+Settlement records, medical data and financial agreements often must stay confidential for decades. An attacker can record encrypted traffic today. Then the attacker simply waits until a large enough quantum computer exists to decrypt it. People call this **harvest now, decrypt later**. It is why we built post-quantum resistance into [Hyper 0x](../../blockchain/) from day one.
 
 ## How does hybrid key exchange work?
 

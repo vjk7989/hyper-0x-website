@@ -1,5 +1,5 @@
-// Static checks over dist/ for the two product pages built in P6 (/products/h0x-ade/
-// and /products/hyper-wallet/), what their arrival could break elsewhere, and (runSeo, at the end) the search checks.
+// Static checks over dist/ for the two product pages built in P6 (/ade/
+// and /wallet/), what their arrival could break elsewhere, and (runSeo, at the end) the search checks.
 // Contract matches scripts/gate/checks.mjs: run(ctx) -> Check[];
 // Check = { id, label, pass, detail }. Run after `astro build`:
 //   node scripts/product-checks.mjs
@@ -13,12 +13,14 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const DIST = path.join(HERE, '..', 'dist');
 const DATA = path.join(HERE, '..', 'src', 'data_files');
 
-// The five product routes the slug dispatch in src/views/ProductView.astro must serve.
-export const PRODUCT_SLUGS = ['h0x-ade', 'hyper-wallet', 'hyper-0x', 'h0x-pay', 'hyperrun'];
+// The four product routes (the product name at the root, not under /products/) the product pages must serve.
+export const PRODUCT_SLUGS = ['h0x-ade', 'hyper-wallet', 'hyper-0x', 'h0x-pay'];
+// Where each product is served, by content id (mirrors PRODUCT_ROUTES in src/utils/content.ts).
+export const PRODUCT_ROUTE = { 'h0x-ade': 'ade', 'hyper-wallet': 'wallet', 'hyper-0x': 'blockchain', 'h0x-pay': 'pay' };
 // The two pages this sub-task built, with the id their single <h1> must carry.
 export const NEW_PAGES = { 'h0x-ade': 'h0x-ade', 'hyper-wallet': 'hyper-wallet' };
-// The three routes the FAQ extraction was not meant to change.
-export const UNCHANGED_SLUGS = ['hyper-0x', 'h0x-pay', 'hyperrun'];
+// The routes the FAQ extraction was not meant to change.
+export const UNCHANGED_SLUGS = ['hyper-0x', 'h0x-pay'];
 
 // A string from each new page's own body copy that must survive into the static HTML
 // (CLAUDE.md 5.5: if a crawler needs JavaScript to read it, it fails).
@@ -101,8 +103,8 @@ export const deBrand = (text) => text
 const quote = (text, index, len) => text.slice(Math.max(0, index - 40), index + len + 40).trim();
 
 function loadPage(distDir, slug) {
-  const file = path.join(distDir, 'products', slug, 'index.html');
-  const rel = `dist/products/${slug}/index.html`;
+  const file = path.join(distDir, PRODUCT_ROUTE[slug], 'index.html');
+  const rel = `dist/${PRODUCT_ROUTE[slug]}/index.html`;
   const html = readText(file);
   return { slug, rel, file, html };
 }
@@ -229,14 +231,14 @@ function dataChecks(threats, adePage, add) {
 
 function siteChecks(distDir, threats, pages, add) {
   // Every product route the slug dispatch has to serve.
-  const missing = PRODUCT_SLUGS.filter((s) => readText(path.join(distDir, 'products', s, 'index.html')) === null);
-  add('product.routes.exist', 'every product route is built', 'dist/products/',
+  const missing = PRODUCT_SLUGS.filter((s) => readText(path.join(distDir, PRODUCT_ROUTE[s], 'index.html')) === null);
+  add('product.routes.exist', 'every product route is built', 'dist/',
     missing.length ? `not built: ${missing.join(', ')}` : '');
 
   // The FAQ extraction was a pure move: the house markup must be unchanged everywhere.
   const faqErrs = [];
   for (const slug of PRODUCT_SLUGS) {
-    const html = readText(path.join(distDir, 'products', slug, 'index.html'));
+    const html = readText(path.join(distDir, PRODUCT_ROUTE[slug], 'index.html'));
     if (html === null) continue;
     const hasHead = /questions<\/h2>/i.test(html);
     const blocks = [...html.matchAll(/<details class="group py-5"[^>]*>([\s\S]*?)<\/details>/gi)];
@@ -246,18 +248,18 @@ function siteChecks(distDir, threats, pages, add) {
       if (!/<p\b[^>]*>\s*\S/i.test(b[1])) faqErrs.push(`${slug}: a FAQ item has no answer <p>`);
     }
   }
-  add('product.faq.structure', 'FAQ markup unchanged on every product route', 'dist/products/', faqErrs.slice(0, 5).join('; '));
+  add('product.faq.structure', 'FAQ markup unchanged on every product route', 'dist/', faqErrs.slice(0, 5).join('; '));
 
   // The three routes the dispatch leaves on the house layout still render it.
   const houseErrs = [];
   for (const slug of UNCHANGED_SLUGS) {
-    const html = readText(path.join(distDir, 'products', slug, 'index.html'));
+    const html = readText(path.join(distDir, PRODUCT_ROUTE[slug], 'index.html'));
     if (html === null) { houseErrs.push(`${slug}: not built`); continue; }
     if (!/<main[\s>]/i.test(html)) houseErrs.push(`${slug}: no <main>`);
     if (headings(html).filter((h) => h.level === 1).length !== 1) houseErrs.push(`${slug}: not exactly one <h1>`);
     if (mainText(html).length < 300) houseErrs.push(`${slug}: only ${mainText(html).length} chars of body copy`);
   }
-  add('product.house.layout', 'the unchanged product routes still render', 'dist/products/', houseErrs.join('; '));
+  add('product.house.layout', 'the unchanged product routes still render', 'dist/', houseErrs.join('; '));
 
   // CLAUDE.md R10.3, checked across all of dist. Redirect and noindex pages are not routes.
   const byH1 = new Map();
@@ -285,12 +287,12 @@ function siteChecks(distDir, threats, pages, add) {
   if (redirect === null) rErrs.push('dist/products/pavii/index.html is not built');
   else {
     if (!/http-equiv="refresh"/i.test(redirect)) rErrs.push('no http-equiv="refresh"');
-    else if (!/content="0;\s*url=\/products\/h0x-ade\/"/i.test(redirect)) rErrs.push(`refresh does not target /products/h0x-ade/: ${(/content="([^"]*)"/i.exec(redirect) || [, '?'])[1]}`);
+    else if (!/content="0;\s*url=\/ade\/"/i.test(redirect)) rErrs.push(`refresh does not target /ade/: ${(/content="([^"]*)"/i.exec(redirect) || [, '?'])[1]}`);
     if (!/<meta name="robots" content="noindex/i.test(redirect)) rErrs.push('redirect page is not noindex');
-    if (!/<link rel="canonical" href="[^"]*\/products\/h0x-ade\/"/i.test(redirect)) rErrs.push('canonical does not point at /products/h0x-ade/');
+    if (!/<link rel="canonical" href="[^"]*\/ade\/"/i.test(redirect)) rErrs.push('canonical does not point at /ade/');
     if (headings(redirect).some((h) => h.level === 1)) rErrs.push('redirect page carries an <h1> and so competes as a route');
   }
-  add('product.redirect.pavii', '/products/pavii/ redirects to /products/h0x-ade/', 'dist/products/pavii/index.html', rErrs.join('; '));
+  add('product.redirect.pavii', '/products/pavii/ redirects to /ade/', 'dist/products/pavii/index.html', rErrs.join('; '));
 
   const sitemap = readText(path.join(distDir, 'sitemap-0.xml'));
   const sErrs = [];
@@ -298,9 +300,9 @@ function siteChecks(distDir, threats, pages, add) {
   else {
     const locs = [...sitemap.matchAll(/<loc>([\s\S]*?)<\/loc>/g)].map((m) => m[1].trim());
     const pavii = locs.filter((l) => /\/products\/pavii\/?$/.test(l));
-    const ade = locs.filter((l) => /\/products\/h0x-ade\/?$/.test(l));
+    const ade = locs.filter((l) => /\/ade\/?$/.test(l));
     if (pavii.length) sErrs.push(`products/pavii is in the sitemap ${pavii.length} time(s): ${pavii.join(', ')}`);
-    if (ade.length !== 1) sErrs.push(`products/h0x-ade appears ${ade.length} time(s), expected exactly 1`);
+    if (ade.length !== 1) sErrs.push(`ade appears ${ade.length} time(s), expected exactly 1`);
   }
   add('product.sitemap.pavii', 'the redirect is out of the sitemap, the new route is in once', 'dist/sitemap-0.xml', sErrs.join('; '));
 
@@ -309,7 +311,7 @@ function siteChecks(distDir, threats, pages, add) {
   if (adeHtml) {
     const rowHeads = [...adeHtml.matchAll(/<th\b[^>]*scope="row"[^>]*>/gi)].length;
     add('product.security.rows.rendered', 'the table renders one row per threat',
-      'dist/products/h0x-ade/index.html',
+      'dist/ade/index.html',
       rowHeads === threats.length ? '' : `${rowHeads} <th scope="row"> rows for ${threats.length} threats`);
   }
 }
@@ -334,7 +336,7 @@ export async function run(ctx = {}) {
         add(id, label, pg.rel, err);
       }
     }
-    try { tableChecks(pages['h0x-ade'], add); } catch (e) { add('product.security.table', 'security table is a real table', 'dist/products/h0x-ade/index.html', `check crashed: ${e.message}`); }
+    try { tableChecks(pages['h0x-ade'], add); } catch (e) { add('product.security.table', 'security table is a real table', 'dist/ade/index.html', `check crashed: ${e.message}`); }
     try { dataChecks(threats, adePage, add); } catch (e) { add('product.data.crash', 'product data checks', 'src/data_files/', e.message); }
     try { siteChecks(distDir, threats, pages, add); } catch (e) { add('product.site.crash', 'site-wide product checks', 'dist/', e.message); }
   } catch (e) {
@@ -467,6 +469,20 @@ export async function runSeo(ctx = {}) {
     }
     const h1Errs = [...byH1].filter(([, v]) => v.length > 1).map(([t, v]) => `<h1> "${t.slice(0, 40)}" shared by ${v.join(', ')}`);
     add('seo.h1.unique', 'no two indexable routes share an h1', 'dist/', h1Errs.slice(0, 5).join('; '));
+
+    // 5.4 and 9.5: every h1, h2 and h3 on every indexable route has an id, and no two on one page share one.
+    // (product.heading.anchors above does the same for the two product pages' h2 and h3; this one has no route list.)
+    const anchorErrs = [];
+    for (const p of pages) {
+      const seen = new Set();
+      for (const h of headings(p.html).filter((x) => x.level <= 3)) {
+        if (!h.id) anchorErrs.push(`${p.rel} <h${h.level}> "${h.text.slice(0, 40)}" has no id`);
+        else if (seen.has(h.id)) anchorErrs.push(`${p.rel} <h${h.level}> "${h.text.slice(0, 40)}" repeats id "${h.id}"`);
+        else seen.add(h.id);
+      }
+    }
+    add('seo.heading.anchors', 'every h1, h2 and h3 on an indexable route has a unique id', 'dist/',
+      anchorErrs.length ? `${anchorErrs.length} heading(s): ${anchorErrs.slice(0, 5).join('; ')}` : '');
 
     // 5.5: every AI crawler is named and allowed.
     const robots = readText(path.join(distDir, 'robots.txt'));

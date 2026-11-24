@@ -204,7 +204,6 @@ for (const stage of document.querySelectorAll('[data-figure="ade-path"]')) {
 `;
 
 const plate = k.plateHtml({
-  fig: 'Fig 7',
   title: 'The path of one H0x-ADE call',
   hint: 'Four stations, left to right',
   readout: 'a call enters the path',

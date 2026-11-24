@@ -94,7 +94,7 @@ Throughout, the supply check compares the wrapped units with the locked units.
 
 ## How does Hyper 0x connect private L2s to other chains?
 
-On [Hyper 0x](../../products/hyper-0x/), the Buckleson blockchain, every customer gets a private L2 with its own sequencer, rules, privacy and bridge. Bridge adapters connect each L2 to EVM chains (chains that run Ethereum-style smart contracts), Solana and Sui. Every L2 settles on one shared L1, the main chain that keeps the final record.
+On [Hyper 0x](../../blockchain/), the Buckleson blockchain, every customer gets a private L2 with its own sequencer, rules, privacy and bridge. Bridge adapters connect each L2 to EVM chains (chains that run Ethereum-style smart contracts), Solana and Sui. Every L2 settles on one shared L1, the main chain that keeps the final record.
 
 Three parts of Hyper 0x match the controls above:
 

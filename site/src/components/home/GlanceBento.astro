@@ -9,16 +9,15 @@ import { brand, type BrandKey } from '@utils/glyphs';
  * work with.
  */
 interface Props {
-  label: string;
   statement: string;
-  fact: { label: string; title: string; text: string };
+  fact: { title: string; text: string };
   logosTitle: string;
 }
 
-const { label, statement, fact, logosTitle } = Astro.props;
+const { statement, fact, logosTitle } = Astro.props;
 const stats = [
   { count: 6, prefix: '', suffix: '', label: 'security gates on every agent call' },
-  { count: 1, prefix: '', suffix: ' pass', label: 'to final, never reordered' },
+  { count: 1, prefix: '', suffix: ' pass', label: 'to a final, ordered record' },
   { count: 4, prefix: '', suffix: '', label: 'layers of encryption' },
   { count: 3, prefix: '', suffix: '', label: 'ecosystems: EVM, Solana and Sui' },
 ];
@@ -29,18 +28,15 @@ const ticks = Array.from({ length: 48 }, (_, i) => i);
 
 <section class="mx-auto max-w-[85rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
   <div>
-    <p class="font-mono text-xs font-medium text-muted">(00) {label}</p>
-    <p class="mt-5 max-w-[48ch] text-xl leading-relaxed font-medium text-pretty text-ink sm:text-2xl" data-reveal>{statement}</p>
+    <p class="max-w-[48ch] text-xl leading-relaxed font-medium text-pretty text-ink sm:text-2xl" data-reveal>{statement}</p>
 
     <div class="mt-10 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
       <div class="bento accent-warm rounded-[1.6rem] bg-sheet p-6 text-white md:col-span-2 lg:row-span-2" data-reveal>
-        <p class="flex items-center gap-2 font-mono text-xs font-medium text-white/60"><span class="size-1.5 rounded-full bg-emerald-400"></span>By design</p>
-        <dl class="mt-8 grid grid-cols-2 gap-x-6 gap-y-8">
+        <dl class="grid grid-cols-2 gap-x-6 gap-y-8">
           {stats.map(stat => (
-            <div>
-              <dt class="sr-only">{stat.label}</dt>
+            <div class="flex flex-col-reverse justify-end">
+              <dt class="mt-2 text-sm text-white/70">{stat.label}</dt>
               <dd class="font-display text-4xl font-semibold tabular-nums sm:text-5xl" data-count={stat.count} data-prefix={stat.prefix} data-suffix={stat.suffix}>{stat.prefix}{stat.count}{stat.suffix}</dd>
-              <dd class="mt-2 text-sm text-white/70">{stat.label}</dd>
             </div>
           ))}
         </dl>
@@ -78,9 +74,8 @@ const ticks = Array.from({ length: 48 }, (_, i) => i);
         <p class="mt-1 text-sm text-muted">Hybrid ML-KEM-768 + X25519 key exchange on every connection.</p>
       </div>
 
-      <div class="bento glass-tint flex flex-col justify-between rounded-[1.6rem] p-6" data-reveal>
-        <p class="font-mono text-xs font-medium text-muted">{fact.label}</p>
-        <div class="mt-6">
+      <div class="bento glass-tint rounded-[1.6rem] p-6" data-reveal>
+        <div>
           <p class="font-display text-xl font-semibold text-ink">{fact.title}</p>
           <p class="mt-1 text-sm text-pretty text-muted">{fact.text}</p>
         </div>
@@ -88,13 +83,12 @@ const ticks = Array.from({ length: 48 }, (_, i) => i);
     </div>
 
     <div class="mt-10 flex flex-col gap-4 border-t border-line pt-6 md:flex-row md:items-center">
-      <p class="shrink-0 font-mono text-xs font-medium text-muted">{logosTitle}</p>
       <div class="marquee relative flex-1 overflow-hidden" aria-label={logosTitle}>
         <ul class="marquee-track flex w-max gap-10">
-          {[...marquee, ...marquee].map((key, index) => {
+          {marquee.map(key => {
             const logo = brand(key);
             return (
-              <li class="flex items-center gap-2 text-muted" aria-hidden={index >= marquee.length ? 'true' : undefined}>
+              <li class="flex items-center gap-2 text-muted">
                 <svg viewBox="0 0 24 24" class="size-5" aria-hidden="true"><path d={logo.path} fill="currentColor" fill-rule={logo.rule} /></svg>
                 <span class="text-sm font-medium whitespace-nowrap">{logo.title}</span>
               </li>
@@ -113,8 +107,8 @@ const ticks = Array.from({ length: 48 }, (_, i) => i);
   .gauge.is-on .tick { animation: tick-on 2.4s cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: calc(var(--i) * 30ms); }
   @keyframes tick-on { 0% { stroke: color-mix(in oklab, var(--ink) 18%, transparent); } 40%, 100% { stroke: var(--accent-500); } }
   .marquee { mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent); }
-  .marquee-track { animation: marquee 32s linear infinite; }
-  .marquee:hover .marquee-track { animation-play-state: paused; }
+  .marquee-track.is-cloned { animation: marquee 32s linear infinite; }
+  .marquee:hover .marquee-track.is-cloned { animation-play-state: paused; }
   @keyframes marquee { to { transform: translateX(-50%); } }
   @media (prefers-reduced-motion: reduce) {
     .marquee-track { animation: none; }
@@ -123,6 +117,11 @@ const ticks = Array.from({ length: 48 }, (_, i) => i);
 </style>
 
 <script>
+  // The second copy exists only to loop the strip, so it is made here and never reaches the HTML crawlers read.
+  document.querySelectorAll<HTMLElement>('.marquee-track').forEach(track => {
+    [...track.children].forEach(li => { const copy = li.cloneNode(true) as HTMLElement; copy.setAttribute('aria-hidden', 'true'); track.append(copy); });
+    track.classList.add('is-cloned');
+  });
   document.querySelectorAll<HTMLElement>('[data-gauge]').forEach(gauge => {
     new IntersectionObserver(([entry], observer) => {
       if (!entry.isIntersecting) return;

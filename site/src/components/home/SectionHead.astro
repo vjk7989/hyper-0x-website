@@ -1,15 +1,14 @@
 ---
+import { headingSlug } from '@utils/utils';
 import PrimaryCTA from '@components/ui/buttons/PrimaryCTA.astro';
 import { localePath } from '@utils/locale';
 
 /**
- * Section opener, after the reference grammar: a mono "(01) Label" tag, a
- * two-line headline whose second line is the payoff (highlighted), and a
- * short paragraph with an optional call to action beside it.
+ * Section opener, after the reference grammar: a two-line headline whose second line is the payoff (highlighted), and a
+ * short paragraph with an optional call to action beside it. Nothing sits above the headline: the founder removed every
+ * eyebrow and counter on 2026-11-24 (Hallmark Floor rule 9).
  */
 interface Props {
-  index?: string;
-  label: string;
   claim: string;
   payoff: string;
   body?: string;
@@ -18,16 +17,13 @@ interface Props {
   id?: string;
 }
 
-const { index, label, claim, payoff, body, cta, tone = 'ground', id } = Astro.props;
+const { claim, payoff, body, cta, tone = 'ground', id } = Astro.props;
 const onSheet = tone === 'sheet';
 ---
 
 <div class="grid gap-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-end">
   <div>
-    <p class:list={['font-mono text-xs font-medium', onSheet ? 'text-white/70' : 'text-muted']} data-reveal>
-      {index && <span class:list={[!onSheet && 'font-semibold text-violet-600 dark:text-orange-400']}>({index}) </span>}{label}
-    </p>
-    <h2 id={id} class:list={['mt-4 text-4xl leading-[1.02] font-semibold sm:text-5xl lg:text-[3.3rem]', onSheet ? 'text-white' : 'text-ink']} data-reveal>
+    <h2 id={id ?? headingSlug(`${claim} ${payoff}`)} class:list={['scroll-mt-24 text-4xl leading-[1.02] font-semibold sm:text-5xl lg:text-[3.3rem]', onSheet ? 'text-white' : 'text-ink']} data-reveal>
       <span class="relative z-[1] block">{claim}</span>
       <span class="mark block w-fit">{payoff}</span>
     </h2>

@@ -105,13 +105,13 @@ A blockchain makes the history of a memory store tamper-evident (any change show
 - Every entry has a known author.
 - You can prove which version of memory the agent used on a given date.
 
-[Hyper 0x](../../products/hyper-0x/), the blockchain that Buckleson builds, can hold these hashes. The data stays in your own store, so you can still delete it when a law demands erasure.
+[Hyper 0x](../../blockchain/), the blockchain that Buckleson builds, can hold these hashes. The data stays in your own store, so you can still delete it when a law demands erasure.
 
 A blockchain cannot judge whether a fact is true. If an attacker writes a false fact through a normal path, the chain records it faithfully. The chain gives you a trail, not a verdict. You still need source checks, conflict checks and a person for high-value facts.
 
 ## How does H0x-ADE guard agent memory?
 
-[H0x-ADE](../../products/h0x-ade/), our security gateway for AI agents, guards the way into memory and the actions that follow.
+[H0x-ADE](../../ade/), our security gateway for AI agents, guards the way into memory and the actions that follow.
 
 - **Injection gate.** H0x-ADE checks files, web pages and tool results before they reach the model. So it catches hidden instructions before the agent can store them.
 - **Compact context.** H0x-ADE gives the agent a search index, a result cache and small notes instead of whole files. On one measured Claude Code task, agents used 30 to 60 percent fewer tokens.

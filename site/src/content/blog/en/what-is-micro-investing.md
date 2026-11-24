@@ -91,9 +91,9 @@ Tokenized assets can help here. A fund unit or a gram of gold can be a token on 
 
 ## How will H0X Pay approach micro-investing?
 
-[H0X Pay](../../products/h0x-pay/) is a Buckleson product. It lets you pay and get paid in crypto. You also set an investment plan once, for example a small percentage of every payment. Your portfolio then grows as you spend. The diagram at the top of this page shows the flow.
+[H0X Pay](../../pay/) is a Buckleson product. It lets you pay and get paid in crypto. You also set an investment plan once, for example a small percentage of every payment. Your portfolio then grows as you spend. The diagram at the top of this page shows the flow.
 
-The roadmap starts with tokenized gold, bought in small slices from everyday payments. Index funds, tokenized stocks and bonds come next in the plan, chosen for each market. After that, users make and receive crypto payments from the same app. Everything settles on [Hyper 0x](../../products/hyper-0x/), the blockchain we built. If you run a business, see how [blockchain payments work for merchants](../blockchain-payments-for-merchants/).
+The roadmap starts with tokenized gold, bought in small slices from everyday payments. Index funds, tokenized stocks and bonds come next in the plan, chosen for each market. After that, users make and receive crypto payments from the same app. Everything settles on [Hyper 0x](../../blockchain/), the blockchain we built. If you run a business, see how [blockchain payments work for merchants](../blockchain-payments-for-merchants/).
 
 ## Where should you start?
 

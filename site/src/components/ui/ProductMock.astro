@@ -7,11 +7,10 @@ import Glyph from '@components/ui/Glyph.astro';
  * H0x-ADE: a gateway console streaming allow / mask / block decisions.
  * Hyper Wallet: a phone that routes and settles a swap.
  * H0X Pay: a payment that sends a slice to tokenized gold.
- * HyperRun: a match HUD that ends in a signed result and payouts.
  * Animations pause offscreen and hold still under reduced motion.
  */
 interface Props {
-  kind: 'h0x-ade' | 'hyper-wallet' | 'h0x-pay' | 'hyperrun';
+  kind: 'h0x-ade' | 'hyper-wallet' | 'h0x-pay';
   class?: string;
 }
 
@@ -107,33 +106,6 @@ const feed = [
       </div>
     </div>
   )}
-
-  {kind === 'hyperrun' && (
-    <div class="pm-hud relative h-full min-h-[22rem] p-4 sm:p-5">
-      <div class="flex items-start justify-between gap-3">
-        <span class="rounded-xl bg-black/50 px-3 py-2 font-mono text-xs ring-1 ring-white/10">Ranked · round 12</span>
-        <span class="flex items-center gap-3 rounded-xl bg-black/50 px-3 py-2 text-sm font-semibold ring-1 ring-white/10">Player A <span class="font-display text-xl tabular-nums">13 : 9</span> Player B</span>
-      </div>
-      <span class="pm-cross" aria-hidden="true"></span>
-      <ul class="absolute top-20 right-4 grid gap-1 text-[0.7rem] sm:right-5">
-        <li class="pm-kill" style="--i:0">Player A <Glyph icon="crosshair" class="inline size-3 text-white" /> Player B</li>
-        <li class="pm-kill" style="--i:1">Player A <Glyph icon="crosshair" class="inline size-3 text-white" /> Player C</li>
-      </ul>
-      <div class="absolute inset-x-4 bottom-4 grid gap-2 sm:inset-x-5 sm:bottom-5">
-        <div class="rounded-2xl bg-black/60 p-3 ring-1 ring-white/10 backdrop-blur">
-          <p class="text-[0.7rem] text-white/55">Fan prediction · who wins?</p>
-          <div class="mt-2 grid grid-cols-2 gap-2 text-sm font-semibold">
-            <span class="rounded-xl bg-orange-600 px-3 py-1.5">Player A · 2×</span>
-            <span class="rounded-xl bg-white/10 px-3 py-1.5">Player B · 2×</span>
-          </div>
-        </div>
-        <div class="relative h-10">
-          <span class="pm-t pm-t1"><Glyph icon="seal-check" class="size-4 text-white" />Result signed by the game</span>
-          <span class="pm-t pm-t2"><Glyph icon="wallet" class="size-4 text-white" />Winner and backers paid</span>
-        </div>
-      </div>
-    </div>
-  )}
 </div>
 
 <style>
@@ -156,7 +128,7 @@ const feed = [
   .pm-f1 { left: 5%; top: 18%; }
   .pm-f2 { right: 5%; bottom: 20%; animation-delay: -2.5s; }
   @keyframes pm-bob { 50% { transform: translateY(-6px); } }
-  .pm-w, .pm-p, .pm-g, .pm-t { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 0.4rem; border-radius: 0.75rem; font-size: 0.75rem; font-weight: 600; opacity: 0; }
+  .pm-w, .pm-p, .pm-g { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 0.4rem; border-radius: 0.75rem; font-size: 0.75rem; font-weight: 600; opacity: 0; }
   .pm-w1, .pm-p1 { background: var(--accent-600); }
   .pm-w2, .pm-w3 { background: rgb(255 255 255 / 0.06); }
   .pm-w4, .pm-p2 { background: rgb(52 211 153 / 0.16); color: #a7f3d0; }
@@ -184,26 +156,10 @@ const feed = [
   .pm-bar-gold span { background: #f59e0b; animation: pm-goldbar 7s infinite; }
   @keyframes pm-goldbar { 0%, 58% { transform: scaleX(0.62); } 64%, 97% { transform: scaleX(0.66); } 100% { transform: scaleX(0.62); } }
 
-  /* HyperRun HUD. */
-  .pm-hud { background: radial-gradient(90% 70% at 50% 35%, rgb(255 255 255 / 0.05), transparent 70%), linear-gradient(180deg, #1a1612 0%, #0c0c0c 60%); }
-  .pm-hud::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgb(255 255 255 / 0.025) 0 1px, transparent 1px 4px); pointer-events: none; }
-  .pm-cross { position: absolute; left: 50%; top: 42%; width: 2.6rem; height: 2.6rem; transform: translate(-50%, -50%); border-radius: 999px; box-shadow: inset 0 0 0 1.5px rgb(255 255 255 / 0.7); animation: pm-aim 4s ease-in-out infinite; }
-  .pm-cross::before, .pm-cross::after { content: ''; position: absolute; left: 50%; top: 50%; background: rgb(255 255 255 / 0.8); transform: translate(-50%, -50%); }
-  .pm-cross::before { width: 3.6rem; height: 1.5px; }
-  .pm-cross::after { width: 1.5px; height: 3.6rem; }
-  @keyframes pm-aim { 0%, 100% { transform: translate(-50%, -50%); } 30% { transform: translate(calc(-50% + 1.4rem), calc(-50% - 0.6rem)); } 65% { transform: translate(calc(-50% - 1rem), calc(-50% + 0.5rem)); } }
-  .pm-kill { padding: 0.25rem 0.55rem; border-radius: 0.5rem; background: rgb(0 0 0 / 0.5); opacity: 0; animation: pm-killfeed 8s infinite; animation-delay: calc(var(--i) * 1.2s); }
-  @keyframes pm-killfeed { 0%, 8% { opacity: 0; transform: translateX(8px); } 12%, 40% { opacity: 1; transform: none; } 46%, 100% { opacity: 0; } }
-  .pm-t { justify-content: flex-start; padding: 0 0.85rem; background: rgb(0 0 0 / 0.65); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.1); }
-  .pm-t1 { animation: pm-toast1 8s infinite; }
-  .pm-t2 { animation: pm-toast2 8s infinite; }
-  @keyframes pm-toast1 { 0%, 48% { opacity: 0; transform: translateY(6px); } 52%, 70% { opacity: 1; transform: none; } 73%, 100% { opacity: 0; } }
-  @keyframes pm-toast2 { 0%, 72% { opacity: 0; transform: translateY(6px); } 76%, 96% { opacity: 1; transform: none; } 100% { opacity: 0; } }
-
   .pm[data-paused] *, .pm[data-paused] *::before, .pm[data-paused] *::after { animation-play-state: paused !important; }
   @media (prefers-reduced-motion: reduce) {
     .pm *, .pm *::before, .pm *::after { animation: none !important; }
-    .pm-w4, .pm-p2, .pm-g2, .pm-t2, .pm-kill { opacity: 1; }
+    .pm-w4, .pm-p2, .pm-g2 { opacity: 1; }
     .pm-bar span { transform: none; }
   }
 </style>

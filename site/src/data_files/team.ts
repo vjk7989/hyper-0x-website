@@ -54,7 +54,7 @@ export const team: TeamMember[] = [
   {
     name: 'Mateo Silva',
     role: 'Lead Protocol Engineer',
-    bio: 'I work on bridges, smart contracts and tokenization: the parts that connect Hyper 0x to other systems. I make sure that settlement never leaves a party exposed.',
+    bio: 'I work on bridges, smart contracts and tokenization: the parts that connect Hyper 0x to other systems. I check that a settlement completes for both parties or for neither.',
     tint: '#6e5fae',
     mock: true,
   },

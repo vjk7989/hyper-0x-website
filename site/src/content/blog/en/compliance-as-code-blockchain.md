@@ -78,7 +78,7 @@ Compliance as code is strong, but it has limits. Plan for these five:
 
 ## How does Hyper 0x run compliance as code?
 
-[Hyper 0x](../../products/hyper-0x/), the Buckleson blockchain, checks compliance rules before a transaction executes, not after. Each customer gets a private L2 with its own rules. An L2 is a private blockchain that settles on a main chain. The chain checks limits, KYC status and maker-checker approvals for every transaction on that L2. Our post on [layer 1 and layer 2 blockchains](../layer-1-vs-layer-2-blockchain/) explains how the layers work together.
+[Hyper 0x](../../blockchain/), the Buckleson blockchain, checks compliance rules before a transaction executes, not after. Each customer gets a private L2 with its own rules. An L2 is a private blockchain that settles on a main chain. The chain checks limits, KYC status and maker-checker approvals for every transaction on that L2. Our post on [layer 1 and layer 2 blockchains](../layer-1-vs-layer-2-blockchain/) explains how the layers work together.
 
 Consensus on Hyper 0x has no leader, and every validator is a known party with a certificate. Each transaction is final in one pass, with no reorgs (rewrites of recent blocks). So a transaction that passed the rules stays on the record, as our post on [blockchain finality](../blockchain-finality-explained/) explains. Per-party encryption keeps identity data and payments private to the parties. Smart contract upgrades on Hyper 0x need approval, and we recommend the same control for every rule change.
 

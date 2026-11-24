@@ -29,7 +29,7 @@ There is a second problem: replication. Every validator (a computer that checks 
 
 Data in transit is data that moves between machines: from a wallet to an app, from an app to a validator, or between validators. There are three threats: eavesdropping, tampering with messages on the way, and **harvest now, decrypt later**. In harvest now, decrypt later, an attacker records encrypted traffic today. Then the attacker waits for a quantum computer that can break it.
 
-On [Hyper 0x](../../products/hyper-0x/), every connection uses TLS 1.3, the standard protocol for encrypted connections, with a hybrid key exchange. Key exchange is how two machines agree on a secret key over an open network. Hyper 0x combines classic X25519 with ML-KEM-768, the post-quantum algorithm that NIST published as FIPS 203 in August 2024. So an attacker must break both. AES-256-GCM encrypts the traffic itself. We explain the quantum side in more detail in [what makes a blockchain post-quantum-resistant](../post-quantum-resistant-blockchain/).
+On [Hyper 0x](../../blockchain/), every connection uses TLS 1.3, the standard protocol for encrypted connections, with a hybrid key exchange. Key exchange is how two machines agree on a secret key over an open network. Hyper 0x combines classic X25519 with ML-KEM-768, the post-quantum algorithm that NIST published as FIPS 203 in August 2024. So an attacker must break both. AES-256-GCM encrypts the traffic itself. We explain the quantum side in more detail in [what makes a blockchain post-quantum-resistant](../post-quantum-resistant-blockchain/).
 
 ## What is encryption in use?
 

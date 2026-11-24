@@ -266,7 +266,6 @@ for (const stage of document.querySelectorAll('[data-figure="cipher-tower"]')) {
 `;
 
 const plate = k.plateHtml({
-  fig: 'Fig 4',
   title: 'Four layers of encryption',
   hint: 'Each ring is its own lock',
   readout: 'your data goes in',

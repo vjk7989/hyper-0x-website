@@ -68,7 +68,7 @@ For a bank or regulated fintech, the first point usually decides the choice. We 
 
 ## How does Hyper 0x use layer 1 and layer 2?
 
-[Hyper 0x](../../products/hyper-0x/) has one L1 and one private L2 for each application. The L1 is permissioned: only known organisations run its validators. Certificates bind each validator to its identity. The L1 uses leaderless aBFT consensus, a voting method with no single leader that stays safe even if some validators fail or lie. With this method, a transaction is final in one pass, and the L1 never rolls it back. Every L2 posts its state roots to this L1, so all the L2s share one verifiable record.
+[Hyper 0x](../../blockchain/) has one L1 and one private L2 for each application. The L1 is permissioned: only known organisations run its validators. Certificates bind each validator to its identity. The L1 uses leaderless aBFT consensus, a voting method with no single leader that stays safe even if some validators fail or lie. With this method, a transaction is final in one pass, and the L1 never rolls it back. Every L2 posts its state roots to this L1, so all the L2s share one verifiable record.
 
 Each L2 has its own sequencer, policies, privacy settings and bridge. The L2s are independent, so you can change one L2 and leave the others as they are:
 
@@ -82,7 +82,7 @@ The figure at the top of this post shows the idea. L2 modules of different sizes
 
 Think of a mid-sized bank that wants three things on-chain. It wants salary payments, a tokenized money-market fund (fund shares held as tokens) for its clients and an audit trail for its AI agents. On Hyper 0x, each one gets its own L2.
 
-On salary day, the payroll L2 fills larger blocks to handle the peak, and the fund L2 sees no effect. Before every trade, the fund L2 checks investor limits and KYC (know-your-customer identity checks) as code. The third L2 records a signed receipt for every agent action, the same approach that [H0x-ADE](../../products/h0x-ade/) uses. If the fund pilot ends after a year, the bank retires that L2, and the other two continue. Auditors check one L1 instead of three separate systems.
+On salary day, the payroll L2 fills larger blocks to handle the peak, and the fund L2 sees no effect. Before every trade, the fund L2 checks investor limits and KYC (know-your-customer identity checks) as code. The third L2 records a signed receipt for every agent action, the same approach that [H0x-ADE](../../ade/) uses. If the fund pilot ends after a year, the bank retires that L2, and the other two continue. Auditors check one L1 instead of three separate systems.
 
 ## Where should you start?
 

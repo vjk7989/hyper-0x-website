@@ -1,0 +1,93 @@
+---
+// ref: https://hachure.framer.website — pen-and-ink hachure terrain line art, as a full-width band (technique rebuilt in code, no asset taken)
+/**
+ * Hachure terrain band: three overlapping ridges drawn as short strokes that
+ * run down each slope, long and dark where the ground is steep, short and
+ * faint where it is flat. The ridgelines come from a seeded sum of sines, so
+ * the output is identical on every build. Colour is token-only (--ink,
+ * --muted, --line, --ground) so both themes work. Decorative: aria-hidden,
+ * no text, no motion. Fills the width of its parent; set height with `class`.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+
+const W = 1200;
+const H = 220;
+const STEP = 9;
+
+// mulberry32: tiny deterministic PRNG.
+function rng(seed: number) {
+  let a = seed;
+  return () => {
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+// Back to front. base = mean ridge height, amp = relief, fade = stroke opacity.
+const ridges = [
+  { seed: 11, base: 95, amp: 52, fade: 0.35, steep: 0.55 },
+  { seed: 29, base: 140, amp: 48, fade: 0.6, steep: 0.5 },
+  { seed: 47, base: 188, amp: 40, fade: 1, steep: 0.45 },
+];
+
+const r1 = (n: number) => Math.round(n * 10) / 10;
+
+const layers = ridges.map(({ seed, base, amp, fade, steep }) => {
+  const rand = rng(seed);
+  const waves = [0, 1, 2, 3].map((k) => ({
+    f: (2 + k * 2.3 + rand()) * ((Math.PI * 2) / W),
+    p: rand() * Math.PI * 2,
+    a: amp / (1 + k * 1.1),
+  }));
+  const h = (x: number) => base - waves.reduce((s, w) => s + w.a * Math.sin(w.f * x + w.p), 0) / 1.6;
+  const dh = (x: number) => (h(x + 1) - h(x - 1)) / 2;
+
+  let line = '';
+  let hatch = '';
+  for (let x = -STEP; x <= W + STEP; x += 8) {
+    line += `${x === -STEP ? 'M' : 'L'}${x} ${Math.round(h(x))}`;
+  }
+  for (let x = 0; x <= W; x += STEP) {
+    const y = h(x);
+    const s = dh(x);
+    const g = Math.min(1, Math.abs(s) * 2.2);
+    if (g < 0.12) continue; // flat ground stays bare
+    const len = 5 + g * steep * 60 + rand() * 4;
+    const lean = -s * 4; // strokes follow the slope
+    const x0 = r1(x + (rand() - 0.5) * 2);
+    hatch += `M${x0} ${r1(y + 1)}l${r1(lean)} ${r1(len)}`;
+  }
+  const area = `${line}L${W + STEP} ${H + 9}L${-STEP} ${H + 9}Z`; // closes below the viewBox, so only the ridge shows a stroke
+  return { hatch, area, fade };
+});
+---
+
+<svg
+  class:list={['terrain-band', className]}
+  viewBox={`0 0 ${W} ${H}`}
+  preserveAspectRatio="xMidYMax slice"
+  aria-hidden="true"
+  focusable="false"
+>
+  {layers.map((l) => (
+    <g>
+      <path d={l.area} fill="var(--ground)" stroke="var(--ink)" stroke-width="1.1" stroke-linejoin="round" stroke-opacity={l.fade * 0.55} />
+      <path d={l.hatch} fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-linecap="round" opacity={l.fade * 0.7} />
+    </g>
+  ))}
+</svg>
+
+<style>
+  .terrain-band {
+    display: block;
+    width: 100%;
+    height: clamp(120px, 18vw, 220px);
+    overflow: hidden;
+    pointer-events: none;
+  }
+</style>

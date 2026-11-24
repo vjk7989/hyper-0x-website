@@ -13,7 +13,7 @@ const card = 'rounded-3xl bg-card p-6 ring-1 ring-line sm:p-8';
 ---
 
 <section aria-labelledby={s.id} class="mx-auto max-w-[85rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
-  <SectionHead index="2" id={s.id} label={s.label} claim={s.claim} payoff={s.payoff} />
+  <SectionHead id={s.id} claim={s.claim} payoff={s.payoff} />
   <div class="mt-10 grid gap-3 md:grid-cols-2 lg:grid-cols-12" data-reveal-group>
     <div class:list={[card, 'md:col-span-2 lg:col-span-7 lg:row-span-2']} data-reveal-item>
       <figure>

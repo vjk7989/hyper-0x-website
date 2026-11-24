@@ -367,6 +367,7 @@ a {
 .on-sheet svg.text-ink { color: #fff; }
 
 html { overflow-x: clip; }
+body { overflow-x: clip; }
 
 /* Wide comparison tables scroll inside their own box on phones, so the page
    itself never scrolls sideways. */

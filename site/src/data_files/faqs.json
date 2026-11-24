@@ -11,15 +11,15 @@
     },
     {
       "question": "How does Hyper 0x keep each customer's data private?",
-      "answer": "Every customer runs on its own L2, so its transactions never mix with the transactions of others. Data stays encrypted in transit, in use, on the ledger and at rest. Only the parties to a record hold the keys to read it."
+      "answer": "Every customer runs on its own L2, so its transactions stay apart from the transactions of others. Data stays encrypted in transit, in use, on the ledger and at rest. Only the parties to a record hold the keys to read it."
     },
     {
       "question": "Will H0x-ADE block the tool calls my agents need?",
       "answer": "No. A call that clears every check goes through, and the gate refuses a call it judges to break your policy. Examples are an injected instruction, personal data that leaves, an unknown package, an empty budget or a destination that is not allowed. Allowed calls go through, and every decision gets a receipt."
     },
     {
-      "question": "Why is a blockchain more secure for my business?",
-      "answer": "Nobody can secretly edit or delete records on Hyper 0x. Every connection is post-quantum-resistant. Compliance rules run before a transaction executes. So auditors and regulators get one record that they can check."
+      "question": "How does a blockchain help my business check its records?",
+      "answer": "Records on Hyper 0x show every edit and every deleted entry. Every connection is post-quantum-resistant. Compliance rules run before a transaction executes. So auditors and regulators get one record that they can check."
     },
     {
       "question": "Who do you work with?",
@@ -30,8 +30,8 @@
       "answer": "Book a 30-minute call. We learn what you want to put on a blockchain. Then we propose a pilot on your own L2, with a clear scope and clear success measures."
     },
     {
-      "question": "What do H0X Pay and HyperRun do?",
-      "answer": "H0X Pay lets you pay and get paid in crypto and puts a slice of every payment into tokenized assets. HyperRun is a realistic shooter where players earn by playing and fans earn by predicting matches. Both settle on Hyper 0x. Book a call to talk about either."
+      "question": "What does H0X Pay do?",
+      "answer": "H0X Pay lets you pay and get paid in crypto and puts a slice of every payment into tokenized assets. It settles on Hyper 0x. Book a call to talk about it."
     }
   ],
   "topics": [
@@ -47,7 +47,7 @@
         },
         {
           "question": "When should a company not use a blockchain?",
-          "answer": "Do not use a blockchain when one party owns the data, nobody else checks it and records change often. A blockchain is useful when several parties must trust the same record. It is also useful when settlement must be final, or when an auditor needs proof that nobody changed a record later.",
+          "answer": "Do not use a blockchain when one party owns the data, nobody else checks it and records change often. A blockchain is useful when several parties must trust the same record. It is also useful when settlement must be final, or when an auditor needs a record that shows any later change.",
           "link": { "title": "How to choose a blockchain development company", "url": "/blog/how-to-choose-a-blockchain-development-company/" }
         },
         {
@@ -88,9 +88,9 @@
           "link": { "title": "AI agent tool calling security", "url": "/blog/ai-agent-tool-calling-security/" }
         },
         {
-          "question": "How do you stop AI agents from running up huge bills?",
-          "answer": "Give every agent its own budget, and enforce it outside the model. Set token and spend limits for each task and each day. Limit retries, find loops and compact the context. A provider dashboard shows the spend after it happens. A gateway stops the call before it happens.",
-          "link": { "title": "H0x-ADE: the Agentic Development Environment", "url": "/products/h0x-ade/" }
+          "question": "How do you limit what AI agents spend?",
+          "answer": "Give every agent its own budget, and enforce it outside the model. Set token and spend limits for each task and each day. Limit retries, find loops and compact the context. A provider dashboard shows the spend after it happens. A gateway checks the limit before the call happens.",
+          "link": { "title": "H0x-ADE: the Agentic Development Environment", "url": "/ade/" }
         },
         {
           "question": "How do you monitor AI agents that take real actions?",
@@ -99,11 +99,11 @@
         },
         {
           "question": "What is excessive agency in AI?",
-          "answer": "Excessive agency is one of the top security risks for apps built on large language models. It means that an agent has more functions, permissions or freedom than its task needs. Then a mistake or an injected instruction can cause real damage. To prevent it, give the least permissions, use narrow tools and get approval for actions with a high impact.",
+          "answer": "Excessive agency is one of the top security risks for apps built on large language models. It means that an agent has more functions, permissions or freedom than its task needs. Then a mistake or an injected instruction can cause real damage. To limit it, give the least permissions, use narrow tools and get approval for actions with a high impact.",
           "link": { "title": "AI agent security: 8 attacks and their defences", "url": "/blog/how-to-secure-ai-agents/" }
         },
         {
-          "question": "How do companies stop sensitive data reaching external AI models?",
+          "question": "How do companies limit sensitive data sent to external AI models?",
           "answer": "Send all model traffic through one gateway. The gateway finds personal data and secrets and removes them before a prompt leaves. It also records who sent which data to which model. Then block AI tools that are not approved at the edge of the network.",
           "link": { "title": "How to limit LLM data leaks", "url": "/blog/stop-llm-data-leaks-pii-redaction/" }
         },
@@ -160,23 +160,23 @@
         },
         {
           "question": "Can you recover crypto if you lose your seed phrase?",
-          "answer": "Usually not. Paid recovery services that promise to recover your crypto are a common scam. The solution is prevention. A smart account can add recovery through trusted devices, guardians or a passkey. Then a lost phone does not mean lost funds."
+          "answer": "Usually not. Paid recovery services that promise to recover your crypto are a common scam. The better step is to plan ahead. A smart account can add recovery through trusted devices, guardians or a passkey. Then a lost phone does not mean lost funds."
         },
         {
-          "question": "Are passkeys safe for crypto wallets?",
-          "answer": "Yes, when the wallet supports them correctly. A passkey signs with a key that never leaves secure hardware, and nobody can steal it with a fake login page. A synced passkey is easier to recover. A passkey on one device is stricter. A good wallet adds a separate recovery path to both types.",
-          "link": { "title": "Hyper Wallet & SDKs", "url": "/products/hyper-wallet/" }
+          "question": "Can I use passkeys to sign for a crypto wallet?",
+          "answer": "Yes, when the wallet supports them correctly. A passkey signs with a key that stays in secure hardware. It is tied to the real site, so a fake login page gets nothing to reuse. A synced passkey is easier to recover. A passkey on one device is stricter. A good wallet adds a separate recovery path to both types.",
+          "link": { "title": "Hyper Wallet & SDKs", "url": "/wallet/" }
         }
       ]
     },
     {
       "id": "post-quantum",
       "label": "Post-quantum security",
-      "intro": "What quantum computers can break, what they cannot break, and why hybrid encryption is the safe default.",
+      "intro": "What quantum computers can break, what they cannot break, and why Hyper 0x uses hybrid encryption.",
       "faqs": [
         {
           "question": "Can quantum computers break blockchains?",
-          "answer": "They can break some parts. A large quantum computer can forge the digital signatures that protect wallets today. Hash functions are much stronger against it. Also, an attacker can record encrypted data today and decrypt it later. This risk is largest for private enterprise records.",
+          "answer": "They can break some parts. A large quantum computer can forge the digital signatures that wallets use today. Hash functions are much stronger against it. Also, an attacker can record encrypted data today and decrypt it later. This risk is largest for private enterprise records.",
           "link": { "title": "What makes a blockchain post-quantum-resistant?", "url": "/blog/post-quantum-resistant-blockchain/" }
         },
         {
@@ -184,17 +184,17 @@
           "answer": "Not yet. Bitcoin signatures use elliptic-curve cryptography, and a large quantum computer can break it. The risk is highest for coins whose public keys are already visible on the chain. A move to post-quantum signatures needs an upgrade of the full network, and that is still under discussion."
         },
         {
-          "question": "Is SHA-256 safe against quantum computers?",
-          "answer": "Mostly, yes. The best known quantum attack on hash functions, Grover's algorithm, cuts the effective security in half. SHA-256 still keeps a very large margin. Signatures and key exchange are the parts to replace."
+          "question": "How does SHA-256 hold up against quantum computers?",
+          "answer": "Mostly well. The best known quantum attack on hash functions, Grover's algorithm, cuts the effective security in half. SHA-256 still keeps a very large margin. Signatures and key exchange are the parts to replace."
         },
         {
           "question": "What is ML-KEM?",
-          "answer": "ML-KEM is the post-quantum standard for key encapsulation. NIST published it as FIPS 203 in August 2024, and it is based on the Kyber algorithm. Two parties use it to agree on a shared secret. Nobody knows a way for a quantum computer to break it."
+          "answer": "ML-KEM is the post-quantum standard for key encapsulation. NIST published it as FIPS 203 in August 2024, and it is based on the Kyber algorithm. Two parties use it to agree on a shared secret. Published research shows no quantum attack on it so far."
         },
         {
           "question": "Why combine X25519 with ML-KEM instead of using ML-KEM alone?",
-          "answer": "Two locks are safer than one. X25519 has resisted classical attacks for decades. ML-KEM is designed to resist quantum attacks. A hybrid key exchange stays secure while either one holds. So if someone finds a flaw in the newer algorithm later, your data stays protected. Hyper 0x uses this hybrid on every connection.",
-          "link": { "title": "Hyper 0x", "url": "/products/hyper-0x/" }
+          "answer": "Two locks give two chances to hold. X25519 has resisted classical attacks for decades. ML-KEM is designed to resist quantum attacks. A hybrid key exchange still holds while either one holds. So if someone finds a flaw in the newer algorithm later, the older one still covers your data. Hyper 0x uses this hybrid on every connection.",
+          "link": { "title": "Hyper 0x", "url": "/blockchain/" }
         },
         {
           "question": "Do we need post-quantum encryption now?",

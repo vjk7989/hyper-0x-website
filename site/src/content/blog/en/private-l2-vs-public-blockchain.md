@@ -40,7 +40,7 @@ A standalone private chain fits a closed group that never needs to work with any
 
 ## Why a private L2 is often the best of both
 
-A private L2 gives each organisation its own sequencer (the component that orders transactions), policies, privacy and bridge. So a payroll peak at one bank never slows another bank. Every L2 settles its state roots (short fingerprints of its records) to the shared Hyper 0x L1. So partners can check the same record, but they do not see each other's private data. This is the model behind [Hyper 0x](../../products/hyper-0x/), which the diagram above shows.
+A private L2 gives each organisation its own sequencer (the component that orders transactions), policies, privacy and bridge. So a payroll peak at one bank never slows another bank. Every L2 settles its state roots (short fingerprints of its records) to the shared Hyper 0x L1. So partners can check the same record, but they do not see each other's private data. This is the model behind [Hyper 0x](../../blockchain/), which the diagram above shows.
 
 ## What else should you compare?
 

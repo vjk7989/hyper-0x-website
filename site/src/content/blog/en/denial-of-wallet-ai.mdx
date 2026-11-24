@@ -100,13 +100,13 @@ The cheapest token is the one that you never send. Many coding agents read whole
 
 A compact context sends only what the task needs. A search index finds the relevant lines. A result cache answers a repeated question without a new model call. Small notes keep decisions and conventions, so the agent does not read them again from the source.
 
-[H0x-ADE](../../products/h0x-ade/), our security gateway for AI agents, gives agents these three tools through MCP servers (services that give an agent its tools). Agents that used them needed 30 to 60 percent fewer tokens on one measured Claude Code task. H0x-ADE also has a budget gate that stops calls when the budget of an agent is empty.
+[H0x-ADE](../../ade/), our security gateway for AI agents, gives agents these three tools through MCP servers (services that give an agent its tools). Agents that used them needed 30 to 60 percent fewer tokens on one measured Claude Code task. H0x-ADE also has a budget gate that stops calls when the budget of an agent is empty.
 
 ## How do signed usage records help billing and disputes?
 
 Cost disputes get harder once agents work across teams and companies. A vendor bills for 40 million tokens. Your own logs say 25 million. Each side trusts its own log, and the other side cannot check it.
 
-Signed usage records fix this. Each record shows which agent made the call, which model ran and how many tokens the call used. Anchor the records on [Hyper 0x](../../products/hyper-0x/), and both sides read the same numbers. Nobody can edit them afterwards, so a billing team can settle the dispute from one record. [Proof of execution for AI](../proof-of-execution-ai/) explains how such a receipt chain works.
+Signed usage records fix this. Each record shows which agent made the call, which model ran and how many tokens the call used. Anchor the records on [Hyper 0x](../../blockchain/), and both sides read the same numbers. Nobody can edit them afterwards, so a billing team can settle the dispute from one record. [Proof of execution for AI](../proof-of-execution-ai/) explains how such a receipt chain works.
 
 A blockchain can also record the rules. Put the budget rule in a smart contract (a program on a blockchain), and nobody can quietly raise a cap. Each change becomes a recorded transaction with a time and an approver.
 

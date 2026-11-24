@@ -82,7 +82,7 @@ Put the controls between the agent and your systems. There, they apply to every 
 6. **Ask a human for risky actions.** Hold payments, external emails and deletions until a person approves them.
 7. **Record everything.** Keep tamper-evident logs (logs that show any change). Then an investigation can show exactly what the agent read and did.
 
-This is how [H0x-ADE](../../products/h0x-ade/), our security gateway for AI agents, works. Every agent call passes six gates: injection, privacy, supply chain, budget, egress and output. The figure above shows calls as they move through the gates. A detector flags injected instructions, and a smart contract (a program on a blockchain) refuses them. The egress rules (rules for outgoing data) and the receipts (records of each call) live on the Hyper 0x blockchain. So nobody can quietly change them, not even a hijacked agent.
+This is how [H0x-ADE](../../ade/), our security gateway for AI agents, works. Every agent call passes six gates: injection, privacy, supply chain, budget, egress and output. The figure above shows calls as they move through the gates. A detector flags injected instructions, and a smart contract (a program on a blockchain) refuses them. The egress rules (rules for outgoing data) and the receipts (records of each call) live on the Hyper 0x blockchain. So nobody can quietly change them, not even a hijacked agent.
 
 ## How does this play out at a bank?
 

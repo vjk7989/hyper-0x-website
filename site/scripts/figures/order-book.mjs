@@ -321,7 +321,6 @@ for (const stage of document.querySelectorAll('[data-figure="order-book"]')) {
 `;
 
 const plate = k.plateHtml({
-  fig: 'Fig 6',
   title: 'A fair order book',
   hint: 'Both sides settle, or neither',
   readout: 'fill #48,213 · 0.50 ETH @ 3,412.20 · matching',

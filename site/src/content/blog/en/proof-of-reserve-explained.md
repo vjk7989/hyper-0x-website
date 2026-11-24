@@ -74,7 +74,7 @@ Our post on [tokenized gold](../tokenized-gold-explained/) shows how bar lists a
 
 ## How does Hyper 0x support proof of reserve?
 
-On [Hyper 0x](../../products/hyper-0x/), the Buckleson blockchain, each issuer runs its own private L2. An L2 is a private blockchain that settles on a main chain. Hyper 0x runs compliance as code: rules that the chain checks before a transaction executes. You can write the mint limit from step 4 as one of these rules. A mint that exceeds the signed reserve figure fails, and it never reaches the ledger.
+On [Hyper 0x](../../blockchain/), the Buckleson blockchain, each issuer runs its own private L2. An L2 is a private blockchain that settles on a main chain. Hyper 0x runs compliance as code: rules that the chain checks before a transaction executes. You can write the mint limit from step 4 as one of these rules. A mint that exceeds the signed reserve figure fails, and it never reaches the ledger.
 
 Hyper 0x is final in one pass, with no reorgs (rewrites of recent blocks). So the supply that an auditor reads today is the same supply tomorrow. Our post on [blockchain finality](../blockchain-finality-explained/) explains why this matters. Per-party encryption keeps the records of each investor private. The issuer can still give an auditor access to the supply and the reserve record.
 

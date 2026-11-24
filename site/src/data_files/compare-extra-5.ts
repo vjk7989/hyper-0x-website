@@ -77,7 +77,7 @@ export const compareExtra5: Record<string, Compare> = {
       outcome: 'Correction rejected, and the original stays final',
       steps: [
         'The fintech and four banks keep the loan register on a private L2 on Hyper 0x.',
-        'Nobody can edit a past entry, so the admin sends a correction entry instead.',
+        'A past entry stays as written and any edit shows, so the admin sends a correction entry instead.',
         'The maker-checker rule needs a second approver, so Hyper 0x rejects the correction before it executes.',
         'The original entry stays final, with no reorgs, so all five firms read the same history.',
       ],

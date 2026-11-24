@@ -1,4 +1,5 @@
 ---
+import { headingSlug } from '@utils/utils';
 import SectionHead from '@components/home/SectionHead.astro';
 import Glyph from '@components/ui/Glyph.astro';
 import ProductArt from '@components/ui/ProductArt.astro';
@@ -13,24 +14,22 @@ import { entriesFor, pathFor, slugOf } from '@utils/content';
  * layouts, so every scene is in the page once.
  */
 interface Props {
-  index: string;
-  label: string;
   claim: string;
   payoff: string;
   body: string;
   cta: { title: string; url: string };
 }
 
-const { index, label, claim, payoff, body, cta } = Astro.props;
+const { claim, payoff, body, cta } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const products = await entriesFor('products', 'en');
-type Art = 'hyper-0x' | 'pavii' | 'hyper-wallet' | 'h0x-pay' | 'hyperrun';
+type Art = 'hyper-0x' | 'pavii' | 'hyper-wallet' | 'h0x-pay';
 // Under each tagline: how it works in two sentences, and one technology fact.
 const explain: Record<string, { text: string; stat: string; statLabel: string }> = {
   'hyper-0x': {
-    text: 'Each application runs on its own L2, a private blockchain with its own rules. Every L2 settles on the shared Hyper 0x L1 (the main chain), where transactions are final in one pass.',
+    text: 'Each application gets a private L2 with its own rules, and all of them share the Hyper 0x L1 (the main chain), where each transaction becomes final.',
     stat: '1 pass',
-    statLabel: 'to final, never reordered',
+    statLabel: 'to a final, ordered record',
   },
   pavii: {
     text: 'H0x-ADE is a gateway between your agents and your systems. Every prompt and tool call goes through six gates. A call that clears every check goes through. A call the gate judges malicious is refused and leaves a receipt on Hyper 0x.',
@@ -43,20 +42,15 @@ const explain: Record<string, { text: string; stat: string; statLabel: string }>
     statLabel: 'per trade, not two',
   },
   'h0x-pay': {
-    text: 'You pay and get paid in crypto as usual. Your plan puts a small part of every payment into tokenized gold. Each payment settles on Hyper 0x.',
+    text: 'Payments work as usual. Your plan sets aside a small part of each one in tokenized gold.',
     stat: 'Gold first',
     statLabel: 'then index funds',
-  },
-  hyperrun: {
-    text: 'Players compete in ranked matches in a realistic shooter. The game signs every result before any payout, so players, fans and sponsors are paid from a signed record.',
-    stat: 'Signed',
-    statLabel: 'result before every payout',
   },
 };
 ---
 
 <section class="mx-auto max-w-[85rem] px-4 py-20 sm:px-6 lg:px-8 lg:py-28" id="products">
-  <SectionHead index={index} label={label} claim={claim} payoff={payoff} body={body} cta={cta} />
+  <SectionHead claim={claim} payoff={payoff} body={body} cta={cta} />
 
   <div class="mt-12 flex flex-col gap-3 xl:h-[34rem] xl:flex-row" data-accordion>
     {products.map((product, index) => {
@@ -72,11 +66,10 @@ const explain: Record<string, { text: string; stat: string; statLabel: string }>
             <div class="flex flex-col">
               <div class="hidden items-center gap-3 xl:flex">
                 <span class="grid size-12 shrink-0 place-items-center overflow-hidden rounded-2xl bg-white/10 ring-1 ring-white/15"><ProductLogo product={slugOf(product)} class="size-7" /></span>
-                <h3 class="text-[1.75rem] leading-tight font-semibold">{product.data.title}</h3>
+                <h3 id={headingSlug(product.data.title)} class="scroll-mt-24 text-[1.75rem] leading-tight font-semibold">{product.data.title}</h3>
               </div>
               <p class="font-medium text-pretty opacity-90 xl:mt-4">{product.data.tagline}</p>
-              <p class="mt-5 font-mono text-xs font-medium opacity-60">How it works</p>
-              <p class="mt-1.5 text-sm leading-relaxed text-pretty opacity-75">{explain[slugOf(product)]?.text}</p>
+              <p class="mt-5 text-sm leading-relaxed text-pretty opacity-75">{explain[slugOf(product)]?.text}</p>
               <ul class="mt-5 space-y-2 text-sm">
                 {product.data.features.slice(0, 3).map(feature => (
                   <li class="flex items-center gap-2.5">

@@ -94,11 +94,11 @@ A token does not fix every problem of a bond.
 
 ## How does Hyper 0x support tokenized bonds?
 
-On [Hyper 0x](../../products/hyper-0x/), the Buckleson blockchain, each issuer runs its own private L2. An L2 is a private blockchain that settles on a main chain. The issuer sets the rules, and per-party encryption keeps the records of each investor private. Hyper 0x runs compliance as code. The chain checks limits, KYC and maker-checker approvals before a transaction executes, so a transfer to an ineligible buyer fails.
+On [Hyper 0x](../../blockchain/), the Buckleson blockchain, each issuer runs its own private L2. An L2 is a private blockchain that settles on a main chain. The issuer sets the rules, and per-party encryption keeps the records of each investor private. Hyper 0x runs compliance as code. The chain checks limits, KYC and maker-checker approvals before a transaction executes, so a transfer to an ineligible buyer fails.
 
 Each transaction is final in one pass, with no reorgs (rewrites of recent blocks). So the holder record that a coupon rule reads does not change later, as our post on [blockchain finality](../blockchain-finality-explained/) explains. You write the token and coupon contracts in Rust, and contract upgrades need approval. Every connection is post-quantum-resistant, which matters for a bond record that can last for decades.
 
-Trades settle atomically: the bond token and the payment move in one step, or neither moves. An on-chain order book gives verified investors a secondary market. Investors can buy and hold through [Hyper Wallet](../../products/hyper-wallet/) or through a branded app on the Hyper Wallet SDK. Our [asset tokenization services](../../services/asset-tokenization/) build the token, the investor rules, the app and the market as one system.
+Trades settle atomically: the bond token and the payment move in one step, or neither moves. An on-chain order book gives verified investors a secondary market. Investors can buy and hold through [Hyper Wallet](../../wallet/) or through a branded app on the Hyper Wallet SDK. Our [asset tokenization services](../../services/asset-tokenization/) build the token, the investor rules, the app and the market as one system.
 
 ## Where should you start?
 

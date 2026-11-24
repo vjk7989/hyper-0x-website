@@ -103,7 +103,7 @@ The team gave the coding agent its own scoped credentials. It moved support to a
 
 ## How does H0x-ADE bring shadow agents under one gateway?
 
-Discovery tells you which agents exist. [H0x-ADE](../../products/h0x-ade/), the Buckleson security gateway for AI agents, gives them one place to connect. Every call through the gateway passes six gates: injection, privacy, supply chain, budget, egress and output.
+Discovery tells you which agents exist. [H0x-ADE](../../ade/), the Buckleson security gateway for AI agents, gives them one place to connect. Every call through the gateway passes six gates: injection, privacy, supply chain, budget, egress and output.
 
 - **Privacy gate.** It removes personal data and secrets before a model can see them.
 - **Supply chain gate.** Every new package or MCP server must pass an allow-list, a pinned hash or a sandbox test.

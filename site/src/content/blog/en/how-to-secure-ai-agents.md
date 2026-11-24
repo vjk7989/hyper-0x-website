@@ -22,7 +22,7 @@ An AI agent is an AI model that uses tools to act. To limit its risk, put contro
 
 ## Why do AI agents need their own security?
 
-Modern agents need deep access to be useful: your data, your internal APIs and the ability to act on their own. Traditional security covers people and fixed software. It does not cover a system that reads untrusted text and then decides what to do. [H0x-ADE](../../products/h0x-ade/), our security gateway for AI agents, closes that gap. The diagram above shows its six gates.
+Modern agents need deep access to be useful: your data, your internal APIs and the ability to act on their own. Traditional security covers people and fixed software. It does not cover a system that reads untrusted text and then decides what to do. [H0x-ADE](../../ade/), our security gateway for AI agents, closes that gap. The diagram above shows its six gates.
 
 ## 1. Prompt injection
 
@@ -66,4 +66,4 @@ The PAVii team keeps a step-by-step [playbook to stop attacks on AI agents](http
 4. Add egress rules and budgets for each agent.
 5. Make logs tamper-evident (so that any change shows). Then audits and disputes have one record.
 
-H0x-ADE does all five out of the box, with receipts on [Hyper 0x](../../products/hyper-0x/). Book a call to see it on your own agents.
+H0x-ADE does all five out of the box, with receipts on [Hyper 0x](../../blockchain/). Book a call to see it on your own agents.

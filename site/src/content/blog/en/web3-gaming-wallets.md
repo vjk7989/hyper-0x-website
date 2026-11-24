@@ -74,11 +74,11 @@ Imagine a mobile studio that launches a season of tournaments with token rewards
 
 When the player wins, a reward lands in the wallet and appears in the inventory. Spending limits and an allow-list of approved contracts limit the damage of phishing (tricks that make players sign bad transactions). For what makes reward economies work, read [play-to-earn games explained](../play-to-earn-games-explained/).
 
-## How will HyperRun handle player wallets?
+## How do studios give players a wallet?
 
-[HyperRun](../../products/hyperrun/) is a Buckleson product. It is a realistic first-person shooter. It gives players and fans an in-game wallet built with the Hyper Wallet SDK. It also makes payouts from a rewards contract on Hyper 0x, our blockchain, based on signed match results.
+A studio embeds a wallet in its own game with the [Hyper Wallet](../../wallet/) SDKs. Players get a wallet inside the game, with no separate app to install. Hyper Wallet is non-custodial by default, so the player holds the keys. Businesses that need custody can get it through the same SDKs.
 
-Studios can use the [Hyper Wallet](../../products/hyper-wallet/) SDKs to embed wallets and payments in their own app or game. Hyper Wallet is non-custodial by default, with custody available through the SDKs for businesses that need it. On [Hyper 0x](../../products/hyper-0x/), account abstraction lets users sign in with a face scan or passkey, and apps can pay the fees for them.
+On [Hyper 0x](../../blockchain/), our blockchain, account abstraction lets players sign in with a face scan or a passkey. The studio can also sponsor the network fees, so players never need a gas token.
 
 ## Where should you start?
 
@@ -88,4 +88,4 @@ Studios can use the [Hyper Wallet](../../products/hyper-wallet/) SDKs to embed w
 4. Set spending limits and session-key rules before launch.
 5. Explain in plain words what players own and what happens if the game ends.
 
-For in-game wallets, see our [wallet SDK services](../../services/wallet-sdks/). Book a call to see the Hyper Wallet SDKs, or to get notified when HyperRun launches.
+For in-game wallets, see our [wallet SDK services](../../services/wallet-sdks/). Book a call to see the Hyper Wallet SDKs.

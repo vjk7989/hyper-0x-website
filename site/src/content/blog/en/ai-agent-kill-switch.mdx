@@ -52,7 +52,7 @@ The diagram below follows four actions of one coding agent down this ladder.
 3. **Watched.** At high risk, extra checks run and a person sees the agent live. A 40 GB upload at 03:00 puts the agent here.
 4. **Restricted.** After a breach of policy, the agent keeps only read-only tools. The attempt to delete the logs folder is that breach.
 5. **Stopped.** A second breach, or a person, stops the agent through a separate channel. Here, the agent tries the delete again.
-6. **Every step on Hyper 0x.** Each decision and each change of state goes into a chained record. The record lives on [Hyper 0x](../../products/hyper-0x/), the Buckleson blockchain (a shared ledger that you can only add to). A deleted log then shows as a gap.
+6. **Every step on Hyper 0x.** Each decision and each change of state goes into a chained record. The record lives on [Hyper 0x](../../blockchain/), the Buckleson blockchain (a shared ledger that you can only add to). A deleted log then shows as a gap.
 
 The fifth step, retired, comes after the incident. You remove the agent, revoke its keys and keep its record.
 
@@ -94,7 +94,7 @@ In a hash chain, each log entry holds a fingerprint (a hash) of the entry before
 
 ## How does H0x-ADE contain a rogue agent?
 
-[H0x-ADE](../../products/h0x-ade/) is our security gateway for AI agents. Claude, Claude Code, Codex, ChatGPT, Grok, OpenCode and custom agents send every prompt and tool call through it. So its kill switch sits outside the agent by design.
+[H0x-ADE](../../ade/) is our security gateway for AI agents. Claude, Claude Code, Codex, ChatGPT, Grok, OpenCode and custom agents send every prompt and tool call through it. So its kill switch sits outside the agent by design.
 
 - **Kill switch.** An agent that breaks rules moves from observed, to restricted, to stopped. A person can stop any agent at any time.
 - **Egress contract.** A smart contract (a program on a blockchain) on Hyper 0x decides what each agent can send and do.

@@ -92,7 +92,7 @@ Put the controls between the agent and your systems. There, they apply to every 
 4. **Clean the output.** Remove secrets and scripts from each answer before it reaches the user.
 5. **Record every decision.** Keep tamper-evident logs, so an investigation can show what the agent read, said and did.
 
-This is how [H0x-ADE](../../products/h0x-ade/), the Buckleson security gateway for AI agents, works. Every agent connects through one gateway, and every call passes six gates: injection, privacy, supply chain, budget, egress and output. The privacy gate removes personal data and secrets before a model can see them. The output gate removes scripts and secrets from agent output before delivery. An egress smart contract on Hyper 0x, the Buckleson blockchain, decides what an agent can send and do.
+This is how [H0x-ADE](../../ade/), the Buckleson security gateway for AI agents, works. Every agent connects through one gateway, and every call passes six gates: injection, privacy, supply chain, budget, egress and output. The privacy gate removes personal data and secrets before a model can see them. The output gate removes scripts and secrets from agent output before delivery. An egress smart contract on Hyper 0x, the Buckleson blockchain, decides what an agent can send and do.
 
 H0x-ADE also chains each receipt to the one before it and anchors the chain on Hyper 0x. If someone deletes an entry, the gap shows. Pair H0x-ADE with a secrets manager, so keys never enter a prompt at all. For the full list of agent risks, read [AI Agent Security: 8 Attacks and Their Defences](../how-to-secure-ai-agents/).
 

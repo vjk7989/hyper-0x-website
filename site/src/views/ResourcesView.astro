@@ -3,9 +3,8 @@ import MainLayout from '@/layouts/MainLayout.astro';
 import SectionHead from '@components/home/SectionHead.astro';
 import Diagram from '@components/ui/Diagram.astro';
 import Glyph from '@components/ui/Glyph.astro';
-import PrimaryCTA from '@components/ui/buttons/PrimaryCTA.astro';
-import { architecture } from '@data/architecture';
-import { BOOKING_URL } from '@data/constants';
+import FinalCta from '@components/home/FinalCta.astro';
+import { getCopy } from '@/copy';
 import { decisions } from '@data/decisions';
 import { siblingSites } from '@data/navigation';
 import { entriesFor, pathFor } from '@utils/content';
@@ -29,52 +28,56 @@ const docs = (await getCollection('docs'))
   .sort((a, b) => (a.data.sidebar.order ?? 0) - (b.data.sidebar.order ?? 0))
   .map(entry => ({ title: entry.data.title, href: localePath('en', `/${entry.id}/`) }));
 
+const email = getCopy('en').home.finalCta.email;
 const link = 'inline-flex items-center gap-1.5 font-medium text-ink transition hover:text-orange-700 dark:hover:text-orange-300';
 ---
 
 <MainLayout title="Hyper 0x resources" seoTitle="Hyper 0x Resources: How the Chain Is Built" description="How Hyper 0x is built and why: the architecture, six engineering decisions with what each one cost, and the docs and articles that go deeper." kind={{ type: 'CollectionPage' }}>
   <div class="mx-auto max-w-[85rem] px-4 pt-12 pb-16 sm:px-6 lg:px-8 lg:pt-16">
-    <div class="max-w-2xl">
-      <p class="font-mono text-xs font-medium text-muted">Resources</p>
-      <h1 id="resources" class="mt-3 text-4xl leading-[1.04] font-semibold text-ink sm:text-5xl">How Hyper 0x is built, and why</h1>
+    <div class="max-w-4xl">
+      <h1 id="resources" class="text-5xl leading-[1.04] font-semibold text-ink sm:text-6xl lg:text-7xl">How Hyper 0x is built, and why</h1>
       <p class="mt-4 max-w-[58ch] text-pretty text-muted">Hyper 0x is a blockchain built so that teams can run AI agents with a gate, custody and a receipt for every action. This page explains the architecture and six decisions behind it, as the engineers who build it described them in November 2026. Each decision states what it cost as well as what it bought.</p>
     </div>
   </div>
 
   <section class="mx-auto max-w-[85rem] scroll-mt-24 px-4 pb-16 sm:px-6 lg:px-8" aria-labelledby="architecture">
-    <SectionHead id="architecture" index="01" label="Architecture" claim="Three layers," payoff="one record." body="Buckleson is the parent company and builds the infrastructure. Hyper 0x is the blockchain, and PAVii is the AI layer. An action flows from the agent through the gate and custody, and settles through your private L2 to the Hyper 0x layer 1." />
-    <div class="mt-10 grid gap-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]" data-reveal>
-      <Diagram name="hyper0x" />
-      <dl class="grid content-start gap-3 rounded-[1.6rem] bg-card p-6 ring-1 ring-line sm:p-7">
-        {architecture.nodes.map(node => (
-          <div class="border-b border-line pb-3 last:border-0 last:pb-0">
-            <dt class="font-semibold text-ink">{node.label}</dt>
-            <dd class="text-muted">{node.sub}</dd>
-          </div>
-        ))}
-      </dl>
+    <SectionHead id="architecture" claim="Three layers," payoff="one record." body="Buckleson is the parent company and builds the infrastructure. Hyper 0x is the blockchain, and PAVii is the AI layer. An action flows from the agent through the gate and custody, and settles through your private L2 to the Hyper 0x layer 1." />
+    <div class="mt-10 overflow-x-auto rounded-2xl" tabindex="0" role="region" aria-label="Hyper 0x architecture diagram, scrolls sideways on narrow screens" data-reveal>
+      <div class="min-w-[48rem]"><Diagram name="hyper0x" /></div>
     </div>
   </section>
 
   <section class="mx-auto max-w-[85rem] scroll-mt-24 px-4 pb-16 sm:px-6 lg:px-8" aria-labelledby="decisions">
-    <SectionHead id="decisions" index="02" label="Decisions" claim="Six decisions," payoff="and what each cost." body="Every architectural choice buys something and charges for it. These six shape most of what Hyper 0x is, with the charge stated. None carries a measured figure, because none is published." />
-    <div class="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
-      {decisions.map(decision => (
-        <article class="rounded-[1.6rem] bg-card p-6 ring-1 ring-line sm:p-7" aria-labelledby={`decision-${decision.id}`} data-reveal>
-          <h3 id={`decision-${decision.id}`} class="text-2xl font-semibold text-ink">{decision.title}</h3>
-          <dl class="mt-5 space-y-4">
-            <div><dt class="font-mono text-xs font-medium text-muted">Chosen</dt><dd class="mt-1 text-ink">{decision.chose}</dd></div>
-            <div><dt class="font-mono text-xs font-medium text-muted">Over</dt><dd class="mt-1 text-ink">{decision.instead}</dd></div>
-            <div><dt class="font-mono text-xs font-medium text-muted">What it bought</dt><dd class="mt-1 text-ink">{decision.bought}</dd></div>
-            <div><dt class="font-mono text-xs font-medium text-muted">What it cost</dt><dd class="mt-1 text-muted">{decision.cost}</dd></div>
-          </dl>
-        </article>
-      ))}
+    <SectionHead id="decisions" claim="Six decisions," payoff="and what each cost." body="Every architectural choice buys something and charges for it. These six shape most of what Hyper 0x is, with the charge stated. None carries a measured figure, because none is published." />
+    <div class="mt-10 overflow-x-auto rounded-3xl bg-card ring-1 ring-line" tabindex="0" role="region" aria-label="Six engineering decisions compared, scrolls sideways on narrow screens" data-reveal>
+      <table class="w-full min-w-[64rem] border-collapse text-left text-sm">
+        <caption class="sr-only">Six engineering decisions: what was chosen, what it was chosen over, what it bought and what it cost</caption>
+        <thead>
+          <tr class="border-b border-line text-muted">
+            <th scope="col" class="px-6 py-4 font-medium">Decision</th>
+            <th scope="col" class="px-6 py-4 font-medium">Chosen</th>
+            <th scope="col" class="px-6 py-4 font-medium">Over</th>
+            <th scope="col" class="px-6 py-4 font-medium">What it bought</th>
+            <th scope="col" class="px-6 py-4 font-medium">What it cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          {decisions.map(decision => (
+            <tr class="border-t border-line align-top first:border-t-0">
+              <th scope="row" id={`decision-${decision.id}`} class="scroll-mt-24 px-6 py-4 font-semibold text-ink">{decision.title}</th>
+              <td class="px-6 py-4 text-ink">{decision.chose}</td>
+              <td class="px-6 py-4 text-ink">{decision.instead}</td>
+              <td class="px-6 py-4 text-ink">{decision.bought}</td>
+              <td class="px-6 py-4 text-muted">{decision.cost}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   </section>
 
   <section class="mx-auto max-w-[85rem] scroll-mt-24 px-4 pb-16 sm:px-6 lg:px-8" aria-labelledby="deeper">
-    <SectionHead id="deeper" index="03" label="Go deeper" claim="Read the detail," payoff="in docs and articles." body="The docs describe the chain part by part. The articles argue the choices above, including what each one costs." />
+    <SectionHead id="deeper" claim="Read the detail," payoff="in docs and articles." body="The docs describe the chain part by part. The articles argue the choices above, including what each one costs." />
     <div class="mt-10 grid gap-4 md:grid-cols-2 md:gap-5">
       <section class="rounded-[1.6rem] bg-card p-6 ring-1 ring-line sm:p-7" aria-labelledby="deeper-docs" data-reveal>
         <h3 id="deeper-docs" class="text-2xl font-semibold text-ink">The chain, in the docs</h3>
@@ -92,6 +95,7 @@ const link = 'inline-flex items-center gap-1.5 font-medium text-ink transition h
         <p class="mt-5 text-sm text-muted">Also from the group: {siblingSites.links.map((sibling, index) => (<>{index > 0 && ' and '}<a href={sibling.href} class="font-medium text-ink underline underline-offset-4">{sibling.label}</a></>))}.</p>
       </section>
     </div>
-    <div class="mt-8" data-reveal><PrimaryCTA title="Ask an engineer the awkward question" url={BOOKING_URL} /></div>
   </section>
+
+  <FinalCta id="ask-an-engineer" claim="Ask an engineer" payoff="the awkward question." text="Book a call with the engineers who build Hyper 0x." btn="Ask an engineer the awkward question" email={email} />
 </MainLayout>

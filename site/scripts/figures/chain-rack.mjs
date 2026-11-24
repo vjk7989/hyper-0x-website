@@ -382,7 +382,6 @@ for (const stage of document.querySelectorAll('[data-figure="chain-rack"]')) {
 `;
 
 const plate = k.plateHtml({
-  fig: 'Fig 2',
   title: 'One L1, as many L2s as you need',
   hint: 'Each app gets its own L2',
   readout: `block #${FIRST_BLOCK.toLocaleString('en-US')} · - tx · 4 L2s live`,

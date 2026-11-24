@@ -1,4 +1,5 @@
 ---
+import { headingSlug } from '@utils/utils';
 import SectionHead from '@components/home/SectionHead.astro';
 import Glyph from '@components/ui/Glyph.astro';
 
@@ -8,20 +9,18 @@ import Glyph from '@components/ui/Glyph.astro';
  * artifact the client gets.
  */
 interface Props {
-  index: string;
-  label: string;
   claim: string;
   payoff: string;
   body: string;
   steps: { title: string; text: string; stage: string; artifact: string }[];
 }
 
-const { index, label, claim, payoff, body, steps } = Astro.props;
+const { claim, payoff, body, steps } = Astro.props;
 const icons = ['chats-circle', 'flask', 'shield-check', 'rocket-launch'];
 ---
 
 <section class="mx-auto max-w-[85rem] px-4 pt-20 pb-24 sm:px-6 lg:px-8 lg:pt-28">
-  <SectionHead index={index} label={label} claim={claim} payoff={payoff} body={body} />
+  <SectionHead claim={claim} payoff={payoff} body={body} />
   <div class="relative mt-14" data-steps>
     <span aria-hidden="true" class="absolute top-6 right-[12%] left-[12%] hidden h-0.5 rounded-full bg-line lg:block"></span>
     <span aria-hidden="true" class="steps-fill absolute top-6 left-[12%] hidden h-0.5 w-[76%] origin-left rounded-full bg-orange-500 lg:block"></span>
@@ -30,8 +29,7 @@ const icons = ['chats-circle', 'flask', 'shield-check', 'rocket-launch'];
         <li class="flex flex-col" data-reveal-item>
           <span class="mx-auto grid size-12 place-items-center rounded-full bg-sheet text-white ring-8 ring-card lg:mx-0"><Glyph icon={icons[i]} class="size-6" /></span>
           <div class="mt-5 flex flex-1 flex-col rounded-[1.6rem] bg-card p-5 ring-1 ring-paper-line">
-            <p class="text-sm font-medium text-orange-700 dark:text-orange-300">{step.stage}</p>
-            <h3 class="mt-1 text-xl font-semibold text-ink">{step.title}</h3>
+            <h3 id={headingSlug(step.title)} class="scroll-mt-24 text-xl font-semibold text-ink">{step.title}</h3>
             <p class="mt-2 text-pretty text-muted">{step.text}</p>
             <p class="mt-auto flex items-center gap-2 pt-5 text-sm font-medium text-ink"><Glyph icon="file-text" class="size-4 text-ink" />{step.artifact}</p>
           </div>

@@ -35,7 +35,7 @@ export const compareChain: Record<string, Compare> = {
         'The bank runs the fund on its own private L2, with its own sequencer and rules.',
         'A payroll peak on another L2 of the bank has no effect on the fund L2.',
         'The fund L2 posts its state root, a fingerprint of every balance, to the Hyper 0x L1.',
-        'The L1 never rolls back, and auditors check one L1 instead of separate systems.',
+        'The L1 finalises each block in one pass, and auditors check one L1 instead of separate systems.',
       ],
     },
   },
@@ -118,7 +118,7 @@ export const compareChain: Record<string, Compare> = {
   },
 
   'blockchain-finality-explained': {
-    title: 'A reorg can erase a confirmed payment, Hyper 0x never rolls back',
+    title: 'A reorg can erase a confirmed payment, Hyper 0x finalises in one pass',
     without: {
       packet: 'Incoming client payment',
       nodes: [
@@ -149,7 +149,7 @@ export const compareChain: Record<string, Compare> = {
       steps: [
         'A client pays the fintech on Hyper 0x.',
         'Known validators vote with leaderless aBFT consensus, which keeps agreeing while fewer than one third are faulty.',
-        'When they agree, the payment is final in one pass, and nobody can reverse it.',
+        'When they agree, the payment is final in one pass, and any later change shows on the record.',
         'The fintech pays the merchant on confirmation, and the ledger matches the bank statement.',
       ],
     },
@@ -224,7 +224,7 @@ export const compareChain: Record<string, Compare> = {
       outcome: 'Both legs settle in one step',
       steps: [
         'Priya orders in Hyper Wallet, where the exchange and the wallet write to one record.',
-        'The order book runs inside Hyper 0x consensus, so nobody can front-run her order.',
+        'The order book runs inside Hyper 0x consensus, so every validator can check that no order ran ahead of hers.',
         'The fill and both balance updates land in a single ledger event.',
         'Both legs complete or neither does, and Priya sees pending, confirmed or failed.',
       ],

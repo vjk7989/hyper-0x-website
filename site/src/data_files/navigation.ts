@@ -28,21 +28,20 @@ export const megaMenus: MegaMenu[] = [
       {
         heading: 'Platform',
         items: [
-          { title: 'Hyper 0x', desc: 'Our blockchain, with a private L2 for you', href: '/products/hyper-0x/', icon: 'link-2' },
+          { title: 'Hyper 0x', desc: 'Our blockchain, with a private L2 for you', href: '/blockchain/', icon: 'link-2' },
         ],
       },
       {
         heading: 'Products',
         items: [
-          { title: 'H0x-ADE', desc: 'Checks every call your AI agents make', href: '/products/h0x-ade/', icon: 'safe-shield' },
-          { title: 'Hyper Wallet & SDKs', desc: 'Wallet, exchange and SDKs for your brand', href: '/products/hyper-wallet/', icon: 'laptop' },
+          { title: 'H0x-ADE', desc: 'Checks every call your AI agents make', href: '/ade/', icon: 'safe-shield' },
+          { title: 'Hyper Wallet & SDKs', desc: 'Wallet, exchange and SDKs for your brand', href: '/wallet/', icon: 'laptop' },
         ],
       },
       {
-        heading: 'Pay and play',
+        heading: 'Pay',
         items: [
-          { title: 'H0X Pay', desc: 'Invest part of every payment', href: '/products/h0x-pay/', icon: 'coin' },
-          { title: 'HyperRun', desc: 'Play, predict and earn', href: '/products/hyperrun/', icon: 'trophy' },
+          { title: 'H0X Pay', desc: 'Invest part of every payment', href: '/pay/', icon: 'coin' },
         ],
       },
     ],
@@ -67,7 +66,7 @@ export const megaMenus: MegaMenu[] = [
         ],
       },
       {
-        heading: 'Protect & connect',
+        heading: 'Control & connect',
         items: [
           { title: 'Wallet SDKs', desc: 'Wallets inside your own apps', href: '/services/wallet-sdks/', icon: 'terminal-box' },
           { title: 'AI-agent security', desc: 'Security gates and receipts for agents', href: '/services/ai-agent-security/', icon: 'ai' },
@@ -113,23 +112,6 @@ export const megaMenus: MegaMenu[] = [
     },
   },
   {
-    id: 'pricing',
-    label: 'Pricing',
-    columns: [
-      {
-        heading: 'Pricing',
-        items: [
-          { title: 'Pricing', desc: 'How an engagement starts, and what we publish', href: '/pricing/', icon: 'coin' },
-          { title: 'Build with us', desc: 'Call, pilot on your own L2, production', href: '/#services', icon: 'sitemap' },
-        ],
-      },
-    ],
-    footer: {
-      primary: { label: 'Book a call', href: 'https://cal.com/buckleson-group/30min' },
-      links: [{ label: 'All solutions', href: '/services/' }],
-    },
-  },
-  {
     id: 'about',
     label: 'About',
     columns: [
@@ -147,28 +129,10 @@ export const megaMenus: MegaMenu[] = [
       links: [],
     },
   },
-  {
-    id: 'contact',
-    label: 'Contact',
-    columns: [
-      {
-        heading: 'Talk to us',
-        items: [
-          { title: 'Contact', desc: 'Talk to an engineer', href: '/contact/', icon: 'mail' },
-          { title: 'Book a call', desc: '30 minutes about your use case', href: 'https://cal.com/buckleson-group/30min', icon: 'calendar-month' },
-        ],
-      },
-    ],
-    footer: {
-      primary: { label: 'Contact', href: '/contact/' },
-      links: [{ label: 'vijay@buckleson.com', href: 'mailto:vijay@buckleson.com' }],
-    },
-  },
 ];
 
-/** Sibling sites the footer backlinks to (R11.8), with the three-layer relationship as text (§5.5). */
+/** Sibling sites the Resources page backlinks to (R11.8). */
 export const siblingSites = {
-  statement: 'Buckleson is the parent company and builds the infrastructure. Hyper 0x is the blockchain, and PAVii is the AI layer.',
   links: [
     { label: 'Buckleson, the parent company', href: 'https://buckleson.com' },
     { label: 'PAVii, the AI layer', href: 'https://pavii.tech' },
@@ -179,11 +143,10 @@ export const footerColumns: { title: string; links: { label: string; path: strin
   {
     title: 'Products',
     links: [
-      { label: 'Hyper 0x', path: '/products/hyper-0x/' },
-      { label: 'H0x-ADE', path: '/products/h0x-ade/' },
-      { label: 'Hyper Wallet & SDKs', path: '/products/hyper-wallet/' },
-      { label: 'H0X Pay', path: '/products/h0x-pay/' },
-      { label: 'HyperRun', path: '/products/hyperrun/' },
+      { label: 'Hyper 0x', path: '/blockchain/' },
+      { label: 'H0x-ADE', path: '/ade/' },
+      { label: 'Hyper Wallet & SDKs', path: '/wallet/' },
+      { label: 'H0X Pay', path: '/pay/' },
     ],
   },
   {
@@ -200,7 +163,6 @@ export const footerColumns: { title: string; links: { label: string; path: strin
     links: [
       { label: 'About us', path: '/about/' },
       { label: 'Resources', path: '/resources/' },
-      { label: 'Pricing', path: '/pricing/' },
       { label: 'Blog', path: '/blog/' },
       { label: 'FAQ', path: '/faq/' },
       { label: 'Docs', path: '/docs/' },

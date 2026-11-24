@@ -25,7 +25,7 @@ The difference is who can validate: who checks transactions and adds them to the
 
 On a **permissioned** blockchain, validators need approval before they join, and each one has a known identity. Hyperledger Fabric and R3 Corda are well-known examples of permissioned platforms. Here the network stays honest through identity, contracts and consensus. Consensus is the protocol by which validators agree on the record. This protocol tolerates a minority of bad actors.
 
-A related but separate question is who can read the data. People often call that public versus private. A chain can be permissioned and still show each record only to the parties involved. That is how [Hyper 0x](../../products/hyper-0x/) works.
+A related but separate question is who can read the data. People often call that public versus private. A chain can be permissioned and still show each record only to the parties involved. That is how [Hyper 0x](../../blockchain/) works.
 
 ## How do they compare?
 

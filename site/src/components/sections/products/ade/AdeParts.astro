@@ -13,7 +13,7 @@ const p = Astro.props.page.parts;
 ---
 
 <section aria-labelledby={p.id} class="mx-auto max-w-[85rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
-  <SectionHead id={p.id} label={p.label} claim={p.claim} payoff={p.payoff} body={p.body} />
+  <SectionHead id={p.id} claim={p.claim} payoff={p.payoff} body={p.body} />
   <div class="mt-10 rounded-[2rem] bg-card p-3 ring-1 ring-line sm:p-5" data-reveal>
     <IsoFigure name="ade-path" tone="sheet" />
   </div>

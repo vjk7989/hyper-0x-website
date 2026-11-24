@@ -23,7 +23,7 @@ export const categories: Category[] = [
   { id: 'infrastructure', label: 'Blockchain infrastructure', icon: 'sitemap', blurb: 'L1s and L2s, finality, encryption and how to choose a partner.', accent: '#2563eb', tint: '#e4edff' },
   { id: 'tokenization', label: 'Tokenization', icon: 'coin', blurb: 'Gold, funds and other real assets on a chain investors can check.', accent: '#c2410c', tint: '#ffeedb' },
   { id: 'wallets', label: 'Wallets & payments', icon: 'laptop', blurb: 'Wallets, SDKs, account abstraction and payments that settle.', accent: '#047857', tint: '#dcf5ea' },
-  { id: 'gaming', label: 'Web3 gaming', icon: 'trophy', blurb: 'Play, predict and earn, with results nobody can edit.', accent: '#e11d48', tint: '#ffe4ea' },
+  { id: 'gaming', label: 'Web3 gaming', icon: 'trophy', blurb: 'Play, predict and earn, with results that show every edit.', accent: '#e11d48', tint: '#ffe4ea' },
 ];
 
 export const categoryById = (id: CategoryId) => categories.find(c => c.id === id)!;
@@ -107,8 +107,8 @@ export const readingPaths: { id: string; title: string; text: string; icon: stri
   },
   {
     id: 'agents',
-    title: 'Secure your AI agents',
-    text: 'From the first attack to a record nobody can erase.',
+    title: 'Check your AI agents',
+    text: 'From the first attack to a record that shows any deleted entry.',
     icon: 'safe-shield',
     category: 'ai-security',
     slugs: ['how-to-secure-ai-agents', 'what-is-prompt-injection', 'ai-agent-tool-calling-security', 'ai-agent-kill-switch', 'proof-of-execution-ai'],

@@ -3,6 +3,7 @@ import PrimaryCTA from '@components/ui/buttons/PrimaryCTA.astro';
 import { BOOKING_URL } from '@data/constants';
 import { localePath } from '@utils/locale';
 
+import { headingSlug } from '@utils/utils';
 /**
  * Contact page body. There is no backend: booking goes to Cal.com, and the
  * form composes an email in the visitor's mail app.
@@ -10,6 +11,17 @@ import { localePath } from '@utils/locale';
 const copy = Astro.locals.copy.contact;
 const field =
   'block w-full rounded-lg border border-line bg-card px-4 py-3 text-ink placeholder:text-muted focus:border-orange-500 focus:ring-orange-500';
+const h2 = 'scroll-mt-24 text-3xl font-semibold text-balance text-ink';
+const lead = 'mt-4 max-w-[65ch] text-lg text-pretty text-ink';
+const body = 'mt-3 max-w-[65ch] text-pretty text-muted';
+const topics = [
+  { to: '/services/ai-agent-security/', text: 'AI-agent security', note: 'You run AI agents and want a gate to check each call, with a receipt for every judgement.' },
+  { to: '/services/custom-blockchains/', text: 'Custom blockchains and private L2s', note: 'You want your own rules, validators and encryption, settled on Hyper 0x.' },
+  { to: '/services/asset-tokenization/', text: 'Asset tokenization', note: 'You hold gold, funds, bonds, invoices or property and want a token with compliance rules built in.' },
+  { to: '/services/wallets-exchanges/', text: 'Wallets and exchanges', note: 'You want a wallet or exchange with your brand, on-chain order books and atomic settlement.' },
+  { to: '/services/wallet-sdks/', text: 'Wallet SDKs', note: 'You want wallets or payments inside your own app or game.' },
+  { to: '/services/forward-deployed-engineering/', text: 'Forward-deployed engineering', note: 'You want our engineers to work inside your team, from a scoped pilot to production.' },
+];
 const label = 'mb-2 block text-sm font-semibold text-ink';
 const link =
   'text-orange-700 underline decoration-orange-300 underline-offset-4 dark:text-orange-300 dark:decoration-orange-700';
@@ -17,7 +29,7 @@ const link =
 
 <section class="mx-auto max-w-[85rem] px-4 pt-12 pb-20 sm:px-6 lg:px-8 lg:pt-20">
   <div class="max-w-3xl" data-reveal>
-    <h1 class="text-5xl leading-[1] font-semibold text-balance text-ink sm:text-6xl">
+    <h1 id={headingSlug(copy.heading)} class="scroll-mt-24 text-5xl leading-[1] font-semibold text-balance text-ink sm:text-6xl">
       {copy.heading}
     </h1>
     <p class="mt-5 max-w-[60ch] text-lg text-pretty text-muted">{copy.subTitle}</p>
@@ -26,7 +38,7 @@ const link =
   <div class="mt-12 grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
     <div class="space-y-8" data-reveal>
       <div class="on-sheet rounded-[2rem] bg-sheet p-8 text-white">
-        <h2 class="text-2xl font-bold">{copy.bookTitle}</h2>
+        <h2 id={headingSlug(copy.bookTitle)} class="scroll-mt-24 text-2xl font-bold">{copy.bookTitle}</h2>
         <p class="mt-2 text-pretty text-white/70">{copy.bookContent}</p>
         <div class="mt-6"><PrimaryCTA title={copy.bookBtn} url={BOOKING_URL} /></div>
       </div>
@@ -43,7 +55,7 @@ const link =
     </div>
 
     <form class="rounded-3xl bg-card p-6 ring-1 ring-line sm:p-8" data-mail-form data-reveal novalidate>
-      <h2 class="text-2xl font-bold text-ink">{copy.formTitle}</h2>
+      <h2 id={headingSlug(copy.formTitle)} class="scroll-mt-24 text-2xl font-bold text-ink">{copy.formTitle}</h2>
       <div class="mt-6 grid gap-5 sm:grid-cols-2">
         <div>
           <label for="contact-name" class={label}>{copy.name}</label>
@@ -72,6 +84,44 @@ const link =
       <p class="mt-2 hidden text-sm font-medium text-red-700 dark:text-red-400" data-mail-error role="alert"></p>
       <div class="mt-6"><PrimaryCTA title={copy.send} type="submit" /></div>
     </form>
+  </div>
+
+  <div class="mt-20 max-w-3xl space-y-14">
+    <section aria-labelledby={headingSlug('Who is on the call?')}>
+      <h2 id={headingSlug('Who is on the call?')} class={h2}>Who is on the call?</h2>
+      <p class={lead}>An engineer who builds Hyper 0x takes the call, not a salesperson.</p>
+      <p class={body}>The call lasts thirty minutes. You describe your use case, and the engineer asks questions about it. Together you agree on what success means.</p>
+    </section>
+    <section aria-labelledby={headingSlug('What should you bring to the call?')}>
+      <h2 id={headingSlug('What should you bring to the call?')} class={h2}>What should you bring to the call?</h2>
+      <p class={lead}>Bring the workload, the constraint you are up against, and the names of the people who touch the data.</p>
+      <ul class="mt-4 max-w-[65ch] list-disc space-y-2 pl-6 text-muted">
+        <li>The workload: what the system does today, or what you want it to do.</li>
+        <li>The constraint: the rule, the deadline or the limit that is in your way.</li>
+        <li>The people: who else reads, approves or changes the data, inside and outside your company.</li>
+      </ul>
+      <p class={body}>A rough picture is enough. The engineer fills in the gaps with you during the call.</p>
+    </section>
+    <section aria-labelledby={headingSlug('What comes out of the call?')}>
+      <h2 id={headingSlug('What comes out of the call?')} class={h2}>What comes out of the call?</h2>
+      <p class={lead}>You leave with an agreed definition of success for your use case and a clear idea of a first scoped pilot.</p>
+      <p class={body}>Most teams start with a single use case as a pilot. The pilot runs on your own L2, a private blockchain that settles on Hyper 0x.</p>
+      <p class={body}>We agree on the success measures before the pilot starts. Your security team reviews the design, the keys and the access before production.</p>
+    </section>
+    <section aria-labelledby={headingSlug('Which problems are worth bringing?')}>
+      <h2 id={headingSlug('Which problems are worth bringing?')} class={h2}>Which problems are worth bringing?</h2>
+      <p class={lead}>Bring any problem that one of our six services covers. Each service has its own page with the details.</p>
+      <ul class="mt-4 max-w-[65ch] space-y-3 text-muted">
+        {topics.map(topic => (
+          <li><a href={localePath('en', topic.to)} class={link}>{topic.text}</a>: {topic.note}</li>
+        ))}
+      </ul>
+    </section>
+    <section aria-labelledby={headingSlug('How else can you reach the team?')}>
+      <h2 id={headingSlug('How else can you reach the team?')} class={h2}>How else can you reach the team?</h2>
+      <p class={lead}>Write to <a href="mailto:vijay@buckleson.com" class={link}>vijay@buckleson.com</a>, or use the form on this page to compose an email.</p>
+      <p class={body}>If you prefer to read first, the <a href={localePath('en', '/guides/intro/')} class={link}>introduction to Hyper 0x</a> explains how the platform works.</p>
+    </section>
   </div>
 </section>
 

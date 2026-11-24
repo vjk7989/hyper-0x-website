@@ -16,7 +16,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { run, runSeo, AI_CRAWLERS, normQuery, PRODUCT_SLUGS, NEW_PAGES, UNCHANGED_SLUGS, NEEDLES } from './product-checks.mjs';
+import { run, runSeo, AI_CRAWLERS, normQuery, PRODUCT_SLUGS, PRODUCT_ROUTE, NEW_PAGES, UNCHANGED_SLUGS, NEEDLES } from './product-checks.mjs';
 
 const SITE = path.join(import.meta.dirname, '..');
 const DATA = path.join(SITE, 'src', 'data_files');
@@ -33,11 +33,10 @@ const TITLES = {
   'hyper-wallet': 'Hyper Wallet, one app for three jobs',
   'hyper-0x': 'Hyper 0x, the chain',
   'h0x-pay': 'H0X Pay, payments that settle',
-  hyperrun: 'HyperRun, ranked predictions',
 };
 const H1S = {
   'h0x-ade': 'H0x-ADE', 'hyper-wallet': 'Hyper Wallet', 'hyper-0x': 'Hyper 0x',
-  'h0x-pay': 'H0X Pay', hyperrun: 'HyperRun',
+  'h0x-pay': 'H0X Pay',
 };
 
 // Long enough for the house-layout check, and it names the brand so the measurement
@@ -87,19 +86,19 @@ function pageHtml(slug, over = {}) {
     + `<h2 id="${slug}-one">What it does</h2><p>${BODY}</p>`
     + `<h3 id="${slug}-detail">One detail</h3><p>${o.needles.join(' ')} ${BODY}</p>`
     + o.table + o.faq + o.extraMain + '</main>';
-  const head = `<title>${o.title}</title><link rel="canonical" href="https://hyper0x.org/products/${slug}/">`;
+  const head = `<title>${o.title}</title><link rel="canonical" href="https://hyper0x.org/${PRODUCT_ROUTE[slug]}/">`;
   return o.edit('<!doctype html><html lang="en"><head>' + head + (o.chrome ? CHROME_STYLE : '') + '</head><body>'
     + (o.chrome ? CHROME_NAV : '') + main + (o.chrome ? CHROME_FOOTER : '') + '</body></html>');
 }
 
-const redirectHtml = (target = '/products/h0x-ade/') => '<!doctype html>'
+const redirectHtml = (target = '/ade/') => '<!doctype html>'
   + `<title>Redirecting to: ${target}</title><meta http-equiv="refresh" content="0;url=${target}">`
   + '<meta name="robots" content="noindex">'
   + `<link rel="canonical" href="https://hyper0x.org${target}">`
   + `<body><a href="${target}">Redirecting</a></body>`;
 
 const sitemapXml = (slugs = PRODUCT_SLUGS) => '<?xml version="1.0" encoding="UTF-8"?><urlset>'
-  + slugs.map((s) => `<url><loc>https://hyper0x.org/products/${s}/</loc><lastmod>2026-11-23</lastmod></url>`).join('')
+  + slugs.map((s) => `<url><loc>https://hyper0x.org/${s === 'pavii' ? 'products/pavii' : PRODUCT_ROUTE[s]}/</loc><lastmod>2026-11-23</lastmod></url>`).join('')
   + '</urlset>';
 
 const TMP = [];
@@ -119,7 +118,7 @@ function buildDist(opts = {}) {
   for (const slug of slugs) {
     const spec = pages[slug];
     if (spec === false) continue;
-    const file = path.join(dist, 'products', slug, 'index.html');
+    const file = path.join(dist, PRODUCT_ROUTE[slug], 'index.html');
     fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, typeof spec === 'string' ? spec : pageHtml(slug, spec ?? {}));
   }
@@ -152,8 +151,8 @@ const forFile = (cs, id, rel) => {
   return m[0];
 };
 const show = (cs) => cs.filter((c) => !c.pass).map((c) => `${c.id} -> ${c.detail}`).join('\n');
-const ADE = 'dist/products/h0x-ade/index.html';
-const WALLET = 'dist/products/hyper-wallet/index.html';
+const ADE = 'dist/ade/index.html';
+const WALLET = 'dist/wallet/index.html';
 
 /** The one-rule-at-a-time workhorse: exactly `ids` fail, everything else passes. */
 async function expectOnlyFailing(ctx, ids) {
@@ -261,23 +260,23 @@ test('AC2 one rule: two headings sharing an id fail only product.heading.anchors
 // ---------------------------------------------- AC3: no two routes share an h1 or a title
 
 test('AC3 one rule: two routes sharing an h1 fail only product.h1.unique, and name both files', async () => {
-  const { ctx } = buildDist({ pages: { hyperrun: { h1: H1S['h0x-pay'] } } });
+  const { ctx } = buildDist({ pages: { 'hyper-0x': { h1: H1S['h0x-pay'] } } });
   const cs = await expectOnlyFailing(ctx, ['product.h1.unique']);
   const d = one(cs, 'product.h1.unique').detail;
-  assert.match(d, /dist\/products\/h0x-pay\/index\.html/);
-  assert.match(d, /dist\/products\/hyperrun\/index\.html/);
+  assert.match(d, /dist\/pay\/index\.html/);
+  assert.match(d, /dist\/blockchain\/index\.html/);
 });
 
 test('AC3: the h1 comparison ignores case and whitespace', async () => {
-  const { ctx } = buildDist({ pages: { hyperrun: { h1: '  hyper   WALLET  ' } } });
+  const { ctx } = buildDist({ pages: { 'hyper-0x': { h1: '  hyper   WALLET  ' } } });
   const cs = await run(ctx);
   assert.equal(one(cs, 'product.h1.unique').pass, false, 'a case-only difference is still the same heading');
 });
 
 test('AC3 one rule: two routes sharing a title fail only product.title.unique', async () => {
-  const { ctx } = buildDist({ pages: { hyperrun: { title: TITLES['hyper-0x'] } } });
+  const { ctx } = buildDist({ pages: { 'h0x-pay': { title: TITLES['hyper-0x'] } } });
   const cs = await expectOnlyFailing(ctx, ['product.title.unique']);
-  assert.match(one(cs, 'product.title.unique').detail, /dist\/products\/hyper-0x\/index\.html/);
+  assert.match(one(cs, 'product.title.unique').detail, /dist\/blockchain\/index\.html/);
 });
 
 test('AC3: the redirect page is not a route, so its title and h1 never collide', async () => {
@@ -547,7 +546,7 @@ test('AC8 one rule: a redirect to the wrong target fails only product.redirect.p
   const cs = await expectOnlyFailing(buildDist({ files: { 'products/pavii/index.html': redirectHtml('/products/') } }).ctx,
     ['product.redirect.pavii']);
   const d = one(cs, 'product.redirect.pavii').detail;
-  assert.match(d, /does not target \/products\/h0x-ade\//);
+  assert.match(d, /does not target \/ade\//);
   assert.match(d, /canonical/);
 });
 
@@ -562,7 +561,7 @@ test('AC8: a /products/pavii/ page that became a real page again is caught', asy
   const cs = await run(buildDist({ files: { 'products/pavii/index.html': pageHtml('h0x-ade', { title: 'PAVii' }) } }).ctx);
   assert.equal(one(cs, 'product.redirect.pavii').pass, false);
   assert.match(one(cs, 'product.redirect.pavii').detail, /refresh/);
-  assert.equal(one(cs, 'product.h1.unique').pass, false, 'it now competes with /products/h0x-ade/ on the h1');
+  assert.equal(one(cs, 'product.h1.unique').pass, false, 'it now competes with /ade/ on the h1');
 });
 
 test('AC8 one rule: products/pavii back in the sitemap fails only product.sitemap.pavii', async () => {
@@ -583,19 +582,19 @@ test('AC8: a missing sitemap-0.xml fails loudly', async () => {
   assert.match(one(cs, 'product.sitemap.pavii').detail, /missing/);
 });
 
-// ---------------------------------------------- the five-way slug dispatch and the FAQ move
+// ---------------------------------------------- the four-way slug dispatch and the FAQ move
 
 test('dispatch: a product route that stopped being built is named', async () => {
-  const cs = await run(buildDist({ pages: { hyperrun: false } }).ctx);
+  const cs = await run(buildDist({ pages: { 'h0x-pay': false } }).ctx);
   const c = one(cs, 'product.routes.exist');
   assert.equal(c.pass, false);
-  assert.match(c.detail, /hyperrun/);
+  assert.match(c.detail, /h0x-pay/);
   assert.equal(one(cs, 'product.house.layout').pass, false);
 });
 
-test('dispatch: the five slugs are the five the view knows about', () => {
+test('dispatch: the four slugs are the four product pages the site serves', () => {
   assert.deepEqual([...PRODUCT_SLUGS].sort(),
-    ['h0x-ade', 'h0x-pay', 'hyper-0x', 'hyper-wallet', 'hyperrun']);
+    ['h0x-ade', 'h0x-pay', 'hyper-0x', 'hyper-wallet']);
   assert.deepEqual(Object.keys(NEW_PAGES).concat(UNCHANGED_SLUGS).sort(), [...PRODUCT_SLUGS].sort());
 });
 
@@ -619,7 +618,7 @@ test('FAQ move: items rendered with no "… questions" heading are reported', as
 });
 
 test('FAQ move: a route with no FAQ at all is allowed (R11.2, empty data renders nothing)', async () => {
-  await expectOnlyFailing(buildDist({ pages: { hyperrun: { faq: '' } } }).ctx, []);
+  await expectOnlyFailing(buildDist({ pages: { 'h0x-pay': { faq: '' } } }).ctx, []);
 });
 
 test('house layout: an unchanged route reduced to a stub is caught', async () => {
@@ -696,7 +695,7 @@ for (const [name, html] of Object.entries(MALFORMED)) {
 
 test('invalid UTF-8 bytes do not throw', async () => {
   const { dist, ctx } = buildDist();
-  fs.writeFileSync(path.join(dist, 'products', 'h0x-ade', 'index.html'), Buffer.concat([
+  fs.writeFileSync(path.join(dist, 'ade', 'index.html'), Buffer.concat([
     Buffer.from('<!doctype html><html lang="en"><head><title>Bad bytes</title></head><body><main><h1 id="h0x-ade">H0x-ADE</h1><p>'),
     Buffer.from([0xff, 0xfe, 0xc3, 0x28, 0x80]),
     Buffer.from('</p></main></body></html>'),
@@ -732,7 +731,7 @@ test('bad ctx data fails as a check, never as a thrown error', async () => {
 
 // ---------------------------------------------- the real dist/ on disk
 
-const distMissing = !fs.existsSync(path.join(DIST, 'products', 'h0x-ade', 'index.html'));
+const distMissing = !fs.existsSync(path.join(DIST, 'ade', 'index.html'));
 const SKIP = distMissing && 'dist/ is not built; run `astro build` first';
 
 test('the real dist/ passes every product check', { skip: SKIP }, async () => {
@@ -767,11 +766,11 @@ test('the real dist/: no route still links to /products/pavii/', { skip: SKIP },
   });
   walk(DIST);
   assert.deepEqual(offenders.filter((f) => f !== 'products/pavii/index.html'), [],
-    'these pages still link to the retired route instead of /products/h0x-ade/');
+    'these pages still link to the retired route instead of /ade/');
 });
 
 test('the real dist/: the security table renders one row per threat', { skip: SKIP }, async () => {
-  const html = fs.readFileSync(path.join(DIST, 'products', 'h0x-ade', 'index.html'), 'utf8');
+  const html = fs.readFileSync(path.join(DIST, 'ade', 'index.html'), 'utf8');
   assert.equal((html.match(/<th[^>]*scope="row"/g) ?? []).length, threats.length);
   assert.equal((html.match(/<th[^>]*scope="rowgroup"/g) ?? []).length, adePage.security.groups.length);
   for (const t of threats) assert.ok(html.includes(adePage.security.rows[t.title].condition.replace(/&/g, '&amp;')), `no row for "${t.title}"`);
@@ -780,7 +779,7 @@ test('the real dist/: the security table renders one row per threat', { skip: SK
 // ---------------------------------------------- runSeo: the search checks (S2)
 
 const ROBOTS_OK = AI_CRAWLERS.map((a) => `User-agent: ${a}\nAllow: /\n`).join('\n');
-const simplePage = (h1, extraHead = '') => `<!doctype html><html><head><title>${h1}</title>${extraHead}</head><body><main><h1>${h1}</h1></main></body></html>`;
+const simplePage = (h1, extraHead = '', body = '') => `<!doctype html><html><head><title>${h1}</title>${extraHead}</head><body><main><h1 id="top">${h1}</h1>${body}</main></body></html>`;
 
 /** A tiny dist: route -> html (route "/" is the root), plus robots.txt. */
 function seoDist(pages, robots = ROBOTS_OK) {
@@ -801,9 +800,9 @@ const GOOD_PAGES = { '/': simplePage('Home'), '/chain': simplePage('Chain') };
 const seo = (pages, map, robots) => runSeo({ distDir: seoDist(pages, robots), seoMap: map });
 const seoFailing = (cs) => cs.filter((c) => !c.pass);
 
-test('seo: a clean dist, map and robots pass all four checks', async () => {
+test('seo: a clean dist, map and robots pass all five checks', async () => {
   const cs = await seo(GOOD_PAGES, GOOD_MAP);
-  assert.deepEqual(cs.map((c) => c.id).sort(), ['seo.h1.unique', 'seo.keyword.declared', 'seo.keyword.unique', 'seo.robots.aiCrawlers']);
+  assert.deepEqual(cs.map((c) => c.id).sort(), ['seo.h1.unique', 'seo.heading.anchors', 'seo.keyword.declared', 'seo.keyword.unique', 'seo.robots.aiCrawlers']);
   assert.deepEqual(seoFailing(cs), [], show(cs));
 });
 
@@ -884,6 +883,48 @@ test('seo.h1.unique: two indexable routes sharing an h1 fail, ignoring case and 
 test('seo.h1.unique: a redirect or noindex page sharing an h1 does not count', async () => {
   const pages = { ...GOOD_PAGES, '/hidden': simplePage('Home', '<meta name="robots" content="noindex">') };
   assert.deepEqual(seoFailing(await seo(pages, GOOD_MAP)), []);
+});
+
+// seo.heading.anchors: 5.4 / 9.5, every route but the noindex ones (404, pitch-deck, redirects).
+const withBody = (route, body) => ({ ...GOOD_PAGES, [route]: simplePage('Page', '', body) });
+
+test('seo.heading.anchors: headings that all carry an id pass, and an id already there is read as is', async () => {
+  const body = '<h2 id="what-it-does">What it does</h2><h3 id="legacy-anchor">Renamed long ago</h3>';
+  const cs = await seo(withBody('/about', body), [...GOOD_MAP, { route: '/about', primary: 'about', supporting: [] }]);
+  assert.deepEqual(seoFailing(cs), [], show(cs));
+});
+
+test('seo.heading.anchors: an h2 with no id fails, naming the route and the heading', async () => {
+  const map = [...GOOD_MAP, { route: '/about', primary: 'about', supporting: [] }];
+  const cs = await seo(withBody('/about', '<h2>Our story</h2>'), map);
+  assert.deepEqual(failingIds(cs), ['seo.heading.anchors']);
+  assert.match(one(cs, 'seo.heading.anchors').detail, /dist\/about\/index\.html <h2> "Our story" has no id/);
+});
+
+test('seo.heading.anchors: an h1 or an h3 with no id fails too, and a nested tag does not hide it', async () => {
+  const map = [...GOOD_MAP, { route: '/about', primary: 'about', supporting: [] }];
+  const h3 = await seo(withBody('/about', '<h2 id="a">A</h2><h3><span>Deep</span> dive</h3>'), map);
+  assert.match(one(h3, 'seo.heading.anchors').detail, /<h3> "Deep dive" has no id/);
+  const h1 = await seo({ ...GOOD_PAGES, '/': '<!doctype html><html><head><title>Home</title></head><body><main><h1>Home</h1></main></body></html>' }, GOOD_MAP);
+  assert.match(one(h1, 'seo.heading.anchors').detail, /dist\/index\.html <h1> "Home" has no id/);
+});
+
+test('seo.heading.anchors: two headings on one page sharing an id fail; the same id on two pages does not', async () => {
+  const map = [...GOOD_MAP, { route: '/about', primary: 'about', supporting: [] }];
+  const dup = await seo(withBody('/about', '<h2 id="x">One</h2><h2 id="x">Two</h2>'), map);
+  assert.match(one(dup, 'seo.heading.anchors').detail, /"Two" repeats id "x"/);
+  const pages = { ...withBody('/about', '<h2 id="x">One</h2>'), '/chain': simplePage('Chain', '', '<h2 id="x">One</h2>') };
+  assert.deepEqual(seoFailing(await seo(pages, map)), []);
+});
+
+test('seo.heading.anchors: a noindex page (404, pitch-deck) or a redirect is not checked', async () => {
+  const map = [...GOOD_MAP, { route: '/about', primary: 'about', supporting: [] }];
+  const pages = {
+    ...GOOD_PAGES,
+    '/404': simplePage('Gone', '<meta name="robots" content="noindex, follow">', '<h2>No id here</h2>'),
+    '/old': redirectHtml('/chain/'),
+  };
+  assert.deepEqual(seoFailing(await seo(pages, map)), []);
 });
 
 test('seo.robots.aiCrawlers: a crawler that is absent fails and is named', async () => {

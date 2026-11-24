@@ -377,7 +377,6 @@ for (const stage of document.querySelectorAll('[data-figure="token-mint"]')) {
 `;
 
 const plate = k.plateHtml({
-  fig: 'Fig 5',
   title: 'From vault to token, one to one',
   hint: 'Every token has a bar behind it',
   readout: 'reserve 12 bars · supply 12 tokens',

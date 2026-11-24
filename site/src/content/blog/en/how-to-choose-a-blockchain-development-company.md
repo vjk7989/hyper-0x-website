@@ -29,7 +29,7 @@ Most projects need the same five building blocks. Ask any partner how they handl
 4. **Integrations.** This covers bridges (links that move tokens) to other chains. It also covers connections to core banking, ERP (enterprise resource planning) and payment systems.
 5. **Operations.** This covers monitoring, upgrades, key management and incident response.
 
-At Buckleson we deliver all five on [Hyper 0x](../../products/hyper-0x/), the blockchain we built ourselves. The diagram above shows how our own products and customer chains share it.
+At Buckleson we deliver all five on [Hyper 0x](../../blockchain/), the blockchain we built ourselves. The diagram above shows how our own products and customer chains share it.
 
 ## Which questions should you ask before hiring?
 
@@ -54,4 +54,4 @@ There is no single right answer. Public chains suit open products that anyone ca
 
 ## How does Buckleson work?
 
-We are a blockchain infrastructure company. We built Hyper 0x, and we build on it every day. This work covers [H0x-ADE](../../products/h0x-ade/) for AI-agent security, Hyper Wallet for trading and payments, and custom L2s for banks, fintechs and asset issuers. Every engagement starts with a scoped pilot, a forward-deployed engineer (one who works inside your team) and success metrics agreed up front. See our [blockchain development services](../../services/) or book a call to talk through your use case.
+We are a blockchain infrastructure company. We built Hyper 0x, and we build on it every day. This work covers [H0x-ADE](../../ade/) for AI-agent security, Hyper Wallet for trading and payments, and custom L2s for banks, fintechs and asset issuers. Every engagement starts with a scoped pilot, a forward-deployed engineer (one who works inside your team) and success metrics agreed up front. See our [blockchain development services](../../services/) or book a call to talk through your use case.

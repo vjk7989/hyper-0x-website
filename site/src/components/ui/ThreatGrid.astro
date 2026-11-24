@@ -2,6 +2,7 @@
 import Glyph from '@components/ui/Glyph.astro';
 import { threats } from '@data/threats';
 
+import { headingSlug } from '@utils/utils';
 /**
  * The ten agent risks as cards: what the risk is, how Pavii checks it, which
  * layers do the work, and an honest badge for what the blockchain adds.
@@ -21,13 +22,10 @@ const badge = {
 ---
 
 <ol class:list={['grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3', className]} data-reveal-group>
-  {threats.slice(0, limit).map((threat, i) => (
+  {threats.slice(0, limit).map(threat => (
     <li class="glass-card flex flex-col rounded-[1.6rem] p-6" data-reveal-item>
-      <div class="flex items-start justify-between gap-3">
-        <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-card text-ink ring-1 ring-line"><Glyph icon={threat.icon} class="size-5" /></span>
-        <span class="font-mono text-xs text-muted">{String(i + 1).padStart(2, '0')}</span>
-      </div>
-      <h3 class="mt-5 text-lg leading-snug font-semibold text-balance text-ink">{threat.title}</h3>
+      <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-card text-ink ring-1 ring-line"><Glyph icon={threat.icon} class="size-5" /></span>
+      <h3 id={headingSlug(threat.title)} class="scroll-mt-24 mt-5 text-lg leading-snug font-semibold text-balance text-ink">{threat.title}</h3>
       <p class="mt-2 text-sm leading-relaxed text-pretty text-muted">{threat.risk}</p>
       <p class="mt-4 text-sm leading-relaxed text-pretty text-ink"><span class="font-semibold">How H0x-ADE checks it.</span> {threat.answer}</p>
       <ul class="mt-4 flex flex-wrap gap-1.5">

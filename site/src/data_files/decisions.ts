@@ -53,7 +53,7 @@ export const decisions: Decision[] = [
     title: 'Receipts on the chain, linked to each other',
     chose: 'Every action leaves a receipt on the chain, and the gate’s judgement on a refused call leaves one too. Each receipt links to the one before it.',
     instead: 'Logging in the application, which costs less and is what most systems do.',
-    cost: 'Receipts use chain capacity, and a written receipt cannot be quietly tidied up afterwards.',
+    cost: 'Receipts use chain capacity, and a written receipt shows any later edit.',
     bought: 'A deleted entry shows as a gap. An application log can be edited by whoever owns the application, which is the party an auditor is checking.',
   },
   {

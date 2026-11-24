@@ -1,4 +1,5 @@
 ---
+import { headingSlug } from '@utils/utils';
 import MainLayout from '@/layouts/MainLayout.astro';
 import SectionHead from '@components/home/SectionHead.astro';
 import PrimaryCTA from '@components/ui/buttons/PrimaryCTA.astro';
@@ -46,8 +47,7 @@ const steps = servicePages[0].steps;
   kind={{ type: 'Service', services: copy.items.map(item => ({ name: item.title, description: item.content })) }}
 >
   <section class="mx-auto max-w-[85rem] px-4 pt-14 pb-10 text-center sm:px-6 lg:px-8 lg:pt-20">
-    <p class="font-mono text-xs font-medium text-muted" data-reveal>Services</p>
-    <h1 class="mx-auto mt-4 max-w-4xl text-5xl leading-[1] font-semibold text-balance text-ink sm:text-6xl">{copy.intro.title}</h1>
+    <h1 id={headingSlug(copy.intro.title)} class="scroll-mt-24 mx-auto max-w-4xl text-5xl leading-[1] font-semibold text-balance text-ink sm:text-6xl">{copy.intro.title}</h1>
     <p class="mx-auto mt-5 max-w-2xl text-lg text-pretty text-muted" data-reveal>{copy.intro.subTitle}</p>
     <div class="mt-8" data-reveal><PrimaryCTA title={copy.intro.cta} url={BOOKING_URL} /></div>
   </section>
@@ -62,7 +62,7 @@ const steps = servicePages[0].steps;
             <a href={href(`/services/${item.id}/`)} class:list={['svc-card group flex h-full flex-col overflow-hidden rounded-[1.8rem] p-5 transition duration-300 hover:-translate-y-0.5 sm:p-6', look.dark ? 'accent-warm bg-sheet text-white' : 'glass-card text-ink']}>
               {look.mock && <div class="h-56 sm:h-64"><ServiceMock kind={page.mock} /></div>}
               <div class:list={['flex flex-1 flex-col', look.mock && 'mt-6']}>
-                <h2 class="text-2xl leading-tight font-semibold text-balance">{item.title}</h2>
+                <h2 id={headingSlug(item.title)} class="scroll-mt-24 text-2xl leading-tight font-semibold text-balance">{item.title}</h2>
                 <p class:list={['mt-2 leading-relaxed text-pretty', look.dark ? 'text-white/70' : 'text-muted']}>{page.intro}</p>
                 <ul class="mt-5 flex flex-wrap gap-2">
                   {item.points.map(point => (
@@ -81,21 +81,18 @@ const steps = servicePages[0].steps;
   </section>
 
   <section class="mx-auto max-w-[85rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20" aria-labelledby="machine-title">
-    <SectionHead index="01" label="The base under every service" claim="One L1, and an L2" payoff="for each use case." body="Every service runs on Hyper 0x. Each use case gets its own L2, and every L2 settles on one L1. Select a step to see each part at work." id="machine-title" />
+    <SectionHead claim="One L1, and an L2" payoff="for each use case." body="Every service runs on Hyper 0x. Each use case gets its own L2, and every L2 settles on one L1. Select a step to see each part at work." id="machine-title" />
     <div class="mt-10"><IsoFigure name="chain-rack" /></div>
   </section>
 
   <section class="mx-auto max-w-[85rem] px-2 py-14 sm:px-3 lg:py-20" aria-labelledby="process-title">
     <div class="rounded-[2rem] bg-paper px-4 py-12 ring-1 ring-paper-line sm:px-8 lg:px-10">
-    <SectionHead index="02" label="How we work" claim="Small first," payoff="then production." body="You see it work before you decide. Every project starts with one use case and one measure of success." id="process-title" />
+    <SectionHead claim="Small first," payoff="then production." body="You see it work before you decide. Every project starts with one use case and one measure of success." id="process-title" />
     <ol class="mt-10 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4" data-reveal-group>
       {steps.map((step, i) => (
         <li class="rounded-[1.6rem] bg-card p-6 ring-1 ring-paper-line" data-reveal-item>
-          <div class="flex items-center justify-between">
-            <span class="grid size-11 place-items-center rounded-xl bg-card text-ink ring-1 ring-line"><Glyph icon={step.icon} class="size-5" /></span>
-            <span class="font-mono text-xs text-muted">Step {i + 1}</span>
-          </div>
-          <h3 class="mt-5 text-lg font-semibold text-ink">{step.title}</h3>
+          <span class="grid size-11 place-items-center rounded-xl bg-card text-ink ring-1 ring-line"><Glyph icon={step.icon} class="size-5" /></span>
+          <h3 id={headingSlug(step.title)} class="scroll-mt-24 mt-5 text-lg font-semibold text-ink">{step.title}</h3>
           <p class="mt-1.5 text-sm leading-relaxed text-pretty text-muted">{i === 1 ? 'A small, real version on your own L2, with the success measure agreed at the start.' : i === 2 ? 'Your security team reviews the design, the keys and the access before launch.' : step.text}</p>
         </li>
       ))}
@@ -107,7 +104,7 @@ const steps = servicePages[0].steps;
     <div class="on-sheet rounded-[2rem] bg-sheet p-6 text-white sm:p-10">
       <div class="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-end">
         <div data-reveal>
-          <h2 class="text-3xl font-semibold text-balance sm:text-4xl">{copy.stats.title}</h2>
+          <h2 id={headingSlug(copy.stats.title)} class="scroll-mt-24 text-3xl font-semibold text-balance sm:text-4xl">{copy.stats.title}</h2>
           <p class="mt-3 text-pretty text-white/70">{copy.stats.subTitle}</p>
         </div>
         <dl class="grid grid-cols-2 gap-6 sm:grid-cols-4" data-reveal-group>
@@ -125,7 +122,7 @@ const steps = servicePages[0].steps;
   </section>
 
   <section class="mx-auto max-w-[85rem] px-4 pb-20 text-center sm:px-6 lg:px-8">
-    <h2 class="text-3xl font-semibold text-ink sm:text-4xl" data-reveal><span class="block">Start with</span><span class="mark">a pilot.</span></h2>
+    <h2 id="start-with-a-pilot" class="scroll-mt-24 text-3xl font-semibold text-ink sm:text-4xl" data-reveal><span class="block">Start with</span><span class="mark">a pilot.</span></h2>
     <p class="mx-auto mt-3 max-w-xl text-muted" data-reveal>One use case and one forward-deployed engineer. We agree on the success measures at the start.</p>
     <div class="mt-7" data-reveal><PrimaryCTA title="Book a call" url={BOOKING_URL} /></div>
   </section>

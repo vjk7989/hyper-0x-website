@@ -40,8 +40,7 @@ const href = (url: string) => localePath('en', url);
 >
   <section class="mx-auto grid max-w-[85rem] grid-cols-1 items-center gap-10 px-4 pt-10 pb-12 sm:px-6 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:px-8 lg:pt-14">
     <div>
-      <p class="font-mono text-xs font-medium text-muted">Service</p>
-      <h1 id={`${id}-title`} class="mt-3 font-display text-4xl leading-[1.02] font-semibold text-balance text-ink sm:text-5xl">{name}</h1>
+      <h1 id={`${id}-title`} class="font-display text-4xl leading-[1.02] font-semibold text-balance text-ink sm:text-5xl">{name}</h1>
       <p class="mt-3 font-display text-5xl leading-[0.98] font-semibold text-balance text-ink sm:text-6xl">
         <span class="block">{page.claim}</span>
         <span class="mark">{page.payoff}</span>
@@ -61,18 +60,17 @@ const href = (url: string) => localePath('en', url);
   </section>
 
   <section class="mx-auto max-w-[85rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20" aria-labelledby="deliver-title">
-    <SectionHead index="01" label="What we deliver" claim="Everything you need," payoff="built and run with you." id="deliver-title" />
+    <SectionHead claim="Everything you need," payoff="built and run with you." id="deliver-title" />
     <FeatureBento idPrefix={id} class="mt-10" items={page.deliverables} highlight={page.highlight} chips={page.outcomes} />
   </section>
 
   <section id="how-it-works" class="mx-auto max-w-[85rem] scroll-mt-24 px-4 py-14 sm:px-6 lg:px-8 lg:py-20" aria-labelledby="how-title">
-    <SectionHead index="02" label="How it works" claim="Watch each part" payoff="do its job." body="Each figure moves. Select a step under a figure to go to that stage. The labels explain each part." id="how-title" />
+    <SectionHead claim="Watch each part" payoff="do its job." body="Each figure moves. Select a step under a figure to go to that stage. The labels explain each part." id="how-title" />
     <div class="mt-10 grid grid-cols-1 gap-12">
-      {page.figures.map((figure, i) => (
+      {page.figures.map(figure => (
         <div class="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-10">
           <div class="lg:sticky lg:top-28">
-            <p class="font-mono text-xs text-muted">Figure {i + 1} of {page.figures.length}</p>
-            <h3 id={`${id}-figure-${slug(figure.title)}`} class="mt-2 text-2xl font-semibold text-balance text-ink">{figure.title}</h3>
+            <h3 id={`${id}-figure-${slug(figure.title)}`} class="text-2xl font-semibold text-balance text-ink">{figure.title}</h3>
             <p class="mt-3 max-w-[48ch] leading-relaxed text-pretty text-muted">{figure.text}</p>
           </div>
           <IsoFigure name={figure.name} />
@@ -82,20 +80,17 @@ const href = (url: string) => localePath('en', url);
   </section>
 
   <section class="mx-auto max-w-[85rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20" aria-labelledby="flow-title">
-    <SectionHead index="03" label="Step by step" claim={`Follow one ${flow.unit}`} payoff="through every layer." body={`Watch a ${flow.unit} pass through each layer, and see where a bad one stops and why.`} id="flow-title" />
+    <SectionHead claim={`Follow one ${flow.unit}`} payoff="through every layer." body={`Watch a ${flow.unit} pass through each layer, and see where a bad one stops and why.`} id="flow-title" />
     <FlowStack name={page.flow} class="mt-10" />
   </section>
 
   <section class="mx-auto max-w-[85rem] px-2 py-14 sm:px-3 lg:py-20" aria-labelledby="process-title">
     <div class="rounded-[2rem] bg-paper px-4 py-12 ring-1 ring-paper-line sm:px-8 lg:px-10">
-    <SectionHead index="04" label="How we work" claim="Small first," payoff="then production." id="process-title" />
+    <SectionHead claim="Small first," payoff="then production." id="process-title" />
     <ol class="process mt-10 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4" data-reveal-group>
-      {page.steps.map((step, i) => (
+      {page.steps.map(step => (
         <li class="relative rounded-[1.6rem] bg-card p-6 ring-1 ring-paper-line" data-reveal-item>
-          <div class="flex items-center justify-between">
-            <span class="grid size-11 place-items-center rounded-xl bg-card text-ink ring-1 ring-line"><Glyph icon={step.icon} class="size-5" /></span>
-            <span class="font-mono text-xs text-muted">Step {i + 1}</span>
-          </div>
+          <span class="grid size-11 place-items-center rounded-xl bg-card text-ink ring-1 ring-line"><Glyph icon={step.icon} class="size-5" /></span>
           <h3 id={`${id}-step-${slug(step.title)}`} class="mt-5 text-lg font-semibold text-ink">{step.title}</h3>
           <p class="mt-1.5 text-sm leading-relaxed text-pretty text-muted">{step.text}</p>
         </li>

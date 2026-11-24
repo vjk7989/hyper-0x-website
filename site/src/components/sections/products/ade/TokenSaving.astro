@@ -15,7 +15,7 @@ const t = page.tokens;
 ---
 
 <section aria-labelledby={t.id} class="mx-auto max-w-[85rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
-  <SectionHead index="1" id={t.id} label={t.label} claim={t.claim} payoff={t.payoff} />
+  <SectionHead id={t.id} claim={t.claim} payoff={t.payoff} />
   <div class="mt-10 grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
     <div data-reveal>
       <p class="text-lg text-pretty text-muted">{t.body}</p>

@@ -76,7 +76,7 @@ Vetting is a check at one point in time. Runtime gating (checks while the agent 
 - **Set budgets**, so that a chatty server or a loop cannot run up costs.
 - **Record every call** in a tamper-evident log (a log that shows any change).
 
-[H0x-ADE](../../products/h0x-ade/), our security gateway for AI agents, does this with six gates on every call. Its supply-chain gate uses allow-lists, pinned hashes and a sandbox for every new package or MCP server. Budgets with MCP compaction (it makes the tool data from MCP servers smaller) keep token spend under control. Every call leaves a hash-chained receipt: a record that holds a fingerprint of the record before it. H0x-ADE anchors these receipts on the Hyper 0x blockchain, so you can prove which server did what. [Proof of execution for AI](../proof-of-execution-ai/) explains the idea behind those receipts.
+[H0x-ADE](../../ade/), our security gateway for AI agents, does this with six gates on every call. Its supply-chain gate uses allow-lists, pinned hashes and a sandbox for every new package or MCP server. Budgets with MCP compaction (it makes the tool data from MCP servers smaller) keep token spend under control. Every call leaves a hash-chained receipt: a record that holds a fingerprint of the record before it. H0x-ADE anchors these receipts on the Hyper 0x blockchain, so you can prove which server did what. [Proof of execution for AI](../proof-of-execution-ai/) explains the idea behind those receipts.
 
 ## What does this look like for an AI team?
 

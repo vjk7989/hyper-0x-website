@@ -7,8 +7,6 @@ import platformLight from '@images/diagrams/platform-light.webp';
 import platformDark from '@images/diagrams/platform-dark.webp';
 import h0xpayLight from '@images/diagrams/h0xpay-light.webp';
 import h0xpayDark from '@images/diagrams/h0xpay-dark.webp';
-import hyperrunLight from '@images/diagrams/hyperrun-light.webp';
-import hyperrunDark from '@images/diagrams/hyperrun-dark.webp';
 import tokenizationLight from '@images/diagrams/tokenization-light.webp';
 import tokenizationDark from '@images/diagrams/tokenization-dark.webp';
 
@@ -35,17 +33,12 @@ export const diagrams = {
   platform: {
     light: platformLight,
     dark: platformDark,
-    alt: 'Buckleson platform: Hyper Wallet, H0X Pay, HyperRun, custom L2s and H0x-ADE all settle on the Hyper 0x L1, with bridges to public chains',
+    alt: 'Buckleson platform: Hyper Wallet, H0X Pay, custom L2s and H0x-ADE all settle on the Hyper 0x L1, with bridges to public chains',
   },
   h0xpay: {
     light: h0xpayLight,
     dark: h0xpayDark,
     alt: 'H0X Pay flow: payments trigger investment plans that buy tokenized assets on the Hyper Wallet order book, all settled on Hyper 0x',
-  },
-  hyperrun: {
-    light: hyperrunLight,
-    dark: hyperrunDark,
-    alt: 'HyperRun flow: signed match results and fan predictions feed a rewards contract that pays out to in-game wallets on Hyper 0x',
   },
   tokenization: {
     light: tokenizationLight,

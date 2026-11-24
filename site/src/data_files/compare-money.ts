@@ -2,8 +2,7 @@ import type { Compare } from './compare';
 
 /**
  * "Without Hyper 0x / with Hyper 0x" diagrams for the wallet, payment and
- * gaming posts. The schema and the rules are in compare.ts. H0X Pay and
- * HyperRun lanes describe the product flow.
+ * gaming posts. The schema and the rules are in compare.ts. H0X Pay lanes describe the product flow.
  */
 export const compareMoney: Record<string, Compare> = {
   'how-to-launch-a-crypto-wallet': {
@@ -296,13 +295,13 @@ export const compareMoney: Record<string, Compare> = {
       packet: 'Match win reward',
       nodes: [
         { icon: 'trophy', label: 'Match win', sub: 'Skill, not hours' },
-        { icon: 'quill-pen', label: 'Signed result', sub: 'HyperRun', guard: true },
+        { icon: 'quill-pen', label: 'Signed result', sub: 'The game', guard: true },
         { icon: 'file-locked', label: 'Rewards contract', sub: 'On Hyper 0x', guard: true },
         { icon: 'wallet-4', label: 'In-game wallet', sub: 'Hyper Wallet SDK', guard: true },
       ],
       outcome: 'Wins will pay out on signed results',
       steps: [
-        'In HyperRun, players earn when they play and win.',
+        'Players earn when they play and win.',
         'The game will sign every match result before any payout.',
         'A rewards contract on Hyper 0x will pay out on the signed result.',
         'The reward will land in an in-game wallet built with the Hyper Wallet SDK.',
@@ -333,7 +332,7 @@ export const compareMoney: Record<string, Compare> = {
       packet: 'Edited match result',
       nodes: [
         { icon: 'game-1', label: 'Cup final', sub: 'Team A wins' },
-        { icon: 'quill-pen', label: 'Signed result', sub: 'HyperRun', guard: true },
+        { icon: 'quill-pen', label: 'Signed result', sub: 'The game', guard: true },
         { icon: 'user-edit', label: 'Insider', sub: 'Changes the score' },
         { icon: 'file-locked', label: 'Rewards contract', sub: 'On Hyper 0x', guard: true },
         { icon: 'group', label: 'Fans', sub: 'Paid on the real result' },
@@ -341,7 +340,7 @@ export const compareMoney: Record<string, Compare> = {
       stopAt: 3,
       outcome: 'The contract will reject the edited result',
       steps: [
-        'In HyperRun, the game signs every match result.',
+        'The game signs every match result.',
         'If someone changes the score afterwards, the signature no longer matches.',
         'The rewards contract on Hyper 0x will check the signature and reject the edit.',
         'Fan predictions will resolve only on the real, signed result.',

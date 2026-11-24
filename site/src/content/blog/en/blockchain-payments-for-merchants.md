@@ -37,7 +37,7 @@ On a blockchain, settlement and finality arrive together. The speed depends on t
 
 - **Probabilistic finality.** On Bitcoin, each new block makes a payment harder to reverse. A common rule for large amounts is to wait for six confirmations, about an hour.
 - **Checkpoint finality.** Ethereum finalizes blocks after two epochs (fixed groups of blocks), roughly 13 minutes.
-- **Deterministic finality.** Some chains use Byzantine fault tolerant (BFT) consensus, a voting method that still works when some validators fail or cheat. These chains treat a transaction as final when the network confirms it. [Hyper 0x](../../products/hyper-0x/), the Buckleson blockchain, works this way: final in one pass, with no reorganizations (rewrites of recent blocks).
+- **Deterministic finality.** Some chains use Byzantine fault tolerant (BFT) consensus, a voting method that still works when some validators fail or cheat. These chains treat a transaction as final when the network confirms it. [Hyper 0x](../../blockchain/), the Buckleson blockchain, works this way: final in one pass, with no reorganizations (rewrites of recent blocks).
 
 For a coffee, a merchant can accept a payment the moment it appears. For a car, wait for finality. Set a policy per order size. Our post [blockchain finality explained](../blockchain-finality-explained/) goes deeper.
 
@@ -90,7 +90,7 @@ Settlement design matters too. Say the retailer converts stablecoins to another 
 
 ## Where does H0X Pay fit?
 
-[H0X Pay](../../products/h0x-pay/) is a Buckleson product. It lets you pay and get paid in crypto with links, QR codes and invoices, settled on Hyper 0x. It also lets you invest a small slice of every payment in tokenized assets, starting with gold. Payments are a later phase of the H0X Pay roadmap. Businesses that want a branded checkout today can use the payments and payment gateway in the [Hyper Wallet SDKs](../../products/hyper-wallet/).
+[H0X Pay](../../pay/) is a Buckleson product. It lets you pay and get paid in crypto with links, QR codes and invoices, settled on Hyper 0x. It also lets you invest a small slice of every payment in tokenized assets, starting with gold. Payments are a later phase of the H0X Pay roadmap. Businesses that want a branded checkout today can use the payments and payment gateway in the [Hyper Wallet SDKs](../../wallet/).
 
 ## Where should you start?
 

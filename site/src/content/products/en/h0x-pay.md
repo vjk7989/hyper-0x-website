@@ -18,6 +18,9 @@ features:
   - title: 'Crypto payments'
     icon: 'qr-code'
     subTitle: 'Pay and get paid with links, QR codes and invoices. Each payment settles on Hyper 0x.'
+  - title: 'A neobank'
+    icon: 'landmark'
+    subTitle: 'A neobank built on the same rails.'
 details:
   title: 'Roadmap'
   items:

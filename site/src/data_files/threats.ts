@@ -26,7 +26,7 @@ export const threats: Threat[] = [
     answer: 'The injection gate treats outside text as data, never as instructions. If a hijacked agent still tries a risky action, the egress contract denies it.',
     layers: ['Injection gate', 'Egress contract', 'Output gate'],
     chain: 'partly',
-    chainText: 'The rule that gates the action is a contract that nobody can secretly weaken. Each denied attempt leaves a receipt.',
+    chainText: 'The rule that gates the action is a contract, and any change to it shows on the chain. Each denied attempt leaves a receipt.',
   },
   {
     icon: 'eye-slash',
@@ -96,7 +96,7 @@ export const threats: Threat[] = [
     answer: 'The budget gate caps tokens, spend and call rate per agent. Compact context cut tokens by 30 to 60 percent on one measured Claude Code task.',
     layers: ['Budget gate', 'Kill switch'],
     chain: 'partly',
-    chainText: 'Nobody can secretly raise the caps in a contract. Signed usage records settle billing disputes.',
+    chainText: 'Any raise of a cap in a contract shows on the chain. Signed usage records settle billing disputes.',
   },
   {
     icon: 'robot',

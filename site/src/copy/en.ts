@@ -13,10 +13,10 @@ export const en = {
   site: {
     /** Default `<meta name="description">` when a page sets none. */
     description:
-      'Hyper 0x is a blockchain that checks what an AI agent may do before it acts and records each action on-chain. It works with any model.',
+      'Blockchain security infrastructure for AI agents. A gate checks each action before it runs, custody holds the keys, and the chain records what happened.',
     /** schema.org `WebSite.description` in every page's `isPartOf`. */
-    descriptionShort: 'A blockchain for teams that run AI agents: a gate checks each action, custody holds the keys and a receipt records it on-chain.',
-    ogTitle: 'Hyper 0x: a blockchain for teams that run AI agents',
+    descriptionShort: 'Blockchain security infrastructure for AI agents: a gate checks each action, custody holds the keys and a receipt records it on-chain.',
+    ogTitle: 'Hyper 0x: blockchain security infrastructure for AI agents',
     ogDescription:
       'Hyper 0x is a blockchain built and operated by Buckleson. A gate checks each agent action before it runs, and a receipt records it on the chain.',
   },
@@ -89,23 +89,24 @@ export const en = {
   },
 
   home: {
-    metaTitle: 'Hyper 0x: a blockchain for teams that run AI agents',
-    banner: 'Five products run on Hyper 0x: H0x-ADE, Hyper CLI, Hyper Wallet & SDKs, H0x Pay and HyperRun',
+    metaTitle: 'Hyper 0x: blockchain security infrastructure for AI agents',
+    banner: 'Four products run on Hyper 0x: H0x-ADE, Hyper CLI, Hyper Wallet & SDKs and H0x Pay',
     hero: {
       badge: 'Model-agnostic · private L2 available',
-      lead: 'You build the application.',
-      // TODO(G2): the clone rotates several phrases here; our approved hero has exactly one line. Add more only if approved.
-      phrases: ['Leave agent security to us.'],
+      lead: 'The security infrastructure',
+      // One line by design. "Security infrastructure" is a category noun; section 1 bans
+      // bare "secure" as an outcome claim, so never reword this to "secure infrastructure".
+      phrases: ['your AI agents run on.'],
       intro:
-        'A gate checks what an AI agent may do before it acts, custody holds its keys, and a receipt on the chain records each action.',
+        'You focus on your product, and we run the infrastructure that checks what your agents do, holds their keys and records every action on the chain.',
       primaryBtn: 'Talk to an engineer',
       secondaryBtn: 'See our products',
-      chips: ['A gate before each action', 'Custody holds the keys', 'A receipt on the chain', 'Any model'],
+      chips: ['A gate before each action', 'Custody holds the keys', 'Every action recorded', 'Any model'],
     },
     glanceIntro: {
       label: 'At a glance',
       statement:
-        'Hyper 0x is a blockchain, built and operated by Buckleson. It is security infrastructure for AI agents, and it works with any AI model.',
+        'Hyper 0x is security infrastructure for AI agents, built on a blockchain. It is for teams that run agents and want each action checked before it happens and recorded after. Buckleson builds and operates it, and it works with any AI model.',
       fact: {
         label: 'Your own chain',
         title: 'A private L2 is available',
@@ -115,46 +116,76 @@ export const en = {
     // TODO(G2): "Works with" is a logo strip label. We have no approved logos (R11.2). Needs: empty logo data, or approved text.
     logos: 'Works with',
     why: {
-      label: 'The stack',
-      claim: 'Four layers stand between an agent',
-      payoff: 'and everything it can reach.',
-      body:
-        'The gate decides. Custody holds the keys. An action proceeds on the chain’s signature and leaves a receipt.',
-      // TODO(G2): our stack has four layers (agents, gate, custody, chain). The clone has three cards, so the Agents layer has no card.
+      label: 'In detail',
+      claim: 'Five parts of the agent stack,',
+      payoff: 'in detail.',
+      body: 'Token optimization, observability, self-improving agents, the model router and agent security each do one job and cover one risk.',
       cards: [
         {
-          figure: 'chain-rack',
-          tags: ['Hyper 0x', 'Private L2'],
-          title: 'Chain',
-          text: 'An action proceeds on the chain’s signature and leaves a receipt on the chain. On a private L2 you choose the validators and the privacy rules.',
-          stat: '01',
-          statLabel: 'the foundation layer',
-          cta: { title: 'Explore the private L2', url: '/products/hyper-0x/' },
+          id: 'token-optimization',
+          figure: 'token-compactor',
+          title: 'Token optimization',
+          text: 'Each call carries less text, so each call costs fewer tokens.',
+          points: [
+            'A search index, a result cache and small notes stand in for whole files',
+            'A budget for each agent and each task',
+            'Repeated history is summarised',
+          ],
+          cta: { title: 'Read more', url: '/blog/reduce-ai-agent-token-costs/' },
         },
         {
+          id: 'observability',
+          figure: 'trace-recorder',
+          title: 'Observability',
+          text: 'The observability engine records every agent run, so you read it instead of guessing.',
+          points: [
+            'Traces, logs and evaluations',
+            'Where the tokens go',
+            'How your team prompts',
+            'Whether anything malicious is happening',
+          ],
+          cta: { title: 'Read more', url: '/blog/ai-agent-observability/' },
+        },
+        {
+          id: 'self-improving',
+          figure: 'feedback-wheel',
+          title: 'Self-improving',
+          text: 'What observability records feeds back into your harness, or into a model of your own.',
+          points: [
+            'Improve the harness from what the record shows',
+            'Train your own model and divert tasks to it',
+            'Built for an organisation, a team or one person: shaped to the way you already work',
+          ],
+          cta: { title: 'Read more', url: '/blog/self-improving-ai-agents/' },
+        },
+        {
+          id: 'router',
+          figure: 'switch-yard',
+          title: 'The router',
+          text: 'The router decides where each task goes, and what leaves your side.',
+          points: [
+            'Important work goes to Claude, Codex or ChatGPT',
+            'Day-to-day work goes to a local model if you have one, and the router trains it in parallel',
+          ],
+          cta: { title: 'Read more', url: '/blog/stop-llm-data-leaks-pii-redaction/' },
+        },
+        {
+          id: 'agent-security',
           figure: 'pavii-gates',
-          tags: ['H0x-ADE', 'Gate'],
-          title: 'Gate',
-          text: 'Every call an agent makes to an outside service passes through the gate. H0x-ADE checks the call there, and the gate holds the credentials for it.',
-          stat: '03',
-          statLabel: 'every outside call passes here',
-          cta: { title: 'Explore H0x-ADE', url: '/products/h0x-ade/' },
-        },
-        {
-          figure: 'cipher-tower',
-          tags: ['Custody', 'No key in the agent'],
-          title: 'Custody',
-          text: 'Signing goes through custody, the service that holds the keys, so an agent never holds a key and has none to leak.',
-          stat: '02',
-          statLabel: 'the keys stay out of the agent',
-          cta: { title: 'How the layers work', url: '/#stack' },
+          title: 'Agent security',
+          text: 'Agent security is a check before every action and a record on the chain.',
+          points: [
+            'Built around prompt injection, LLM hijacking, distillation, skill hijacking and supply chain attacks',
+            'The gate checks each call against your rules',
+          ],
+          cta: { title: 'Read more', url: '/blog/how-to-secure-ai-agents/' },
         },
       ],
     },
     products: {
       label: 'Products',
       claim: 'One chain.',
-      payoff: 'Five products on top.',
+      payoff: 'Four products on top.',
       body: 'Each product is a way of using Hyper 0x without writing consensus code yourself.',
       cta: { title: 'All products', url: '/products/' },
     },
@@ -162,41 +193,56 @@ export const en = {
       label: 'Build with us',
       claim: 'Choose your application and your agent.',
       payoff: 'We design the architecture.',
-      body: 'Built for enterprise teams. You pick the application and the agent, and we design the architecture that checks, records and limits that agent.',
-      // TODO(G2): item ids are route slugs (/services/<id>/) and are kept from the clone. A follow-up should rename them to pick-your-stack, observability, token-optimisation and security.
-      // TODO(G2): the ServiceMock visuals (chain, token, wallet, agent) are component files outside this task and may show Buckleson-era labels.
+      body: 'Built for enterprise teams, with architecture that checks, records and limits that agent.',
+      // Founder spec 2026-11-24: a glass bento, each tile an icon, a heading and one line, with more on hover or focus. `size` places the tile on the 4-column grid.
       items: [
         {
-          id: 'custom-blockchains',
-          title: 'Pick your stack',
-          line: 'Choose the application you want to build and the agent that runs it.',
-          included: ['Your application, your agent', 'Architecture designed for the pair', 'Controls on what the agent may do'],
-          outcome: 'Designed around the pair',
-          mock: 'chain',
-        },
-        {
-          id: 'asset-tokenization',
+          id: 'observability',
+          icon: 'pulse',
+          size: 'lead',
           title: 'Observability engine',
-          line: 'Observes every prompt, trace, log and evaluation your agents produce.',
-          included: ['Prompts, traces, logs and evaluations in one place', 'Feeds back into your harness', 'A smaller in-house model can take the easy tasks'],
-          outcome: 'Data that improves your harness',
-          mock: 'token',
+          line: 'Every agent run, recorded in one place.',
+          detail: 'Read each run to see what the agent did, then tune your harness from what you find.',
         },
         {
-          id: 'wallets-exchanges',
-          title: 'Token optimisation engine',
-          line: 'The more you use, the more you save.',
-          included: ['Heavier use is rewarded in the price you pay', 'Pricing rewards volume'],
-          outcome: 'Pricing rewards volume',
-          mock: 'wallet',
+          id: 'training',
+          icon: 'graduation-cap',
+          size: 'wide',
+          title: 'Training your agents',
+          line: 'Train your agents on their own run history.',
+          detail: 'The record shows what to change, and the changes go back into your agents.',
         },
         {
-          id: 'ai-agent-security',
-          title: 'Security engine',
-          line: 'A gate decides what an agent may do before it acts.',
-          included: ['Checks each action before it runs', 'Signs through custody; no key in the agent', 'A receipt on the chain for every action'],
-          outcome: 'A receipt for every action',
-          mock: 'agent',
+          id: 'token-saving',
+          icon: 'coins',
+          size: 'small',
+          title: 'Token saving',
+          line: 'Compact context keeps each call small.',
+          detail: 'The observability engine shows what each call costs.',
+        },
+        {
+          id: 'blockchain-security',
+          icon: 'shield-check',
+          size: 'small',
+          title: 'Blockchain security',
+          line: 'Every agent action leaves a receipt on the chain.',
+          detail: 'A gate decides what an agent may do before it acts. Signing goes through custody, so the agent never holds a key.',
+        },
+        {
+          id: 'pii-masking',
+          icon: 'mask-happy',
+          size: 'wide3',
+          title: 'PII masking',
+          line: 'Confidential data is masked before work leaves your side.',
+          detail: 'Outside models see only the masked version, and the reply comes back to you.',
+        },
+        {
+          id: 'zkps',
+          icon: 'fingerprint',
+          size: 'small',
+          title: 'ZKPs',
+          line: 'Zero-knowledge proofs, used with the chain.',
+          detail: 'A proof lets one party show that a statement is true without revealing the data behind it.',
         },
       ],
     },
@@ -204,11 +250,11 @@ export const en = {
       label: 'How a private L2 starts',
       claim: 'From a first call',
       payoff: 'to your chain running.',
-      body: 'Four steps, and what is decided at each one.',
+      body: 'An engagement runs in four steps, and you and an engineer decide the scope, the design and the launch together.',
       steps: [
-        { title: 'Scope it', text: 'What goes on-chain, what stays off, and who needs to verify it.', stage: 'Scope', artifact: 'What goes on-chain' },
-        { title: 'Choose validators', text: 'Who runs consensus for your chain, and under what policy.', stage: 'Choose', artifact: 'Who runs consensus' },
-        { title: 'Integrate', text: 'Our engineers work alongside yours until your product writes to the chain.', stage: 'Integrate', artifact: 'Your product writes to the chain' },
+        { title: 'Scope it', text: 'What goes on-chain, what stays off, and who needs to verify it.', stage: 'Scope', artifact: 'A shared scope' },
+        { title: 'Choose validators', text: 'Who runs consensus for your chain, and under what policy.', stage: 'Choose', artifact: 'Your validator set' },
+        { title: 'Integrate', text: 'Our engineers work alongside yours until your product writes to the chain.', stage: 'Integrate', artifact: 'A working integration' },
         { title: 'Go live', text: 'Your layer 2 runs in production and we keep it running.', stage: 'Run', artifact: 'Your L2 in production' },
       ],
     },
@@ -216,7 +262,7 @@ export const en = {
       label: 'See it run',
       claim: 'Watch a transaction',
       payoff: 'move through the system.',
-      body: 'Select a flow. Each step lights up when it happens.',
+      body: 'One request, end to end: where it is routed, what is masked before it leaves, and what comes back.',
       // TODO(G2): the tokenization tab has no approved copy, and the diagrams (@data/systems) are outside this task. Needs a Hyper 0x flow or removal.
       tabs: [
         { label: 'Chain transaction', icon: 'cube', system: 'hyper0x' },
@@ -227,8 +273,11 @@ export const en = {
     },
     vision: {
       label: 'Our vision',
-      statement: 'A record of what happened that nobody can quietly rewrite.',
-      story: [],
+      statement: 'Run your AI agents without wondering what they did.',
+      story: [
+        'Buckleson builds the infrastructure for agents, and the record it keeps shows any deleted entry.',
+        'So you can run your agents and read what they did instead of guessing.',
+      ],
       person: { name: 'Vijay Tadepalli', role: 'Founder' },
       cta: { title: 'Read our story', url: '/about/' },
     },
@@ -236,19 +285,19 @@ export const en = {
       title: 'Hyper 0x at a glance',
       facts: [
         { term: 'Who we are', detail: 'Hyper 0x is a blockchain, built and operated by Buckleson. It is security infrastructure for AI agents.' },
-        { term: 'What it does', detail: 'A gate checks each agent action before it runs. Signing goes through custody, so the agent never holds a key. Each action leaves a receipt on the chain.' },
+        { term: 'What it does', detail: 'It checks each agent action before it runs, signs through custody and records the result on the chain.' },
         { term: 'Who it is for', detail: 'Teams that run AI agents, on any model. Hyper 0x is tied to no AI provider.' },
-        { term: 'Products', detail: 'H0x-ADE, Hyper CLI, Hyper Wallet & SDKs, H0x Pay and HyperRun.' },
-        { term: 'The group', detail: 'Hyper 0x is the blockchain. Buckleson builds and operates it. PAVii is the AI layer that performs the checks.' },
-        { term: 'How to start', detail: 'Book thirty minutes with an engineer. Most teams start with a single use case as a pilot.' },
+        { term: 'Products', detail: 'H0x-ADE, Hyper CLI, Hyper Wallet & SDKs and H0x Pay.' },
+        { term: 'The group', detail: 'Hyper 0x is the blockchain. Buckleson is the company behind it. PAVii is the AI layer that performs the checks.' },
+        { term: 'How to start', detail: 'Book a call with an engineer. Most teams start with a single use case as a pilot.' },
       ],
     },
     faq: {
       label: 'FAQ',
-      claim: 'Questions,',
-      payoff: 'answered.',
+      claim: 'What teams ask',
+      payoff: 'before they start.',
       stillUnsure: 'Still unsure?',
-      stillUnsureText: 'Talk to an engineer for thirty minutes. You talk to somebody who builds the chain, not a salesperson.',
+      stillUnsureText: 'Ask in a thirty-minute call. You talk to somebody who builds the chain, not a salesperson.',
     },
     latestPosts: {
       label: 'Insights',
@@ -260,7 +309,7 @@ export const en = {
       claim: 'Put your next agent',
       payoff: 'on a chain you do not have to run.',
       text: 'Thirty minutes with an engineer who builds Hyper 0x.',
-      btn: 'Talk to an engineer',
+      btn: 'Book your call',
       // TODO(G2): no approved email address exists in our copy; our contact route is the cal.com link. Needs a decision on this line.
       email: 'Or email vijay@buckleson.com',
     },
@@ -315,8 +364,8 @@ export const en = {
       {
         id: 'wallets-exchanges',
         title: 'Token optimisation engine',
-        content: 'The more you use, the more you save. Heavier use is rewarded in the price you pay.',
-        points: ['Pricing rewards volume'],
+        content: 'Compact context sends a model only what the task needs, so each call carries less text.',
+        points: ['A search index, a result cache and small notes instead of whole files', 'Budgets per agent and per task', 'Repeated history summarised'],
         diagram: 'platform',
       },
       {
@@ -326,7 +375,7 @@ export const en = {
           'A gate decides what an agent may do before it acts. Signing goes through custody, so the agent never holds a key, and each action leaves a receipt on the chain.',
         points: ['Checks each action before it runs', 'Signs through custody; no key in the agent', 'A receipt on the chain for every action'],
         diagram: 'pavii',
-        link: { title: 'See H0x-ADE', url: '/products/h0x-ade/' },
+        link: { title: 'See H0x-ADE', url: '/ade/' },
       },
       {
         id: 'wallet-sdks',
@@ -334,7 +383,7 @@ export const en = {
         content: 'A wallet and exchange under your own brand, running on Hyper 0x. SDKs let you place them inside your own application.',
         points: ['Multi-chain wallet', 'Built-in exchange', 'SDKs for your own interface'],
         diagram: 'wallet',
-        link: { title: 'See Hyper Wallet', url: '/products/hyper-wallet/' },
+        link: { title: 'See Hyper Wallet', url: '/wallet/' },
       },
       // TODO(G2): no approved copy exists for forward-deployed engineering as a service. The text below is the clone's, with banned wording removed. Needs: an approved line, or removal of this item and its route.
       {
@@ -372,8 +421,8 @@ export const en = {
     lead: 'Hyper 0x is a blockchain, built and operated by Buckleson. A gate checks what an AI agent may do before it acts, and a receipt records each action.',
     story: {
       label: 'Our story',
-      title: 'Our journey from crypto wallets to blockchain infrastructure',
-      intro: 'We are not just another crypto company. We use blockchain to fix problems that existing systems cannot fix. Each fix showed us a bigger problem.',
+      title: 'From a crypto wallet to a blockchain of our own',
+      intro: 'Buckleson uses blockchain to fix problems that existing systems cannot fix. Each fix showed us a bigger problem.',
       steps: [
         {
           label: 'The wallet',
@@ -403,7 +452,7 @@ export const en = {
           label: 'Beyond payments',
           icon: 'earth',
           title: 'Then we saw it was never only about payments.',
-          text: 'A record that nobody can secretly change is useful far beyond money. We took Hyper 0x to tokenized assets, shared company processes and private identity checks.',
+          text: 'A record that shows any edit is useful far beyond money. We took Hyper 0x to tokenized assets, shared company processes and private identity checks.',
         },
         {
           label: 'AI-agent security',
@@ -427,7 +476,7 @@ export const en = {
       payoff: 'one system.',
       body: 'Hyper 0x is the blockchain. Buckleson builds and operates it. PAVii is the AI layer that performs the checks before an agent acts.',
       layers: [
-        { term: 'Hyper 0x', detail: 'The blockchain. It settles each action and keeps the receipt that nobody can secretly change.' },
+        { term: 'Hyper 0x', detail: 'The blockchain. It settles each action and keeps a receipt that makes any change visible.' },
         { term: 'Buckleson', detail: 'The infrastructure company that builds and operates Hyper 0x, and ships Hyper Wallet.' },
         { term: 'PAVii', detail: 'The AI layer. Its gate checks what an agent may do before it acts.' },
       ],
@@ -443,21 +492,21 @@ export const en = {
           icon: 'safe-shield',
           title: 'Checking AI agents',
           text: 'H0x-ADE checks every call that an AI agent makes. Each action leaves a receipt on Hyper 0x.',
-          url: '/products/h0x-ade/',
+          url: '/ade/',
         },
         {
           tag: 'Hyper Wallet and H0X Pay',
           icon: 'currency-dollar',
           title: 'Stablecoin payments',
           text: 'H0x Pay brings settlement into the wallet and exchange we already run, so a payment costs less than moving the same money the traditional way.',
-          url: '/products/h0x-pay/',
+          url: '/pay/',
         },
         {
           tag: 'Hyper 0x',
           icon: 'cube-3d',
           title: 'Private L2 chains',
           text: 'Hyper 0x gives each organisation its own L2, settling to a shared base layer. You choose the validators and the privacy rules.',
-          url: '/products/hyper-0x/',
+          url: '/blockchain/',
         },
         {
           tag: 'SDKs and MCP',
@@ -480,8 +529,8 @@ export const en = {
         },
         {
           label: 'Vision',
-          title: 'Records that nobody can secretly change.',
-          text: 'We want critical systems to run on shared records that nobody can secretly edit, while each person keeps control of their own data.',
+          title: 'Records that show every change.',
+          text: 'We want critical systems to run on shared records where any edit leaves a visible trace, while each person keeps control of their own data.',
         },
         {
           label: 'Goal',
@@ -534,8 +583,8 @@ export const en = {
         {
           icon: 'ai',
           title: 'AI agents that you can audit',
-          text: 'Every action of an AI agent leaves a signed receipt on the chain. Nobody can secretly change it, so you can give agents real work.',
-          url: '/products/h0x-ade/',
+          text: 'Every action of an AI agent leaves a signed receipt on the chain. Any change to it shows in the record, so you can check what an agent did before you give it more work.',
+          url: '/ade/',
         },
       ],
       note: 'And payments too: they settle in one pass, with one fee.',
@@ -556,7 +605,7 @@ export const en = {
         },
         {
           question: 'What can a blockchain do besides payments?',
-          answer: 'A blockchain can prove a fact without showing private data. It lets many companies run one process on a shared record. It splits large assets into units that owners can verify. It also keeps a record of AI agent actions that nobody can secretly change.',
+          answer: 'A blockchain can prove a fact without showing private data. It lets many companies run one process on a shared record. It splits large assets into units that owners can verify. It also keeps a record of AI agent actions where any deleted entry leaves a visible gap.',
         },
         {
           question: 'How does Hyper 0x handle the blockchain trilemma?',
@@ -606,8 +655,8 @@ export const en = {
     title: 'Products',
     seoTitle: 'Products: H0x-ADE, Hyper CLI, Hyper Wallet | Hyper 0x',
     metaDescription:
-      'Five products on one chain: H0x-ADE, Hyper CLI, Hyper Wallet & SDKs, H0x Pay and HyperRun.',
-    heading: 'One chain. Five products on top.',
+      'Four products on one chain: H0x-ADE, Hyper CLI, Hyper Wallet & SDKs and H0x Pay.',
+    heading: 'One chain. Four products on top.',
     subTitle:
       'Each product is a way of using Hyper 0x without writing consensus code yourself.',
     why: {

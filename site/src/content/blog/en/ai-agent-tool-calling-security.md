@@ -56,7 +56,7 @@ This also limits the damage of a successful attack. A fooled agent with read acc
 
 An egress policy (rules for outgoing traffic) decides where an agent can send data and what it can do outside your walls. It is an allow-list of destinations: approved domains, known email recipients, registered bank accounts and internal APIs. Some calls try to post to an unknown URL or email an outside address. Others try to load an image link with data packed into it. The policy blocks all of them, however convincing the model's reasoning was. This is how it limits data exfiltration (the theft of data through outgoing calls).
 
-In [H0x-ADE](../../products/h0x-ade/), our security gateway for AI agents, the egress policy is a smart contract (a program on a blockchain) on [Hyper 0x](../../products/hyper-0x/). An agent, a compromised server or an insider cannot quietly edit the rules. Every change to the rules leaves a record.
+In [H0x-ADE](../../ade/), our security gateway for AI agents, the egress policy is a smart contract (a program on a blockchain) on [Hyper 0x](../../blockchain/). An agent, a compromised server or an insider cannot quietly edit the rules. Every change to the rules leaves a record.
 
 ## When must a human approve an agent's action?
 

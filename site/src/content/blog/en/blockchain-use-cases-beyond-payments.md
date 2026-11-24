@@ -90,13 +90,13 @@ Our [blockchain vs database](../blockchain-vs-database/) guide has the full deci
 
 ## How does Hyper 0x support these use cases?
 
-[Hyper 0x](../../products/hyper-0x/) is the Buckleson blockchain: one [permissioned](../permissioned-vs-permissionless-blockchain/) L1 with known validators, each bound to a certificate. Each customer gets a private L2, a private blockchain that settles on the shared L1, with its own rules, privacy and bridge. Consensus has no leader, so no single node sets the order. Each transaction is final in one pass, with no reorgs (rewrites of recent blocks).
+[Hyper 0x](../../blockchain/) is the Buckleson blockchain: one [permissioned](../permissioned-vs-permissionless-blockchain/) L1 with known validators, each bound to a certificate. Each customer gets a private L2, a private blockchain that settles on the shared L1, with its own rules, privacy and bridge. Consensus has no leader, so no single node sets the order. Each transaction is final in one pass, with no reorgs (rewrites of recent blocks).
 
 [Per-party encryption](../blockchain-data-encryption-four-layers/) keeps each record readable only by its parties. Hash commitments on the ledger let an auditor confirm that a record did not change. Compliance as code checks limits, KYC and maker-checker approvals before a transaction executes. The invoice check above can be one of these rules, so a second loan fails before it executes.
 
-[H0x-ADE](../../products/h0x-ade/), our security gateway for AI agents, checks every agent call at six gates and anchors its hash-chained receipts on Hyper 0x. Our [custom blockchain](../../services/custom-blockchains/) and [asset tokenization](../../services/asset-tokenization/) services build these systems with you.
+[H0x-ADE](../../ade/), our security gateway for AI agents, checks every agent call at six gates and anchors its hash-chained receipts on Hyper 0x. Our [custom blockchain](../../services/custom-blockchains/) and [asset tokenization](../../services/asset-tokenization/) services build these systems with you.
 
-Buckleson started with a crypto wallet, [Hyper Wallet](../../products/hyper-wallet/), and then built Hyper 0x. Its design comes from microservices, small services that each do one job. Each application or policy gets its own L2, with final settlement and audit on the L1. In our view, blockchain is the most underrated technology in business.
+Buckleson started with a crypto wallet, [Hyper Wallet](../../wallet/), and then built Hyper 0x. Its design comes from microservices, small services that each do one job. Each application or policy gets its own L2, with final settlement and audit on the L1. In our view, blockchain is the most underrated technology in business.
 
 For AI security in detail, read [how blockchain secures AI agents](https://www.pavii.tech/blog/blockchain-for-ai-security/) on the PAVii blog.
 

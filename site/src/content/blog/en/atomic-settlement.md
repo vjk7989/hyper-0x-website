@@ -19,7 +19,7 @@ Atomic settlement means both legs of a trade, the asset and the payment, settle 
 
 ## Why does it matter?
 
-In 1974, a German bank called Herstatt was shut down in the middle of the trading day. Its counterparties had already paid their side of currency trades, but never received the other side. The risk that one leg of a trade settles and the other does not still carries the bank's name: _Herstatt risk_. We built [Hyper Wallet](../../products/hyper-wallet/) so that this cannot happen.
+In 1974, a German bank called Herstatt was shut down in the middle of the trading day. Its counterparties had already paid their side of currency trades, but never received the other side. The risk that one leg of a trade settles and the other does not still carries the bank's name: _Herstatt risk_. We built [Hyper Wallet](../../wallet/) so that this cannot happen.
 
 ## Why combine the exchange and the wallet?
 

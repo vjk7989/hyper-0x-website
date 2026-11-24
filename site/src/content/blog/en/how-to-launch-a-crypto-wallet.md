@@ -30,7 +30,7 @@ Users now expect far more than send and receive:
 - **dApps and NFTs:** WalletConnect support for dApps (blockchain apps) and an NFT view.
 - **Simple sign-in:** no seed phrases, thanks to [account abstraction](../account-abstraction-no-seed-phrases/).
 
-[Hyper Wallet](../../products/hyper-wallet/) has all of these features. The same wallet also comes as SDKs.
+[Hyper Wallet](../../wallet/) has all of these features. The same wallet also comes as SDKs.
 
 ## Build from scratch: when does it make sense?
 

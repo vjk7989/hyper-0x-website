@@ -545,7 +545,6 @@ for (const stage of document.querySelectorAll('[data-figure="data-vault"]')) {
 `;
 
 const plate = k.plateHtml({
-  fig: 'Fig 1',
   title: 'How Hyper 0x seals and records your data',
   hint: 'One record, sealed at every stage',
   readout: `stage 1 of 4 · ${STAGES[0].text}`,

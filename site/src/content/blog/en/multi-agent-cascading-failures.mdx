@@ -38,7 +38,7 @@ The diagram below runs the same workflow with three controls between the agents.
 3. **Credit agent.** It checks key facts against the source system, not against another agent's flag. For loan 8813, the ID service disagrees with the flag, so the loan stops.
 4. **Circuit breaker.** Step limits, budgets and timeouts between agents stop a failure that spreads. A retry loop on loan 8814 reaches the step limit.
 5. **Pricing agent.** It makes the offer only when every earlier hop passed.
-6. **Payout, traced hop by hop.** Each hop leaves a signed receipt on [Hyper 0x](../../products/hyper-0x/), the Buckleson blockchain (a shared ledger that you can only add to). A bad fact then leads back to its first step. Loan 8812, with a matching ID, reaches this point and gets paid.
+6. **Payout, traced hop by hop.** Each hop leaves a signed receipt on [Hyper 0x](../../blockchain/), the Buckleson blockchain (a shared ledger that you can only add to). A bad fact then leads back to its first step. Loan 8812, with a matching ID, reaches this point and gets paid.
 
 ## What makes messages between agents risky?
 
@@ -92,7 +92,7 @@ The record matters most across companies, which rarely share one identity system
 
 ## How does H0x-ADE help in a multi-agent workflow?
 
-[H0x-ADE](../../products/h0x-ade/) is our security gateway for AI agents. Every prompt and tool call that passes through it goes through six gates: injection, privacy, supply chain, budget, egress and output. Each decision gets a signed, hash-chained receipt on Hyper 0x. So when each agent in a workflow sends its calls through H0x-ADE, you can trace which agent made which call.
+[H0x-ADE](../../ade/) is our security gateway for AI agents. Every prompt and tool call that passes through it goes through six gates: injection, privacy, supply chain, budget, egress and output. Each decision gets a signed, hash-chained receipt on Hyper 0x. So when each agent in a workflow sends its calls through H0x-ADE, you can trace which agent made which call.
 
 - **Budget gate.** Budgets stop a failure that spreads through runaway calls.
 - **Kill switch.** An agent that breaks rules moves from observed, to restricted, to stopped. A person can stop any agent at any time.

@@ -1,15 +1,15 @@
 ---
+import { headingSlug } from '@utils/utils';
 import Glyph from '@components/ui/Glyph.astro';
 import IsoFigure from '@components/ui/IsoFigure.astro';
 
 /**
  * Home hero on light drafting paper. Left: who we are, in one headline whose
  * last line rotates through who we build for, a one-sentence summary, calls
- * to action and the four domains. Right: Fig 1, the data vault, showing a
+ * to action and the four domains. Right: the data vault, showing a
  * record kept encrypted in transit, in use, on the ledger and at rest.
  */
 interface Props {
-  badge: string;
   lead: string;
   phrases: string[];
   intro: string;
@@ -18,7 +18,7 @@ interface Props {
   chips: string[];
 }
 
-const { badge, lead, phrases, intro, primary, secondary, chips } = Astro.props;
+const { lead, phrases, intro, primary, secondary, chips } = Astro.props;
 const chipIcons = ['stack', 'diamond', 'wallet', 'shield-check'];
 ---
 
@@ -27,11 +27,7 @@ const chipIcons = ['stack', 'diamond', 'wallet', 'shield-check'];
 
   <div class="relative mx-auto grid max-w-[90rem] grid-cols-[minmax(0,1fr)] items-center gap-10 px-5 pt-20 pb-10 sm:px-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-8 lg:pt-[4.5rem] lg:pb-14">
     <div class="lg:ps-2">
-      <p class="inline-flex items-center gap-2 rounded-full bg-card px-3 py-1.5 text-xs font-medium text-ink/80 ring-1 ring-line" data-hero-in>
-        <span class="relative flex size-2"><span class="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500/60"></span><span class="relative inline-flex size-2 rounded-full bg-emerald-500"></span></span>
-        {badge}
-      </p>
-      <h1 class="mt-6 text-[2.4rem] leading-[0.98] font-semibold text-ink sm:text-[3.4rem] lg:text-[3.3rem] xl:text-[3.8rem]">
+      <h1 id={headingSlug(lead)} class="scroll-mt-24 text-[2.4rem] leading-[0.98] font-semibold text-ink sm:text-[3.4rem] lg:text-[3.3rem] xl:text-[3.8rem]">
         <span class="block">{lead}</span>
         <span class="block min-h-[1.05em]" data-typer={phrases.length > 1 ? JSON.stringify(phrases) : undefined}>
           <span class="mark" data-typer-text>{phrases[0]}</span>{phrases.length > 1 && <span class="typer-caret" aria-hidden="true"></span>}
@@ -106,7 +102,7 @@ const chipIcons = ['stack', 'diamond', 'wallet', 'shield-check'];
     }
     if (reduced) return;
 
-    // On load: the badge, buttons and chips rise in and the figure settles
+    // On load: the buttons and chips rise in and the figure settles
     // onto the paper. The headline and intro are visible from the first
     // paint (they are the page's largest text).
     const intro = gsap.timeline({ defaults: { ease: 'expo.out' } });

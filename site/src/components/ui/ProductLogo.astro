@@ -14,7 +14,7 @@ interface Props {
 }
 
 const { product, class: className } = Astro.props;
-const fallback: Record<string, string> = { 'h0x-pay': 'coins', hyperrun: 'crosshair' };
+const fallback: Record<string, string> = { 'h0x-pay': 'coins' };
 ---
 
 {product === 'pavii' && (

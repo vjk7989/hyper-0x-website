@@ -66,7 +66,7 @@ On Hyper 0x, account abstraction is the default: users sign in with a face scan 
 
 For years, custodial won on convenience: email sign-in, password resets and no network fees to think about. Non-custodial meant seed phrases, gas tokens (the coins that pay network fees) and confusing errors. Account abstraction closes most of that gap. Apps can pay network fees for users, set spending limits and support recovery, while the keys stay with the user.
 
-Self-custody also does things that custody struggles with. Users can connect to dApps (blockchain apps) through WalletConnect and hold assets from many chains in one place. They can also move funds without waiting for a provider to approve a withdrawal. [Hyper Wallet](../../products/hyper-wallet/) is an example: a non-custodial wallet and exchange in one app.
+Self-custody also does things that custody struggles with. Users can connect to dApps (blockchain apps) through WalletConnect and hold assets from many chains in one place. They can also move funds without waiting for a provider to approve a withdrawal. [Hyper Wallet](../../wallet/) is an example: a non-custodial wallet and exchange in one app.
 
 ## Why do many fintechs choose non-custodial by default?
 

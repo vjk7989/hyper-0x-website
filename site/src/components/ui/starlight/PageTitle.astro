@@ -1,4 +1,5 @@
 ---
+import { productPath } from '@utils/content';
 /** Breadcrumb above the title: the docs hub, then the product page this section documents. */
 const { entry, sidebar } = Astro.locals.starlightRoute;
 const section = entry.id.split('/')[0];
@@ -8,7 +9,7 @@ type Item = { type: 'link' | 'group'; label: string; isCurrent?: boolean; entrie
 const holdsCurrent = (item: Item): boolean =>
   item.type === 'link' ? !!item.isCurrent : (item.entries ?? []).some(holdsCurrent);
 const group = (sidebar as Item[]).find(holdsCurrent);
-const product = section === 'guides' ? null : `${base}/products/${section}/`;
+const product = section === 'guides' ? null : `${base}${productPath(section)}`;
 ---
 
 <nav class="crumbs" aria-label="Breadcrumb">

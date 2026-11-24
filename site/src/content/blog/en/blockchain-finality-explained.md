@@ -53,7 +53,7 @@ Ethereum sits in between. Since its move to proof of stake, in which validators 
 
 ## What does final in one pass mean?
 
-[Hyper 0x](../../products/hyper-0x/) uses **aBFT**, asynchronous Byzantine fault tolerance. "Byzantine" means that validators can lie or misbehave, not only crash. "Asynchronous" means that the protocol makes no assumption about how quickly messages arrive. So it still reaches agreement when the network is slow or under attack.
+[Hyper 0x](../../blockchain/) uses **aBFT**, asynchronous Byzantine fault tolerance. "Byzantine" means that validators can lie or misbehave, not only crash. "Asynchronous" means that the protocol makes no assumption about how quickly messages arrive. So it still reaches agreement when the network is slow or under attack.
 
 Its consensus is hashgraph-based and leaderless. Leaderless means that there is no single block proposer that an attacker can bribe, censor or knock offline. It stays safe while fewer than one third of validators are faulty. Transaction order comes from the median time at which validators received each transaction. So no single node can front-run (put its own transaction ahead of others).
 
@@ -67,7 +67,7 @@ Every payment flow has a moment when someone releases value because they believe
 
 - **When to release value.** A merchant ships goods, a broker delivers securities, and a lender releases funds. Each one must act only after the incoming payment is final.
 - **Both legs of a trade.** An exchange of an asset for payment in one step works only if nobody can undo that step. That is the basis of [atomic settlement](../atomic-settlement/).
-- **Reconciliation.** With probabilistic finality, a payment can show as confirmed and then as unconfirmed. Then operations teams must chase it. With deterministic finality, [Hyper Wallet](../../products/hyper-wallet/) users see only three states: pending, confirmed or failed.
+- **Reconciliation.** With probabilistic finality, a payment can show as confirmed and then as unconfirmed. Then operations teams must chase it. With deterministic finality, [Hyper Wallet](../../wallet/) users see only three states: pending, confirmed or failed.
 - **Liquidity.** Uncertain finality makes firms wait longer or hold extra buffers. Certainty lets them use funds again as soon as a payment settles.
 
 Think of a fintech that pays merchants in several countries. On a chain with probabilistic finality, its treasury team must choose a confirmation count and accept the remaining risk. The other choice is to wait longer and tie up cash. If a reorg happens after a payout, the team must try to get the money back. With deterministic finality, each payout is either confirmed and final, or it failed. The ledger matches the bank statement.

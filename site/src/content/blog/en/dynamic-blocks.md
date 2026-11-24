@@ -22,7 +22,7 @@ Most blockchains use fixed-size blocks. That works on an average day, but traffi
 
 ## How do dynamic blocks work?
 
-Each L2 on [Hyper 0x](../../products/hyper-0x/) sets three values: a minimum block size, a maximum block size and a time limit. When the network is quiet, small blocks seal on the time limit, so waits stay short. When load suddenly increases, blocks grow toward the maximum, and the backlog never builds.
+Each L2 on [Hyper 0x](../../blockchain/) sets three values: a minimum block size, a maximum block size and a time limit. When the network is quiet, small blocks seal on the time limit, so waits stay short. When load suddenly increases, blocks grow toward the maximum, and the backlog never builds.
 
 ## What is the honest limit?
 

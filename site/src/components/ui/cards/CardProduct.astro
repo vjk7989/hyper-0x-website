@@ -17,7 +17,7 @@ interface Props {
 }
 
 const { product, wide = false } = Astro.props;
-type Art = 'hyper-0x' | 'h0x-ade' | 'hyper-wallet' | 'h0x-pay' | 'hyperrun';
+type Art = 'hyper-0x' | 'h0x-ade' | 'hyper-wallet' | 'h0x-pay';
 const slug = slugOf(product) as Art;
 ---
 

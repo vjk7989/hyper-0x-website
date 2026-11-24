@@ -17,4 +17,16 @@ function capitalize(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export { formatDate, capitalize };
+/**
+ * Slug for a heading's `id`, derived from the heading's own text so the anchor
+ * survives a sibling being added or reordered (CLAUDE.md section 9.5). Section 5.4
+ * requires every heading to be deep-linkable, and `seo.heading.anchors` checks it.
+ */
+function headingSlug(text: string): string {
+  return String(text)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+export { formatDate, capitalize, headingSlug };

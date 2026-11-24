@@ -54,7 +54,7 @@ An address is a public identifier derived from a key and encoded to suit its cha
 | Stellar | Starts with G, 56 characters | Memos for exchanges. A minimum balance and trustlines |
 | Sui | 0x plus 64 hex characters | Looks like EVM but is not interchangeable |
 
-The better wallets do these checks for users. They validate every address against the selected chain and warn when a memo or tag is missing. They also fill in addresses automatically where they can. [Hyper Wallet](../../products/hyper-wallet/), for example, lets users deposit from Binance or Coinbase on any coin page with their address filled in for them.
+The better wallets do these checks for users. They validate every address against the selected chain and warn when a memo or tag is missing. They also fill in addresses automatically where they can. [Hyper Wallet](../../wallet/), for example, lets users deposit from Binance or Coinbase on any coin page with their address filled in for them.
 
 ## How do bridges and swaps move value between chains?
 

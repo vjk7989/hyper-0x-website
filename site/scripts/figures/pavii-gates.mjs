@@ -385,7 +385,6 @@ for (const stage of document.querySelectorAll('[data-figure="pavii-gates"]')) {
 `;
 
 const plate = k.plateHtml({
-  fig: 'Fig 3',
   title: 'How Pavii checks AI agents',
   hint: 'Good calls pass, bad calls break',
   readout: 'calls arriving from your agents',

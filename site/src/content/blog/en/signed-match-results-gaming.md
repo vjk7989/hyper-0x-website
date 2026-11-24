@@ -91,11 +91,11 @@ A signature proves who reported a result and that nobody changed it afterwards. 
 | Who can check it | Only the operator | Anyone with the public key |
 | Stops cheats during play? | No | No, anti-cheat tools still apply |
 
-## How will HyperRun use signed results?
+## How does a studio put signed results to use?
 
-[HyperRun](../../products/hyperrun/) is a Buckleson product. It is a realistic first-person shooter where players earn when they play and win. Fans predict matches and players, and they earn when their prediction is correct. Fans also back good players, and those players get sponsorship.
+The game server signs every match result before any payout. Nobody can change a result after the server signs it. A rewards contract on [Hyper 0x](../../blockchain/), the Buckleson blockchain, checks the signature. It then settles the predictions and pays the winners.
 
-HyperRun signs every match result before any payout. Nobody can change a result after the game signs it. A rewards contract on Hyper 0x, the Buckleson blockchain, settles the predictions and pays the winners. Players and fans get an in-game wallet that uses the Hyper Wallet SDK. Read about [web3 gaming wallets](../web3-gaming-wallets/) to see how embedded wallets work without seed phrases.
+Players need a wallet to receive those payouts. The [Hyper Wallet](../../wallet/) SDKs embed one in the game. Read about [web3 gaming wallets](../web3-gaming-wallets/) to see how embedded wallets work without seed phrases.
 
 ## Where should you start?
 
@@ -106,4 +106,4 @@ HyperRun signs every match result before any payout. Nobody can change a result 
 5. Let a smart contract check the signature before any payout.
 6. Keep anti-cheat tools and integrity monitoring for cheats during play.
 
-HyperRun has signed results and on-chain payouts built in. Book a call with a Buckleson engineer to plan signed results for your own game.
+Book a call with a Buckleson engineer to plan signed results for your own game.

@@ -9,19 +9,17 @@ import socialIcons from '@data/social-icons.json';
 /**
  * "Our vision" (placed in a dark box), in the founder's voice: the founder's
  * photo in a thin frame with corner marks, name and role below it; beside it
- * the label with a rule, one large statement that reveals word by word as it
+ * one large statement that reveals word by word as it
  * scrolls (data-words, see motion-run.ts), and the founder's short note.
  */
 interface Props {
-  index?: string;
-  label: string;
   statement: string;
   story: string[];
   person: { name: string; role: string };
   cta: { title: string; url: string };
 }
 
-const { index, label, statement, story, person, cta } = Astro.props;
+const { statement, story, person, cta } = Astro.props;
 ---
 
 <section class="relative">
@@ -51,11 +49,6 @@ const { index, label, statement, story, person, cta } = Astro.props;
     </figure>
 
     <div class="lg:pt-2">
-      <p class="flex items-center gap-4 font-mono text-xs font-medium text-white/70">
-        <span>{index && `(${index}) `}{label}</span>
-        <span class="h-px flex-1 bg-white/20"></span>
-        <span class="size-2.5 rounded-full ring-1 ring-white/50" aria-hidden="true"></span>
-      </p>
       <p class="mt-8 text-[2rem] leading-[1.08] font-semibold tracking-tight text-balance text-white sm:text-[2.6rem] lg:text-[2.9rem]" data-words>{statement}</p>
       <div class="mt-10 max-w-[38rem] space-y-4 text-lg leading-relaxed text-pretty text-white/75" data-reveal>
         {story.map(paragraph => <p>{paragraph}</p>)}

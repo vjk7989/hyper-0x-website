@@ -26,6 +26,17 @@ const ROUTES: Record<LocalisedCollection, string> = {
   products: '/products',
 };
 
+/** Root route of each product, by content id: the product name at the root, not under /products/. */
+export const PRODUCT_ROUTES: Record<string, string> = {
+  'hyper-0x': 'blockchain',
+  'h0x-ade': 'ade',
+  'hyper-wallet': 'wallet',
+  'h0x-pay': 'pay',
+};
+
+/** Site-relative path of a product page, from its content id. */
+export const productPath = (id: string) => `/${PRODUCT_ROUTES[id]}/`;
+
 /** Default ordering of each collection wherever it is listed. */
 const SORTERS: {
   [C in LocalisedCollection]: (

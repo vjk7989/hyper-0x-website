@@ -1,52 +1,91 @@
 ---
 import SectionHead from '@components/home/SectionHead.astro';
 import Glyph from '@components/ui/Glyph.astro';
-import ServiceMock from '@components/ui/ServiceMock.astro';
-import { localePath } from '@utils/locale';
 
 /**
- * Services as a 2x2 bento: each card has a small live UI, what's included
- * and the outcome, and links to its section on the services page.
+ * Build with us: a glass bento. Each tile is an icon, a small heading and one
+ * line. The detail is always in the HTML; hover or focus swaps it in for the
+ * line, in the same space so nothing shifts. Where there is no hover (touch)
+ * the line and the detail are both shown.
  */
 interface Item {
   id: string;
+  icon: string;
+  size: string;
   title: string;
   line: string;
-  included: string[];
-  outcome: string;
-  mock: string;
+  detail: string;
 }
 interface Props {
-  index: string;
-  label: string;
   claim: string;
   payoff: string;
   body: string;
   items: Item[];
 }
 
-const { index, label, claim, payoff, body, items } = Astro.props;
-type Mock = 'chain' | 'token' | 'wallet' | 'agent';
+const { claim, payoff, body, items } = Astro.props;
+const span: Record<string, string> = {
+  lead: 'lg:col-span-2 lg:row-span-2',
+  wide: 'lg:col-span-2',
+  wide3: 'sm:col-span-2 lg:col-span-3',
+  small: '',
+};
 ---
 
-<section class="mx-auto max-w-[85rem] px-4 py-20 sm:px-6 lg:px-8 lg:py-28" id="services">
-  <SectionHead index={index} label={label} claim={claim} payoff={payoff} body={body} cta={{ title: 'All services', url: '/services/' }} />
-  <div class="mt-12 grid gap-4 lg:grid-cols-2" data-reveal-group>
-    {items.map((item, i) => (
-      <article class:list={['grid gap-6 rounded-[1.6rem] p-5 sm:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] sm:p-6', i === 1 || i === 2 ? 'on-sheet bg-sheet text-white' : 'glass-tint text-ink']} data-reveal-item>
-        <div class="h-64 sm:h-auto"><ServiceMock kind={item.mock as Mock} /></div>
-        <div class="flex flex-col">
-          <h3 class="text-2xl font-semibold">{item.title}</h3>
-          <p class="mt-2 opacity-80">{item.line}</p>
-          <ul class="mt-5 space-y-2 text-sm">
-            {item.included.map(point => <li class="flex items-start gap-2"><Glyph icon="check-circle" class="mt-px size-4.5 shrink-0 text-current" />{point}</li>)}
-          </ul>
-          <p class="mt-5 w-fit rounded-full bg-orange-600 px-3.5 py-1.5 text-sm font-semibold text-white dark:bg-orange-700">{item.outcome}</p>
-          <a href={localePath('en', `/services/${item.id}/`)} class="mt-5 inline-flex w-fit items-center gap-1.5 text-sm font-semibold underline-offset-4 hover:underline">
-            See {item.title.toLowerCase()}<Glyph icon="arrow-right" class="size-4" />
-          </a>
-        </div>
-      </article>
-    ))}
+<section class="mx-auto max-w-[85rem] px-4 py-20 sm:px-6 lg:px-8 lg:py-28" id="services" aria-labelledby="build-with-us">
+  <SectionHead claim={claim} payoff={payoff} body={body} cta={{ title: 'All services', url: '/services/' }} id="build-with-us" />
+  <div class="bento-stage relative mt-12 isolate rounded-[1.75rem] p-3 sm:p-4">
+    <div class="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:auto-rows-[minmax(11rem,auto)] lg:grid-cols-4" data-reveal-group>
+      {items.map(item => (
+        <article
+          tabindex="0"
+          aria-labelledby={`tile-${item.id}`}
+          class:list={['tile glass-card group flex flex-col rounded-[1.5rem] p-5 outline-none focus-visible:ring-2 focus-visible:ring-orange-600 sm:p-6', span[item.size] ?? '']}
+          data-reveal-item
+        >
+          <span class="grid size-11 place-items-center rounded-2xl bg-orange-600/10 text-orange-600">
+            <Glyph icon={item.icon} class="size-6" />
+          </span>
+          <h3 id={`tile-${item.id}`} class:list={['mt-auto pt-6 font-semibold text-ink', item.size === 'lead' ? 'text-2xl lg:text-3xl' : 'text-lg']}>{item.title}</h3>
+          <div class="tile-copy mt-2 text-ink/80">
+            <p class="tile-line">{item.line}</p>
+            <p class="tile-detail text-ink">{item.detail}</p>
+          </div>
+        </article>
+      ))}
+    </div>
   </div>
 </section>
+
+<style>
+  /* A soft accent wash behind the tiles, so the frosted glass has something to blur. */
+  .bento-stage {
+    background:
+      radial-gradient(40% 55% at 12% 20%, color-mix(in oklab, var(--accent-500) 22%, transparent), transparent),
+      radial-gradient(35% 50% at 88% 85%, color-mix(in oklab, var(--accent-500) 16%, transparent), transparent);
+  }
+  .tile { transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1); }
+  :global(.dark) .tile {
+    background: rgb(255 255 255 / 0.05);
+    backdrop-filter: blur(18px) saturate(1.4);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12), 0 0 0 1px rgb(255 255 255 / 0.1);
+  }
+  /* Line and detail share one grid cell, so the tile never changes height. */
+  .tile-copy { display: grid; }
+  .tile-line, .tile-detail { grid-area: 1 / 1; transition: opacity 250ms ease; }
+  .tile-detail { opacity: 0; }
+  .tile:hover .tile-line, .tile:focus-within .tile-line { opacity: 0; }
+  .tile:hover .tile-detail, .tile:focus-within .tile-detail { opacity: 1; }
+  @media (hover: none) {
+    .tile-copy { gap: 0.5rem; }
+    .tile-line, .tile-detail { grid-area: auto; }
+    .tile-detail { opacity: 1; }
+    .tile:hover .tile-line, .tile:focus-within .tile-line { opacity: 1; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .tile:hover, .tile:focus-within { transform: translateY(-3px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tile, .tile-line, .tile-detail { transition: none; }
+  }
+</style>

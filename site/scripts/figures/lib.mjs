@@ -44,15 +44,18 @@ export function tools(P) {
 }
 
 /** The heavy base every figure stands on: feet, groove, screws, label plate. */
-export function basePlate(P, plate, { height = 12, foot = 5, label, ruler } = {}) {
+export function basePlate(P, plate, { height = 12, foot = 5, label, ruler, lean = false } = {}) {
+  // lean: coarser curves (feet 16 steps, corners 4) for the figures on a byte budget
+  const f = lean ? 12 : 28;
+  const c = lean ? 4 : 8;
   const { S, L, D, at, byDepth } = tools(P);
-  const out = [`<path class="iso-halo" d="${k.haloOf(plate, -height - foot, height, P)}"/>`];
+  const out = [`<path class="iso-halo" d="${k.slabOf(plate, -height - foot, height, P, c).fill}"/>`];
   for (const [x, y] of byDepth(k.corners(plate, 22))) {
-    out.push(S(k.cylinder(x, y, 7, -height - foot, 1.6, P, 28), { tone: 'lo' }));
-    out.push(S(k.cylinder(x, y, 5.4, -height - foot + 1.6, foot - 1.6, P, 28), { tone: 'mid' }));
+    out.push(S(k.cylinder(x, y, 7, -height - foot, 1.6, P, f), { tone: 'lo' }));
+    out.push(S(k.cylinder(x, y, 5.4, -height - foot + 1.6, foot - 1.6, P, f), { tone: 'mid' }));
   }
-  out.push(S(k.slabOf(plate, -height, height, P, 8, 1.6), { tone: 'mid' }));
-  out.push(L(k.planOutline(k.insetPlan(plate, 5), 0, P), { tone: 'lo' }));
+  out.push(S(k.slabOf(plate, -height, height, P, c, 1.6), { tone: 'mid' }));
+  out.push(L(k.planOutline(k.insetPlan(plate, 5), 0, P, c), { tone: 'lo' }));
   const screws = k.corners(plate, 10);
   out.push(L(screws.map(([x, y]) => k.ring(x, y, 2.2, 0, P, 16)).join(''), { tone: 'lo' }));
   out.push(D(screws.map(([x, y]) => at([x, y, 0])), { size: 0.5 }));
@@ -243,7 +246,7 @@ const SITE_CSS = `
 .iso-card .fig-steps{display:none}
 @container figbox (min-height:10rem){.iso-card .iso-stage{width:min(100cqw - 1rem,(100cqh - 3.5rem) * var(--fig-ar,1.7));margin-inline:auto}}
 html.dark .iso,.iso-sheet{--fig-tag:#1c1c1c}
-html:not(.dark) .iso-card{--fig-accent:oklch(0.511 0.262 276.966)}
+html:not(.dark) .iso-card{--fig-accent:var(--accent-600)}
 html:not(.dark) .iso:not(.iso-card){--fig-accent:var(--accent-400,#fb923c);--fig-tag:#1c1c1c}
 html:not(.dark) .iso-hero{--anatomy-card:#121212}
 html.dark .iso{--fig-accent:var(--accent-400,#fb923c)}

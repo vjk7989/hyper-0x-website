@@ -12,7 +12,7 @@ const s = walletPage.sdk;
 <section class="mx-auto max-w-[85rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20" aria-labelledby={s.id}>
   <div class="glass grid grid-cols-1 gap-10 rounded-[2rem] p-8 lg:grid-cols-2 lg:items-center lg:p-14">
     <div>
-      <SectionHead index={s.index} label={s.label} claim={s.claim} payoff={s.payoff} body={s.body} id={s.id} />
+      <SectionHead claim={s.claim} payoff={s.payoff} body={s.body} id={s.id} />
       <ul class="mt-8 space-y-4" data-reveal-group>
         {s.rows.map(r => (
           <li class="flex gap-3" data-reveal-item>

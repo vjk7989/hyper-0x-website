@@ -96,7 +96,7 @@ export const systems = {
     steps: [
       { path: ['d1'], packet: '+1,250 USDC', caption: 'Add funds from Binance or Coinbase. The app fills in your address.' },
       { path: ['d2', 'd3'], packet: 'Buy 0.5 ETH', caption: 'Place an order. The order book runs inside Hyper 0x consensus.' },
-      { path: ['d4'], packet: 'Sell 0.5 ETH', caption: 'A seller matches by price, then by time. Nobody can trade ahead of the order.' },
+      { path: ['d4'], packet: 'Sell 0.5 ETH', caption: 'A seller matches by price, then by time. Every validator can check that no order traded ahead.' },
       { path: ['d5'], packet: 'ETH ⇄ USDC', caption: 'Both legs settle in one step on Hyper 0x: both or neither.' },
       { path: ['d6'], packet: 'BTC · SOL', caption: 'Hold Bitcoin, Ethereum, Solana, TON, XRP and more in the same app.' },
       { path: ['d7'], packet: 'Swap', caption: 'Or swap any coin at the best route, with MEV protection.' },
@@ -163,7 +163,7 @@ export const systems = {
       { path: ['p2', 'p3'], packet: 'Read CRM', caption: 'H0x-ADE catches injected instructions and removes secrets.' },
       { path: ['p1', 'p2'], packet: 'Ignore rules', caption: 'A hidden prompt in a PDF tries to take over the agent. Blocked.', blocked: true },
       { path: ['p4', 'p5'], packet: 'Allowed', caption: 'The egress contract allows the action and it reaches your systems.' },
-      { path: ['p6'], packet: 'Receipt', caption: 'H0x-ADE chains a signed receipt on Hyper 0x. Nobody can secretly delete it.' },
+      { path: ['p6'], packet: 'Receipt', caption: 'H0x-ADE chains a signed receipt on Hyper 0x. Any deleted receipt leaves a visible gap.' },
     ],
   },
   h0xpay: {
@@ -190,33 +190,6 @@ export const systems = {
       { path: ['h3'], packet: '$0.80', caption: 'Your plan sets aside a small slice of every payment.' },
       { path: ['h4'], packet: 'Buy gold', caption: 'The slice buys tokenized gold at the best price.' },
       { path: ['h5', 'h6'], packet: '+0.01 g', caption: 'It settles on Hyper 0x and your gold balance grows.' },
-    ],
-  },
-  hyperrun: {
-    title: 'How HyperRun pays players and fans',
-    nodes: [
-      { id: 'fans', col: 1, row: 0, icon: 'users', label: 'Fans', sub: 'back a player' },
-      { id: 'predict', col: 2, row: 0, icon: 'trending-up', label: 'Predictions', sub: 'players & matches' },
-      { id: 'player', col: 0, row: 1, icon: 'gamepad-2', label: 'Player', sub: 'joins a match' },
-      { id: 'game', col: 1, row: 1, icon: 'crosshair', label: 'HyperRun', sub: 'realistic FPS', tone: 'chain' },
-      { id: 'result', col: 2, row: 1, icon: 'badge-check', label: 'Signed result', sub: 'tamper-evident', tone: 'guard' },
-      { id: 'rewards', col: 3, row: 1, icon: 'trophy', label: 'Rewards contract', sub: 'on Hyper 0x', tone: 'chain' },
-      { id: 'wallet', col: 3, row: 2, icon: 'wallet', label: 'In-game wallet', sub: 'Hyper Wallet SDK' },
-    ],
-    edges: [
-      ['r1', 'player', 'game'],
-      ['r2', 'fans', 'predict'],
-      ['r3', 'game', 'result'],
-      ['r4', 'result', 'rewards'],
-      ['r5', 'predict', 'rewards'],
-      ['r6', 'rewards', 'wallet'],
-    ],
-    steps: [
-      { path: ['r1'], packet: 'Match', caption: 'A player joins a realistic FPS match.' },
-      { path: ['r2'], packet: 'Back a player', caption: 'Fans predict outcomes and back the players they believe in.' },
-      { path: ['r3'], packet: 'Win', caption: 'When the match ends, the game signs the result, so nobody can change it.' },
-      { path: ['r4', 'r6'], packet: 'Reward', caption: 'The rewards contract pays the player into their in-game wallet.' },
-      { path: ['r5', 'r6'], packet: 'Payout', caption: 'Correct predictions also pay out, and fans sponsor great players.' },
     ],
   },
 } satisfies Record<string, SystemSpec>;

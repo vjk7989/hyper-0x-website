@@ -83,13 +83,11 @@ The first simulation showed a leak. Daily quests created more parts than repairs
 
 At launch, the economy had a fixed prize pool, a sink for each faucet and rules that players can read.
 
-## How will HyperRun use Hyper 0x for payouts?
+## How can a studio use Hyper 0x for payouts?
 
-[HyperRun](../../products/hyperrun/) is a Buckleson product. It is a realistic first-person shooter. Players earn when they play and win. Fans earn when they predict matches correctly. Fans also back good players through their predictions, and those players get sponsorship.
+The game signs every result before any payout, so nobody can change a result after the game signs it. A rewards contract on [Hyper 0x](../../blockchain/), the Buckleson blockchain, settles the payouts from those signed results. Hyper 0x is final in one pass, with no reorgs, so each payout is final once it settles.
 
-The game signs every result before any payout, so nobody can change a result after the game signs it. A rewards contract on [Hyper 0x](../../products/hyper-0x/), the Buckleson blockchain, settles the predictions and pays the winners. Hyper 0x is final in one pass, with no reorgs, so each HyperRun payout is final once it settles. Players and fans get an in-game wallet that uses the Hyper Wallet SDK.
-
-Studios can also use the [Hyper Wallet](../../products/hyper-wallet/) SDKs to put wallets and payments into their own game.
+The [Hyper Wallet](../../wallet/) SDKs put a wallet and payments into the game. They are non-custodial by default. Account abstraction lets players sign in with a passkey, and the studio can sponsor the network fees.
 
 ## Where should you start?
 

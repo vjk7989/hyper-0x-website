@@ -1,14 +1,19 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro';
-import VisionSection from '@components/home/VisionSection.astro';
+import { Picture } from 'astro:assets';
 import SectionHead from '@components/home/SectionHead.astro';
 import FinalCta from '@components/home/FinalCta.astro';
 import Box from '@components/home/Box.astro';
 import Glyph from '@components/ui/Glyph.astro';
 import IsoFigure from '@components/ui/IsoFigure.astro';
+import PrimaryCTA from '@components/ui/buttons/PrimaryCTA.astro';
+import founderPhoto from '@images/team/vijay.jpg';
+import { ORGANIZATION } from '@data/constants';
+import socialIcons from '@data/social-icons.json';
 import { getCopy } from '@/copy';
 import { localePath, type MarketingLocale } from '@utils/locale';
 
+import { headingSlug } from '@utils/utils';
 /**
  * About, in the running order of pavii.tech's about page (structure and rhythm
  * only): hero, why we started (a counted timeline), four fact tiles, the group
@@ -26,13 +31,38 @@ const { locale } = Astro.props;
 const t = getCopy(locale);
 const copy = t.about;
 const statIcons = ['cube', 'robot', 'shield-check', 'link-simple'];
+/**
+ * Link text for each card, naming where the link goes (R10.4 bans "Learn more"
+ * and other generic anchors). Keyed by the card's own title rather than by its
+ * position: a positional list silently attaches the wrong text to every card
+ * below an item that is reordered or inserted in the copy file, and nothing
+ * fails. This is the same reason section 9.5 derives a heading id from its own
+ * slug and never from an index. The fallback keeps a new card descriptive
+ * rather than blank.
+ */
+const linkFor = (map: Record<string, string>, title: string) => map[title] ?? `Read about ${title.toLowerCase()}`;
+
+const nowLinks: Record<string, string> = {
+  'Checking AI agents': 'Read how the gate checks each call',
+  'Stablecoin payments': 'See how H0x Pay settles payments',
+  'Private L2 chains': 'See how a private L2 works',
+  'Tools for builders and their AI agents': 'Start building with our SDKs',
+};
+const beyondLinks: Record<string, string> = {
+  'Prove a fact, keep the data private': 'Read how to prove a fact privately',
+  'Run one process across many companies': 'See custom chains for many companies',
+  'Own a part of a large asset': 'See how asset tokenization works',
+  'Audit without exposing everything': 'Read the four layers of encryption',
+  'Rules that run before money moves': 'Read how compliance as code works',
+  'AI agents that you can audit': 'See how agent receipts work',
+};
+const vision = t.home.vision;
 const href = (url: string) => localePath(locale, url);
 ---
 
 <MainLayout title={copy.title} seoTitle={copy.seoTitle} description={copy.metaDescription} kind={{ type: 'AboutPage' }} faqs={copy.faq.items}>
   <section class="mx-auto max-w-[85rem] px-4 pt-14 pb-14 sm:px-6 lg:px-8 lg:pt-20">
-    <p class="font-mono text-xs font-medium text-muted" data-reveal>{copy.label}</p>
-    <h1 class="mt-4 max-w-5xl text-[2.6rem] leading-[1] font-semibold text-ink sm:text-6xl lg:text-[3.6rem] xl:text-[4rem]">
+    <h1 id={headingSlug(`${copy.claim} ${copy.payoff}`)} class="scroll-mt-24 max-w-5xl text-[2.6rem] leading-[1] font-semibold text-ink sm:text-6xl lg:text-[3.6rem] xl:text-[4rem]">
       <span class="block">{copy.claim}</span>
       <span class="mark">{copy.payoff}</span>
     </h1>
@@ -42,13 +72,11 @@ const href = (url: string) => localePath(locale, url);
   <section class="mx-auto max-w-[85rem] px-4 pb-20 sm:px-6 lg:px-8" aria-labelledby="story-title">
     <div class="glass-card grid grid-cols-1 gap-10 rounded-[2rem] p-6 sm:p-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16" data-story>
       <div class="lg:sticky lg:top-28 lg:self-start">
-        <p class="flex items-center gap-4 font-mono text-xs font-medium text-muted">{copy.story.label}<span class="h-px flex-1 bg-line"></span></p>
-        <h2 id="story-title" class="mt-5 text-3xl leading-tight font-semibold text-balance text-ink sm:text-4xl">{copy.story.title}</h2>
+        <h2 id="story-title" class="text-3xl leading-tight font-semibold text-balance text-ink sm:text-4xl">{copy.story.title}</h2>
         <p class="mt-4 text-lg leading-relaxed text-pretty text-muted">{copy.story.intro}</p>
         {/* The stage: on large screens it follows the chapter you are reading. */}
         <div class="story-stage mt-10 hidden lg:block" aria-hidden="true">
-          <p class="font-mono text-xs font-medium text-muted">Chapter <span class="text-ink" data-story-num>01</span> / {String(copy.story.steps.length).padStart(2, '0')}</p>
-          <div class="relative mt-5 h-40">
+          <div class="relative h-40">
             {copy.story.steps.map((step, index) => (
               <div class="story-chapter absolute inset-0" data-chapter={index} data-on={index === 0 ? '' : undefined}>
                 <span class="grid size-14 place-items-center rounded-2xl bg-ink text-ground"><Glyph ui={step.icon} class="size-7" /></span>
@@ -65,10 +93,9 @@ const href = (url: string) => localePath(locale, url);
       <ol class="story-steps relative grid gap-10 lg:gap-24 lg:py-10">
         {copy.story.steps.map((step, index) => (
           <li class="story-step relative grid grid-cols-[2.25rem_minmax(0,1fr)] gap-4" data-story-step={index}>
-            <span class="story-dot relative z-[1] grid size-9 place-items-center rounded-full bg-ink font-mono text-xs font-semibold text-ground">{String(index + 1).padStart(2, '0')}</span>
+            <span class="story-dot relative z-[1] grid size-9 place-items-center rounded-full bg-ink text-ground"><Glyph ui={step.icon} class="size-4" /></span>
             <div class="pt-1">
-              <p class="font-mono text-xs font-medium text-muted">{step.label}</p>
-              <h3 class="mt-1 text-xl font-semibold text-balance text-ink sm:text-2xl">{step.title}</h3>
+              <h3 id={headingSlug(step.title)} class="scroll-mt-24 text-xl font-semibold text-balance text-ink sm:text-2xl">{step.title}</h3>
               <p class="mt-2 text-lg leading-relaxed text-pretty text-muted">{step.text}</p>
             </div>
           </li>
@@ -88,32 +115,30 @@ const href = (url: string) => localePath(locale, url);
     <p class="mt-3 text-sm text-muted" data-reveal>{copy.statsNote}</p>
   </section>
 
-  <section class="mx-auto grid max-w-[85rem] grid-cols-1 items-center gap-10 px-4 pb-20 sm:px-6 lg:grid-cols-[minmax(0,6fr)_minmax(0,6fr)] lg:gap-16 lg:px-8" aria-labelledby="group-title">
-    <div>
-      <p class="font-mono text-xs font-medium text-muted" data-reveal>{copy.group.label}</p>
-      <h2 id="group-title" class="mt-4 text-4xl leading-[1.02] font-semibold text-ink sm:text-5xl" data-reveal><span class="block">{copy.group.claim}</span><span class="mark">{copy.group.payoff}</span></h2>
-      <p class="mt-6 max-w-[40rem] text-lg leading-relaxed text-pretty text-muted" data-reveal>{copy.group.body}</p>
-      <dl class="mt-8 divide-y divide-line border-y border-line" data-reveal-group>
-        {copy.group.layers.map(layer => (
-          <div class="grid gap-1 py-4 sm:grid-cols-[9rem_minmax(0,1fr)] sm:gap-6" data-reveal-item>
-            <dt class="font-semibold text-ink">{layer.term}</dt>
-            <dd class="text-muted">{layer.detail}</dd>
-          </div>
-        ))}
-      </dl>
+  <section class="mx-auto max-w-[85rem] px-4 pb-20 sm:px-6 lg:px-8" aria-labelledby="group-title">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:items-end lg:gap-16">
+      <h2 id="group-title" class="text-4xl leading-[1.02] font-semibold text-ink sm:text-5xl" data-reveal><span class="block">{copy.group.claim}</span><span class="mark">{copy.group.payoff}</span></h2>
+      <p class="text-lg leading-relaxed text-pretty text-muted" data-reveal>{copy.group.body}</p>
     </div>
-    <IsoFigure name="pavii-gates" tone="card" />
+    <IsoFigure name="group-bench" tone="card" />
+    <dl class="mt-10 grid grid-cols-1 divide-y divide-line border-y border-line md:grid-cols-3 md:divide-x md:divide-y-0" data-reveal-group>
+      {copy.group.layers.map(layer => (
+        <div class="grid content-start gap-2 py-6 md:px-8 md:first:pl-0 md:last:pr-0" data-reveal-item>
+          <dt class="font-display text-2xl font-semibold text-ink">{layer.term}</dt>
+          <dd class="leading-relaxed text-pretty text-muted">{layer.detail}</dd>
+        </div>
+      ))}
+    </dl>
   </section>
 
   <section class="mx-auto max-w-[85rem] px-4 py-20 sm:px-6 lg:px-8 lg:py-28" aria-labelledby="pillars-title">
-    <SectionHead label={copy.pillars.label} claim={copy.pillars.claim} payoff={copy.pillars.payoff} id="pillars-title" />
+    <SectionHead claim={copy.pillars.claim} payoff={copy.pillars.payoff} id="pillars-title" />
     <ul class="mt-12 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4" data-reveal-group>
       {copy.pillars.items.map(item => {
         const moat = item.label === 'Moat';
         return (
           <li class:list={['flex flex-col rounded-[1.8rem] p-6 sm:p-7', moat ? 'on-sheet bg-sheet text-white' : 'glass-card']} data-reveal-item>
-            <p class:list={['font-mono text-xs font-semibold', moat ? 'text-orange-400' : 'text-violet-600 dark:text-orange-400']}>{item.label}</p>
-            <h3 class:list={['mt-5 text-2xl leading-tight font-semibold text-balance', moat ? 'text-white' : 'text-ink']}>{item.title}</h3>
+            <h3 id={headingSlug(item.title)} class:list={['scroll-mt-24 text-2xl leading-tight font-semibold text-balance', moat ? 'text-white' : 'text-ink']}>{item.title}</h3>
             <p class:list={['mt-3 leading-relaxed text-pretty', moat ? 'text-white/75' : 'text-muted']}>{item.text}</p>
           </li>
         );
@@ -122,18 +147,17 @@ const href = (url: string) => localePath(locale, url);
   </section>
 
   <section class="mx-auto max-w-[85rem] px-4 pb-20 sm:px-6 lg:px-8" aria-labelledby="now-title">
-    <SectionHead label={copy.now.label} claim={copy.now.claim} payoff={copy.now.payoff} body={copy.now.body} id="now-title" />
+    <SectionHead claim={copy.now.claim} payoff={copy.now.payoff} body={copy.now.body} id="now-title" />
     <ul class="mt-12 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3" data-reveal-group>
       {copy.now.items.map((item, index) => {
         const lead = index === 0;
         return (
-          <li class:list={[lead && 'lg:row-span-2', index === copy.now.items.length - 1 && 'md:col-span-2']} data-reveal-item>
+          <li class:list={[lead && 'lg:col-span-2', index === copy.now.items.length - 1 && 'md:col-span-2']} data-reveal-item>
             <a href={href(item.url)} class:list={['now-card group flex h-full flex-col rounded-[1.8rem] p-6 sm:p-7', lead ? 'on-sheet bg-sheet text-white' : 'glass-card']}>
               <span class:list={['grid place-items-center rounded-2xl transition duration-300', lead ? 'size-14 bg-white/10 text-white' : 'size-12 bg-card text-ink ring-1 ring-line group-hover:bg-ink group-hover:text-ground group-hover:ring-ink']}><Glyph ui={item.icon} class={lead ? 'size-7' : 'size-6'} /></span>
-              <p class:list={['mt-6 font-mono text-xs font-semibold', lead ? 'text-orange-400' : 'text-violet-600 dark:text-orange-400']}>{item.tag}</p>
-              <h3 class:list={['mt-2 font-semibold text-balance', lead ? 'text-3xl text-white sm:text-4xl' : 'text-xl text-ink']}>{item.title}</h3>
-              <p class:list={['mt-3 leading-relaxed text-pretty', lead ? 'text-lg text-white/75' : 'text-muted']}>{item.text}</p>
-              <span class:list={['mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold', lead ? 'text-orange-300' : 'text-orange-700 dark:text-orange-300']}>Learn more<Glyph icon="arrow-right" class="size-4 transition group-hover:translate-x-1" /></span>
+              <h3 id={headingSlug(item.title)} class:list={['scroll-mt-24 mt-6 font-semibold text-balance', lead ? 'text-3xl text-white sm:text-4xl' : 'text-xl text-ink']}>{item.title}</h3>
+              <p class:list={['mt-3 leading-relaxed text-pretty', lead ? 'max-w-[40rem] text-lg text-white/75' : 'text-muted']}>{item.text}</p>
+              <span class:list={['mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold', lead ? 'text-orange-300' : 'text-orange-700 dark:text-orange-300']}>{linkFor(nowLinks, item.title)}<Glyph icon="arrow-right" class="size-4 transition group-hover:translate-x-1" /></span>
             </a>
           </li>
         );
@@ -141,20 +165,63 @@ const href = (url: string) => localePath(locale, url);
     </ul>
   </section>
 
+  {/*
+    The founder block is laid out inline here rather than through VisionSection,
+    which the home page uses. Only the layout differs: the home version is one
+    narrow column, this one runs the statement full width with the photo beside
+    the story. Every piece of content is still shared, so the two cannot drift
+    apart -- the statement and story come from `vision` in the copy file, the
+    photo from @images/team/vijay.jpg, and the name, role and LinkedIn from
+    ORGANIZATION.founder. Change the words in those sources, never here, and
+    keep the `.vision-frame` corner marks in step with VisionSection's.
+  */}
   <div id="founder">
-    <Box tone="dark"><VisionSection {...t.home.vision} cta={{ title: 'Talk to us', url: '/contact/' }} /></Box>
+    <Box tone="dark"><section class="mx-auto max-w-[85rem] px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+      <p class="max-w-5xl text-[2rem] leading-[1.08] font-semibold tracking-tight text-balance text-white sm:text-[2.6rem] lg:text-[3.2rem]" data-words>{vision.statement}</p>
+      <div class="mt-12 grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-16">
+        <figure class="max-w-[18rem] sm:max-w-[22rem] lg:max-w-none" data-reveal>
+          <div class="vision-photo relative aspect-[4/5] overflow-hidden rounded-[1.4rem] bg-white/5">
+            <Picture
+              src={founderPhoto}
+              formats={['avif', 'webp']}
+              widths={[320, 480, 640, 832]}
+              sizes="(min-width: 1024px) 26rem, (min-width: 640px) 22rem, 18rem"
+              alt={`${vision.person.name}, ${vision.person.role.toLowerCase()} of Buckleson`}
+              loading="lazy"
+              decoding="async"
+              class="absolute inset-0 size-full object-cover object-top"
+            />
+            <span class="vision-frame" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          </div>
+          <figcaption class="mt-5">
+            <p class="font-mono text-xs font-medium text-white">{vision.person.name}</p>
+            <p class="mt-1 text-sm text-white/60">{vision.person.role}, Buckleson</p>
+            <a href={ORGANIZATION.founder.linkedin} target="_blank" rel="noopener" class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-white/85 transition hover:text-white">
+              <svg viewBox={socialIcons.linkedin.viewBox} class="size-4" fill="currentColor" aria-hidden="true">{socialIcons.linkedin.paths.map(d => <path d={d} />)}</svg>
+              Connect on LinkedIn
+            </a>
+          </figcaption>
+        </figure>
+        <div class="grid content-start gap-8 text-lg leading-relaxed text-pretty text-white/75 sm:grid-cols-2 sm:gap-10" data-reveal>
+          {vision.story.map(paragraph => <p>{paragraph}</p>)}
+          <div class="sm:col-span-2"><PrimaryCTA title="Talk to us" url={localePath(locale, '/contact/')} /></div>
+        </div>
+      </div>
+    </section></Box>
   </div>
 
   <Box><section class="mx-auto max-w-[85rem] px-4 py-20 sm:px-6 lg:px-8 lg:py-28" aria-labelledby="beyond-title">
-    <SectionHead label={copy.beyond.label} claim={copy.beyond.claim} payoff={copy.beyond.payoff} body={copy.beyond.body} id="beyond-title" />
-    <ul class="mt-12 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3" data-reveal-group>
-      {copy.beyond.items.map(item => (
-        <li data-reveal-item>
-          <a href={href(item.url)} class="beyond-card glass-card group flex h-full flex-col rounded-[1.8rem] p-6 sm:p-7">
+    <SectionHead claim={copy.beyond.claim} payoff={copy.beyond.payoff} body={copy.beyond.body} id="beyond-title" />
+    <ul class="mt-12 grid grid-cols-1 gap-x-12 border-t border-line md:grid-cols-2" data-reveal-group>
+      {copy.beyond.items.map((item) => (
+        <li class="border-b border-line" data-reveal-item>
+          <a href={href(item.url)} class="beyond-card group grid grid-cols-[3rem_minmax(0,1fr)] gap-5 py-7">
             <span class="grid size-12 place-items-center rounded-2xl bg-card text-ink ring-1 ring-line transition duration-300 group-hover:bg-ink group-hover:text-ground group-hover:ring-ink"><Glyph ui={item.icon} class="size-6" /></span>
-            <h3 class="mt-6 text-xl font-semibold text-balance text-ink">{item.title}</h3>
-            <p class="mt-2 leading-relaxed text-pretty text-muted">{item.text}</p>
-            <span class="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-orange-700 dark:text-orange-300">Learn more<Glyph icon="arrow-right" class="size-4 transition group-hover:translate-x-1" /></span>
+            <span class="block">
+              <h3 id={headingSlug(item.title)} class="scroll-mt-24 text-xl font-semibold text-balance text-ink">{item.title}</h3>
+              <span class="mt-2 block leading-relaxed text-pretty text-muted">{item.text}</span>
+              <span class="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-orange-700 dark:text-orange-300">{linkFor(beyondLinks, item.title)}<Glyph icon="arrow-right" class="size-4 transition group-hover:translate-x-1" /></span>
+            </span>
           </a>
         </li>
       ))}
@@ -167,8 +234,7 @@ const href = (url: string) => localePath(locale, url);
 
   <section class="mx-auto grid max-w-[85rem] grid-cols-1 gap-10 px-4 py-20 sm:px-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16 lg:px-8 lg:py-28" aria-labelledby="about-faq-title">
     <div>
-      <p class="font-mono text-xs font-medium text-muted">{copy.faq.label}</p>
-      <h2 id="about-faq-title" class="mt-4 text-4xl leading-[1.02] font-semibold text-ink sm:text-5xl"><span class="block">{copy.faq.claim}</span><span class="mark">{copy.faq.payoff}</span></h2>
+      <h2 id="about-faq-title" class="text-4xl leading-[1.02] font-semibold text-ink sm:text-5xl"><span class="block">{copy.faq.claim}</span><span class="mark">{copy.faq.payoff}</span></h2>
     </div>
     <div class="divide-y divide-line border-y border-line">
       {copy.faq.items.map((item, index) => (
@@ -188,12 +254,11 @@ const href = (url: string) => localePath(locale, url);
 
 <script>
   // As each chapter crosses the middle of the screen, the left stage shows
-  // its number, icon and name, and the other chapters dim a little.
+  // its icon and name, and the other chapters dim a little.
   document.querySelectorAll<HTMLElement>('[data-story]').forEach(story => {
     const steps = [...story.querySelectorAll<HTMLElement>('[data-story-step]')];
     const chapters = [...story.querySelectorAll<HTMLElement>('[data-chapter]')];
     const pips = [...story.querySelectorAll<HTMLElement>('[data-pip]')];
-    const num = story.querySelector<HTMLElement>('[data-story-num]');
     let current = -1;
     const show = (index: number) => {
       if (index === current) return;
@@ -201,7 +266,6 @@ const href = (url: string) => localePath(locale, url);
       chapters.forEach((el, i) => el.toggleAttribute('data-on', i === index));
       pips.forEach((el, i) => el.toggleAttribute('data-on', i <= index));
       steps.forEach((el, i) => el.toggleAttribute('data-on', i === index));
-      if (num) num.textContent = String(index + 1).padStart(2, '0');
     };
     story.classList.add('story-live');
     show(0);
@@ -228,7 +292,7 @@ const href = (url: string) => localePath(locale, url);
   @media (prefers-reduced-motion: reduce) {
     .story-chapter, .story-pip, .story-live .story-step { transition: none; }
   }
-  /* The timeline rail behind the numbered dots. */
+  /* The timeline rail behind the dots. */
   .story-steps::before {
     content: '';
     position: absolute;
@@ -242,7 +306,14 @@ const href = (url: string) => localePath(locale, url);
   .now-card:hover { transform: translateY(-3px); }
   .now-card:focus-visible { outline: 3px solid var(--accent-500); outline-offset: 2px; }
   .beyond-card { transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1); }
-  .beyond-card:hover { transform: translateY(-3px); }
+  .beyond-card:hover { transform: translateX(4px); }
   .beyond-card:focus-visible { outline: 3px solid var(--accent-500); outline-offset: 2px; }
+  /* The founder photo's thin inner frame, with a diagonal mark at each corner. */
+  .vision-frame { position: absolute; inset: 0.8rem; border-radius: 1rem; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.32); pointer-events: none; }
+  .vision-frame i { position: absolute; width: 1.1rem; height: 1px; background: rgb(255 255 255 / 0.55); }
+  .vision-frame i:nth-child(1) { left: 0.55rem; top: 0.95rem; transform: rotate(45deg); }
+  .vision-frame i:nth-child(2) { right: 0.55rem; top: 0.95rem; transform: rotate(-45deg); }
+  .vision-frame i:nth-child(3) { left: 0.55rem; bottom: 0.95rem; transform: rotate(-45deg); }
+  .vision-frame i:nth-child(4) { right: 0.55rem; bottom: 0.95rem; transform: rotate(45deg); }
   @media (prefers-reduced-motion: reduce) { .beyond-card { transition: none; } .beyond-card:hover { transform: none; } }
 </style>

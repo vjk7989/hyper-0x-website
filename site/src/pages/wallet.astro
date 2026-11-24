@@ -1,0 +1,8 @@
+---
+import ProductView from '@views/ProductView.astro';
+import { getEntry } from 'astro:content';
+
+const entry = (await getEntry('products', 'en/hyper-wallet'))!;
+---
+
+<ProductView product={entry} />

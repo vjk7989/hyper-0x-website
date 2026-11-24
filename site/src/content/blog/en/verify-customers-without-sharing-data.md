@@ -89,7 +89,7 @@ These designs remove copies, but four hard problems remain:
 
 ## How does Hyper 0x support private customer checks?
 
-[Hyper 0x](../../products/hyper-0x/), the Buckleson blockchain, gives you the base for these patterns. Each company gets a private L2, a private blockchain with its own rules that settles on a shared main chain, the L1. You build the signed results, proofs and revocation records on that L2, and Hyper 0x gives the parts underneath:
+[Hyper 0x](../../blockchain/), the Buckleson blockchain, gives you the base for these patterns. Each company gets a private L2, a private blockchain with its own rules that settles on a shared main chain, the L1. You build the signed results, proofs and revocation records on that L2, and Hyper 0x gives the parts underneath:
 
 - **Compliance as code.** The chain checks KYC status, limits and approvals before a transaction executes. A rule can accept deposits only from customers with a valid, unrevoked result.
 - **Per-party encryption.** Hyper 0x encrypts each record separately for each party, so only the parties to a record can read it.

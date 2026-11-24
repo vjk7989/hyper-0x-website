@@ -8,7 +8,7 @@
   --anatomy-halo:#050505;--anatomy-halo-opacity:.9;--anatomy-dot:#e6e6e6;
   --anatomy-red:#ff6b6b;--anatomy-green:#6be0a0;--anatomy-blue:#6b9bff;
   --anatomy-weight:.6px;--anatomy-ease:cubic-bezier(.32,.72,0,1);
-  --anatomy-mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --anatomy-mono:var(--font-mono,ui-monospace,"SF Mono",Menlo,Consolas,monospace);
   --anatomy-lift:inset 0 1px 0 0 #ffffff0a,inset 0 0 0 1px #ffffff06,0 0 0 1px #00000026,0 1px 1px -.5px #00000014,0 3px 3px -1.5px #00000014,0 6px 6px -3px #00000014,0 12px 12px -6px #00000014;
 }
 html:not(.dark) .iso.iso-card{
@@ -83,8 +83,7 @@ html:not(.dark) .iso.iso-card{
 .iso-figure{margin:32px 0 36px}
 .iso-plate{position:relative;padding:52px 24px;border-radius:0;background:var(--anatomy-card);box-shadow:0 0 0 1px var(--anatomy-mid);--anatomy-paper:var(--anatomy-card)}
 .iso-plate-corners{position:absolute;inset:18px 20px;pointer-events:none}
-.iso-plate-corner{position:absolute;color:var(--anatomy-muted);font-family:var(--anatomy-mono);font-size:10.5px;line-height:1;letter-spacing:.04em;white-space:nowrap}
-.iso-plate-corner[data-corner="fig"]{top:0;left:0;color:var(--anatomy-text)}
+.iso-plate-corner{position:absolute;color:var(--anatomy-muted);font-family:var(--anatomy-mono);font-size:10.5px;line-height:1;white-space:nowrap}
 .iso-plate-corner[data-corner="title"]{top:0;right:0;letter-spacing:.04em}
 .iso-plate-corner[data-corner="hint"]{bottom:0;left:0;letter-spacing:.04em}
 .iso-plate-corner[data-corner="readout"]{right:0;bottom:0;color:var(--anatomy-text);font-variant-numeric:tabular-nums}
@@ -165,7 +164,7 @@ html:not(.dark) .iso.iso-card{
 .iso-card .fig-steps{display:none}
 @container figbox (min-height:10rem){.iso-card .iso-stage{width:min(100cqw - 1rem,(100cqh - 3.5rem) * var(--fig-ar,1.7));margin-inline:auto}}
 html.dark .iso,.iso-sheet{--fig-tag:#1c1c1c}
-html:not(.dark) .iso-card{--fig-accent:oklch(0.511 0.262 276.966)}
+html:not(.dark) .iso-card{--fig-accent:var(--accent-600)}
 html:not(.dark) .iso:not(.iso-card){--fig-accent:var(--accent-400,#fb923c);--fig-tag:#1c1c1c}
 html:not(.dark) .iso-hero{--anatomy-card:#121212}
 html.dark .iso{--fig-accent:var(--accent-400,#fb923c)}

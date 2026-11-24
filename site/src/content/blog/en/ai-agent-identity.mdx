@@ -77,7 +77,7 @@ At the end, **the data warehouse answers**. The call runs with the smallest righ
 
 Assume that a user can make the model reveal anything that the model can read. So keys and tokens never belong in a prompt, a system prompt or agent memory. Store them in a secret manager (a vault that gives secrets to your code, not to the model). Your own code gets the secret and makes the call. The model only asks for the action.
 
-[H0x-ADE](../../products/h0x-ade/) adds a second line of defence. Its privacy gate removes personal data and secrets before a model sees them. Its output gate removes them from what comes back. Our guide on how to [limit AI data leaks](../stop-llm-data-leaks-pii-redaction/) explains these gates.
+[H0x-ADE](../../ade/) adds a second line of defence. Its privacy gate removes personal data and secrets before a model sees them. Its output gate removes them from what comes back. Our guide on how to [limit AI data leaks](../stop-llm-data-leaks-pii-redaction/) explains these gates.
 
 ## How do you stop an agent fast?
 
@@ -99,7 +99,7 @@ The record gives four benefits:
 - **Partner companies can check an agent** without access to your identity provider. This matters when agents work across companies, as in [multi-agent workflows](../multi-agent-cascading-failures/).
 - **Changes leave a trail.** Each change of status or owner is a recorded transaction with a time.
 
-[Hyper 0x](../../products/hyper-0x/), the blockchain that Buckleson builds, uses post-quantum-resistant key exchange for every connection. This matters for agent records that must stay private for many years.
+[Hyper 0x](../../blockchain/), the blockchain that Buckleson builds, uses post-quantum-resistant key exchange for every connection. This matters for agent records that must stay private for many years.
 
 The limit: a blockchain does not decide which rights an agent needs. It records who the agent is and whether it can act. The rights check still runs in a gateway and in your own systems.
 

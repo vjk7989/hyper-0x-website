@@ -29,4 +29,4 @@ Seed phrases and gas fees are two of the biggest reasons why people and enterpri
 
 ## Why does it matter for enterprises?
 
-Employees and customers can use blockchain-backed apps without training. The organisation keeps control through policies such as maker-checker approvals (one person proposes and another approves). With the [Hyper Wallet](../../products/hyper-wallet/) SDKs, account abstraction lets you embed secure wallets into internal apps and customer products. Every action stays monitored and recorded on [Hyper 0x](../../products/hyper-0x/). See [how to launch your own crypto wallet](../how-to-launch-a-crypto-wallet/).
+Employees and customers can use blockchain-backed apps without training. The organisation keeps control through policies such as maker-checker approvals (one person proposes and another approves). With the [Hyper Wallet](../../wallet/) SDKs, account abstraction lets you embed secure wallets into internal apps and customer products. Every action stays monitored and recorded on [Hyper 0x](../../blockchain/). See [how to launch your own crypto wallet](../how-to-launch-a-crypto-wallet/).

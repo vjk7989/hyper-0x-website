@@ -76,11 +76,11 @@ With both legs on one ledger, [atomic settlement](../atomic-settlement/) moves t
 
 ## How does Hyper 0x support tokenized money?
 
-On [Hyper 0x](../../products/hyper-0x/), the Buckleson blockchain, a bank can run its tokenized deposit on its own private L2. An L2 is a private blockchain that settles on a main chain. Compliance as code runs before a transaction executes. So KYC status, client limits and maker-checker approvals apply to every transfer. In a maker-checker approval, one person prepares a transaction and a second person approves it.
+On [Hyper 0x](../../blockchain/), the Buckleson blockchain, a bank can run its tokenized deposit on its own private L2. An L2 is a private blockchain that settles on a main chain. Compliance as code runs before a transaction executes. So KYC status, client limits and maker-checker approvals apply to every transfer. In a maker-checker approval, one person prepares a transaction and a second person approves it.
 
 Per-party encryption keeps balances and payments private to the parties. Each transfer is final in one pass, with no reorgs (rewrites of recent blocks). Every L2 settles on the same Hyper 0x L1. So banks on separate L2s settle to one shared record, and each bank keeps its client data private. Bridges connect each L2 to EVM chains, Solana and Sui. Clients can then reach stablecoins on public chains when the rules of the bank allow it.
 
-Our [custom blockchain services](../../services/custom-blockchains/) set up the L2, the rules and the bridges with your team. [H0X Pay](../../products/h0x-pay/) is a Buckleson product. It lets users pay and get paid in crypto, and every payment settles on Hyper 0x.
+Our [custom blockchain services](../../services/custom-blockchains/) set up the L2, the rules and the bridges with your team. [H0X Pay](../../pay/) is a Buckleson product. It lets users pay and get paid in crypto, and every payment settles on Hyper 0x.
 
 ## Where should you start?
 

@@ -45,7 +45,7 @@ export const servicePages: ServicePage[] = [
     intro: 'Get a private blockchain that runs your rules from the first day. We launch it as an L2, a private chain that settles on the Hyper 0x main chain (the L1). We connect it to your systems and run it with you.',
     outcomes: ['Your rules as code', 'Per-party encryption', 'Bridges to EVM, Solana and Sui'],
     mock: 'chain',
-    highlight: { value: '1 pass', label: 'to a final record, never reordered' },
+    highlight: { value: '1 pass', label: 'to a final, ordered record' },
     deliverables: [
       { icon: 'tree-structure', title: 'A private L2 sized for you', text: 'You get your own rules, privacy model, bridge and sequencer (the node that puts transactions in order). Blocks grow when traffic is high and shrink when it is low.' },
       { icon: 'scales', title: 'Compliance as code', text: 'Limits, KYC identity checks and maker-checker approvals (a second person approves) run before a transaction executes, not after.' },
@@ -67,7 +67,7 @@ export const servicePages: ServicePage[] = [
       { question: 'Who runs the chain after launch?', answer: 'We run it with you. Our engineers monitor and upgrade it. Your team keeps control of the rules and the keys.' },
     ],
     related: [
-      { title: 'Hyper 0x, our blockchain', url: '/products/hyper-0x/' },
+      { title: 'Hyper 0x, our blockchain', url: '/blockchain/' },
       { title: 'Private L2 vs public blockchain', url: '/blog/private-l2-vs-public-blockchain/' },
       { title: 'Layer 1 vs layer 2', url: '/blog/layer-1-vs-layer-2-blockchain/' },
     ],
@@ -119,7 +119,7 @@ export const servicePages: ServicePage[] = [
     mock: 'wallet',
     highlight: { value: '1 fee', label: 'per trade, with no wallet fee on top' },
     deliverables: [
-      { icon: 'book-open-text', title: 'On-chain order book', text: 'A central limit order book runs inside consensus, the step where validators agree on each block. Every validator calculates the same matches, so nobody can trade ahead of an order.' },
+      { icon: 'book-open-text', title: 'On-chain order book', text: 'A central limit order book runs inside consensus, the step where validators agree on each block. Every validator calculates the same matches, so anyone can check that no order traded ahead.' },
       { icon: 'swap', title: 'Atomic settlement', text: 'Both sides of a trade settle in one step, or neither does. No party pays without getting the asset.' },
       { icon: 'fingerprint', title: 'No seed phrases', text: 'Users sign in with a passkey or a face scan. Nobody has to keep a seed phrase (a list of secret recovery words). Apps can pay the network fees for them.' },
       { icon: 'users-three', title: 'Maker-checker approvals', text: 'Large or unusual transfers wait until a second person approves them. Code enforces this rule.' },
@@ -138,7 +138,7 @@ export const servicePages: ServicePage[] = [
       { question: 'Can we run our own compliance rules?', answer: 'Yes. Limits, KYC, sanctions checks and maker-checker approvals run as code before each transaction executes.' },
     ],
     related: [
-      { title: 'Hyper Wallet & SDKs', url: '/products/hyper-wallet/' },
+      { title: 'Hyper Wallet & SDKs', url: '/wallet/' },
       { title: 'How to launch a crypto wallet', url: '/blog/how-to-launch-a-crypto-wallet/' },
       { title: 'Custodial vs non-custodial wallets', url: '/blog/custodial-vs-non-custodial-wallet/' },
     ],
@@ -172,7 +172,7 @@ export const servicePages: ServicePage[] = [
       { question: 'How do we audit transfers across apps?', answer: 'The SDK signs, checks and records every transfer on one L2, so all your apps share one audit trail.' },
     ],
     related: [
-      { title: 'Hyper Wallet & SDKs', url: '/products/hyper-wallet/' },
+      { title: 'Hyper Wallet & SDKs', url: '/wallet/' },
       { title: 'Web3 gaming wallets', url: '/blog/web3-gaming-wallets/' },
       { title: 'Blockchain payments for merchants', url: '/blog/blockchain-payments-for-merchants/' },
     ],
@@ -184,7 +184,7 @@ export const servicePages: ServicePage[] = [
     eyebrow: 'Service · AI-agent security',
     claim: 'Let your AI agents act,',
     payoff: 'and stay in control.',
-    intro: 'AI agents now send emails, move data and run code. We check every action of every agent. Nobody can secretly change the rules or delete the record.',
+    intro: 'AI agents now send emails, move data and run code. We check every action of every agent. The rules and the record show any change or deleted entry.',
     outcomes: ['Six gates per call', 'Tamper-evident receipts', 'Context compaction and budgets'],
     mock: 'agent',
     highlight: { value: '6 gates', label: 'on every agent call' },
@@ -205,11 +205,11 @@ export const servicePages: ServicePage[] = [
     steps: pilotSteps('We put H0x-ADE between the agents of one team and their systems. Then we watch every call.', 'We adjust the gates, the egress rules and the kill-switch steps with your security team.'),
     faqs: [
       { question: 'Which AI agents can you work with?', answer: 'Claude, Claude Code, Codex, ChatGPT, Grok, OpenCode and your own agents, through one gateway.' },
-      { question: 'Why use a blockchain for agent security?', answer: 'Nobody can secretly change the rules in a smart contract. Chained receipts on Hyper 0x show any deleted entry as a gap. Auditors can check both.' },
+      { question: 'Why use a blockchain for agent security?', answer: 'A smart contract shows every change to its rules. Chained receipts on Hyper 0x show any deleted entry as a gap. Auditors can check both.' },
       { question: 'Does it slow our agents down or cost more?', answer: 'Compact context makes calls smaller. On one measured Claude Code task, agents used 30 to 60 percent fewer tokens.' },
     ],
     related: [
-      { title: 'H0x-ADE, the Agentic Development Environment', url: '/products/h0x-ade/' },
+      { title: 'H0x-ADE, the Agentic Development Environment', url: '/ade/' },
       { title: 'PAVii Agentic Security on pavii.tech', url: 'https://www.pavii.tech/products/security/' },
       { title: 'AI agent security: 8 attacks and their defences', url: '/blog/how-to-secure-ai-agents/' },
       { title: 'How an AI agent kill switch works', url: '/blog/ai-agent-kill-switch/' },
@@ -244,7 +244,7 @@ export const servicePages: ServicePage[] = [
     ],
     related: [
       { title: 'How to choose a blockchain development company', url: '/blog/how-to-choose-a-blockchain-development-company/' },
-      { title: 'Hyper 0x, our blockchain', url: '/products/hyper-0x/' },
+      { title: 'Hyper 0x, our blockchain', url: '/blockchain/' },
       { title: 'About Buckleson', url: '/about/' },
     ],
   },

@@ -96,7 +96,7 @@ So the register moves to a private L2, a private blockchain that settles on the 
 
 ## How does Hyper 0x work next to a database?
 
-On [Hyper 0x](../../products/hyper-0x/), the Buckleson blockchain, the shared record goes on a private L2, and private data stays in your database. Hyper 0x is a permissioned [L1](../layer-1-vs-layer-2-blockchain/), the main chain, with known validators, each bound to a certificate. Each L2 has its own sequencer, the node that orders its transactions, plus its own rules and bridge.
+On [Hyper 0x](../../blockchain/), the Buckleson blockchain, the shared record goes on a private L2, and private data stays in your database. Hyper 0x is a permissioned [L1](../layer-1-vs-layer-2-blockchain/), the main chain, with known validators, each bound to a certificate. Each L2 has its own sequencer, the node that orders its transactions, plus its own rules and bridge.
 
 Consensus has no leader, so no single node sets the order. Each transaction is final in one pass, with no reorgs (rewrites of recent blocks). Per-party encryption keeps each record readable only by its parties. Hash commitments on the ledger let an auditor confirm that a record did not change. Compliance as code checks limits, KYC (know your customer) status and maker-checker approvals before a transaction executes. Every connection is post-quantum-resistant.
 

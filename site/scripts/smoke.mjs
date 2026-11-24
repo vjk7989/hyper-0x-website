@@ -4,6 +4,7 @@
 import { readFile, readdir, stat } from 'node:fs/promises';
 import { join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { resolveLink } from './resolve-link.mjs';
 
 const DIST = fileURLToPath(new URL('../dist/', import.meta.url));
 // The site is served from the root of its custom domain (no base path).
@@ -13,13 +14,13 @@ const REQUIRED_FILES = ['index.html', '404.html', 'robots.txt', 'llms.txt', 'llm
 
 // Cheap content assertions for key pages (site-relative route -> needles).
 const EXPECTATIONS = {
-  '/': ['<html lang="en"', 'You build the application.', '"@type":"FAQPage"', 'data-hero', 'id="services"', 'data-vault', 'chain-rack', 'pavii-gates', 'cipher-tower'],
+  '/': ['<html lang="en"', 'The security infrastructure', '"@type":"FAQPage"', 'data-hero', 'id="services"', 'token-compactor', 'trace-recorder', 'feedback-wheel', 'switch-yard', 'pavii-gates'],
   '/about/': ['"@type":"AboutPage"', 'Our story'],
   '/faq/': ['"@type":"FAQPage"', 'id="ai-agent-security"', 'ML-KEM'],
   '/products/': ['Hyper 0x', 'H0X Pay'],
-  '/products/h0x-ade/': ['id="four-parts"', 'id="see-every-call"', 'id="context-compactor"', 'id="h0x-ade-questions"'],
-  '/products/hyper-wallet/': ['id="how-a-swap-finds-its-route"', 'id="launch-your-own-wallet"', 'id="one-app-replaces-three"', 'id="hyper-wallet-questions"'],
-  '/products/h0x-pay/': ['H0X Pay'],
+  '/ade/': ['id="four-parts"', 'id="see-every-call"', 'id="context-compactor"', 'id="h0x-ade-questions"'],
+  '/wallet/': ['id="how-a-swap-finds-its-route"', 'id="launch-your-own-wallet"', 'id="one-app-replaces-three"', 'id="hyper-wallet-questions"'],
+  '/pay/': ['H0X Pay'],
   '/contact/': ['data-mail-form', 'cal.com/buckleson-group/30min'],
   '/blog/how-to-secure-ai-agents/': ['"@type":"BlogPosting"', '"@type":"BreadcrumbList"'],
 };
@@ -108,11 +109,11 @@ for (const file of pages) {
   for (const word of BANNED) if (word.test(text)) fail(route, `contains banned text ${word}`);
 
   // Internal links must resolve to a built file.
-  for (const [, href] of html.matchAll(/href="(\/(?!\/)[^"#?]*)/g)) {
-    let path = href.slice(BASE.length) || '/';
-    if (path.endsWith('/')) path += 'index.html';
-    else if (!/\.[a-z0-9]+$/i.test(path)) path += '/index.html';
-    if (!fileSet.has(path)) fail(route, `broken link ${href}`);
+  for (const [, href] of html.matchAll(/href="([^"]*)"/g)) {
+    const target = resolveLink(href, route, BASE);
+    if (!target) continue;
+    if (target.outside) fail(route, `link climbs above the site root ${href}`);
+    else if (!fileSet.has(target.path)) fail(route, `broken link ${href}`);
   }
 
   const site = route.startsWith(BASE) ? route.slice(BASE.length) : route;

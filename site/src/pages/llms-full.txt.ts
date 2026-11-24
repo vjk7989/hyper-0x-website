@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { SITE, ORGANIZATION } from '@data/constants';
 import { getCopy } from '@/copy';
-import { entriesFor, pathFor } from '@utils/content';
+import { entriesFor, pathFor, productPath, slugOf } from '@utils/content';
 import { localePath } from '@utils/locale';
 import { getCollection } from 'astro:content';
 
@@ -56,7 +56,7 @@ export const GET: APIRoute = async () => {
       const data = product.data;
       return [
         `## ${data.title}`,
-        `URL: ${SITE.origin}${pathFor(product)}`,
+        `URL: ${SITE.origin}${productPath(slugOf(product))}`,
         data.summary.trim(),
         ...data.features.map(f => `- ${f.title}: ${f.subTitle}`),
         ...data.details.items.map(d => `- ${d.title}: ${d.subTitle}`),
@@ -73,11 +73,6 @@ export const GET: APIRoute = async () => {
       '## How Hyper 0x is built',
       `URL: ${SITE.origin}${localePath('en', '/resources/')}`,
       'The resources page explains how the chain is built at a high level: the architecture, the decisions taken, and the trade-offs behind each one. It does not publish source code.',
-    ].join('\n\n'),
-    [
-      '## Pricing',
-      `URL: ${SITE.origin}${localePath('en', '/pricing/')}`,
-      'The pricing page explains how an engagement starts and what its scope is made of. It publishes no prices: no price, tier or starting figure exists for any service or product, and none should be inferred from the existence of the page. To discuss scope, book a call at https://cal.com/buckleson-group/30min.',
     ].join('\n\n'),
     [
       '## Documentation',

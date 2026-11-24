@@ -22,7 +22,7 @@ AI adoption is inevitable, but trust is not. Enterprises in banking, healthcare 
 
 ## How does a receipt chain work?
 
-On [Hyper 0x](../../products/hyper-0x/), every AI decision and action becomes a transaction (an entry on the blockchain). Each transaction carries a signature and a link to the previous receipt. The blockchain anchors the chain, so nobody can quietly rewrite history. Not even an administrator or the AI itself can do it.
+On [Hyper 0x](../../blockchain/), every AI decision and action becomes a transaction (an entry on the blockchain). Each transaction carries a signature and a link to the previous receipt. The blockchain anchors the chain, so nobody can quietly rewrite history. Not even an administrator or the AI itself can do it.
 
 ## What is it used for?
 
@@ -32,6 +32,6 @@ On [Hyper 0x](../../products/hyper-0x/), every AI decision and action becomes a 
 
 ## How does it fit next to existing systems?
 
-Hyper 0x sits next to existing systems. It needs no change to current business logic or infrastructure. We record how AI runs, not what AI thinks. [H0x-ADE](../../products/h0x-ade/), our security gateway, brings the same idea to AI agents. It anchors the logs of every agent on Hyper 0x. To learn more, read our guide [AI Agent Security: 8 Attacks and Their Defences](../how-to-secure-ai-agents/).
+Hyper 0x sits next to existing systems. It needs no change to current business logic or infrastructure. We record how AI runs, not what AI thinks. [H0x-ADE](../../ade/), our security gateway, brings the same idea to AI agents. It anchors the logs of every agent on Hyper 0x. To learn more, read our guide [AI Agent Security: 8 Attacks and Their Defences](../how-to-secure-ai-agents/).
 
 To show an auditor what an agent did, read [how to prove what your AI agent did](https://www.pavii.tech/blog/prove-what-ai-agent-did/) on the PAVii blog.

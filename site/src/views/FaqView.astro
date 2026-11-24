@@ -1,4 +1,5 @@
 ---
+import { headingSlug } from '@utils/utils';
 import MainLayout from '@/layouts/MainLayout.astro';
 import Box from '@components/home/Box.astro';
 import FinalCta from '@components/home/FinalCta.astro';
@@ -35,8 +36,7 @@ const all = topics.flatMap(topic => topic.faqs.map(({ question, answer }) => ({ 
 
 <MainLayout title={copy.title} seoTitle={copy.seoTitle} description={copy.metaDescription} kind={{ type: 'WebPage' }} faqs={all}>
   <section class="mx-auto max-w-[85rem] px-4 pt-14 pb-12 sm:px-6 lg:px-8 lg:pt-20">
-    <p class="font-mono text-xs font-medium text-muted" data-reveal>{copy.label}</p>
-    <h1 class="mt-4 max-w-4xl text-5xl leading-[1] font-semibold text-ink sm:text-6xl">
+    <h1 id={headingSlug(`${copy.claim} ${copy.payoff}`)} class="scroll-mt-24 max-w-4xl text-5xl leading-[1] font-semibold text-ink sm:text-6xl">
       <span class="block">{copy.claim}</span>
       <span class="mark">{copy.payoff}</span>
     </h1>
@@ -50,12 +50,11 @@ const all = topics.flatMap(topic => topic.faqs.map(({ question, answer }) => ({ 
     </nav>
   </section>
 
-  {topics.map((topic, index) => (
+  {topics.map(topic => (
     <Box>
       <section id={topic.id} class="mx-auto grid max-w-[85rem] scroll-mt-24 gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:px-8 lg:py-20" aria-labelledby={`${topic.id}-title`}>
         <div class="lg:sticky lg:top-24 lg:self-start">
-          <p class="font-mono text-xs font-medium text-muted">0{index + 1} / 0{topics.length}</p>
-          <span class="mt-4 grid size-12 place-items-center rounded-2xl bg-ground text-ink"><Glyph icon={icons[topic.id] ?? 'question'} class="size-6" /></span>
+          <span class="grid size-12 place-items-center rounded-2xl bg-ground text-ink"><Glyph icon={icons[topic.id] ?? 'question'} class="size-6" /></span>
           <h2 id={`${topic.id}-title`} class="mt-5 text-3xl font-semibold text-balance text-ink">{topic.label}</h2>
           <p class="mt-3 max-w-[36ch] text-pretty text-muted">{topic.intro}</p>
         </div>
@@ -63,7 +62,7 @@ const all = topics.flatMap(topic => topic.faqs.map(({ question, answer }) => ({ 
           {topic.faqs.map((faq, i) => (
             <details class="group py-5" open={i === 0}>
               <summary class="flex cursor-pointer list-none items-start justify-between gap-6 text-lg font-semibold text-ink">
-                <h3 class="text-pretty">{faq.question}</h3>
+                <h3 id={headingSlug(faq.question)} class="scroll-mt-24 text-pretty">{faq.question}</h3>
                 <span class="grid size-8 shrink-0 place-items-center rounded-full bg-ground transition duration-300 group-open:rotate-45"><Glyph icon="plus" class="size-4" /></span>
               </summary>
               <p class="mt-3 max-w-[64ch] leading-relaxed text-pretty text-muted">{faq.answer}</p>

@@ -89,7 +89,7 @@ Only `requests` at its pinned version passes every layer. The part, its hash and
 
 ## Why anchor the AI-BOM on a blockchain?
 
-A spreadsheet or an internal database can hold an AI-BOM. The problem is trust. Anyone with admin rights can edit it, and a partner cannot check it. A blockchain (a shared ledger that you can only add to) such as [Hyper 0x](../../products/hyper-0x/) changes the picture in four ways:
+A spreadsheet or an internal database can hold an AI-BOM. The problem is trust. Anyone with admin rights can edit it, and a partner cannot check it. A blockchain (a shared ledger that you can only add to) such as [Hyper 0x](../../blockchain/) changes the picture in four ways:
 
 - **Shared.** Every team and partner checks the same pinned hashes.
 - **Append-only.** Each change to the allow-list is a new transaction with an approver. Nobody can quietly rewrite the list.
@@ -100,7 +100,7 @@ Be clear about the limit. The chain shows the origin of a part, and it shows tha
 
 ## How does H0x-ADE fit into the AI supply chain?
 
-[H0x-ADE](../../products/h0x-ade/) is our security gateway for AI agents. Every agent call passes through it. Its supply chain gate puts the dependency-gate idea into practice. Every new package or MCP server must pass an allow-list, a pinned hash or a sandbox test.
+[H0x-ADE](../../ade/) is our security gateway for AI agents. Every agent call passes through it. Its supply chain gate puts the dependency-gate idea into practice. Every new package or MCP server must pass an allow-list, a pinned hash or a sandbox test.
 
 Like every H0x-ADE decision, the result gets a receipt. A receipt is a signed record of one decision, chained to the receipt before it. H0x-ADE anchors that chain on Hyper 0x, so a deleted entry shows as a gap. [Proof of execution for AI](../proof-of-execution-ai/) explains how a receipt chain works.
 

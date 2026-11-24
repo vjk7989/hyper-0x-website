@@ -13,7 +13,7 @@ const pill = [
 ---
 
 <section class="mx-auto max-w-[85rem] px-4 py-14 sm:px-6 lg:px-8 lg:py-20" aria-labelledby={r.id}>
-  <SectionHead index={r.index} label={r.label} claim={r.claim} payoff={r.payoff} id={r.id} />
+  <SectionHead claim={r.claim} payoff={r.payoff} id={r.id} />
   <div class="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-center">
     <div data-reveal><RouteFigure caption={r.figureCaption} /></div>
     <ol class="space-y-6" data-reveal-group>

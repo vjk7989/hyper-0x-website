@@ -27,9 +27,7 @@ const widths: Record<string, string> = {
   products: 'w-[min(56rem,calc(100vw-2rem))]',
   services: 'w-[min(42rem,calc(100vw-2rem))]',
   resources: 'w-[min(44rem,calc(100vw-2rem))]',
-  pricing: 'w-[min(22rem,calc(100vw-2rem))]',
   about: 'w-[min(22rem,calc(100vw-2rem))]',
-  contact: 'w-[min(24rem,calc(100vw-2rem))]',
 };
 ---
 
@@ -133,7 +131,6 @@ const widths: Record<string, string> = {
           </button>
         </li>
       ))}
-      <li class="border-b border-line"><a href={href('/contact/')} class="block py-4 text-lg font-semibold text-ink">Contact</a></li>
     </ul>
     {megaMenus.map(menu => (
       <div class="mobile-view absolute inset-0 overflow-y-auto px-4 py-2" data-view={menu.id} hidden>

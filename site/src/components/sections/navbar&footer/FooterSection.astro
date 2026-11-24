@@ -3,8 +3,9 @@ import socialIcons from '@data/social-icons.json';
 import { SOCIAL } from '@data/constants';
 import BrandLogo from '@components/BrandLogo.astro';
 import Glyph from '@components/ui/Glyph.astro';
+import TerrainBand from '@components/ui/TerrainBand.astro';
 import { BOOKING_URL, SITE } from '@data/constants';
-import { footerColumns, siblingSites } from '@data/navigation';
+import { footerColumns } from '@data/navigation';
 import { localePath } from '@utils/locale';
 
 /** Footer: who we are, link columns, and a giant wordmark lit by the cursor. */
@@ -12,16 +13,14 @@ const { locale, copy: t } = Astro.locals;
 const year = new Date().getFullYear();
 ---
 
-<footer class="mt-auto px-2 pb-2 sm:px-3 sm:pb-3">
+<div class="mt-auto">
+<TerrainBand class="mt-16" />
+<footer class="px-2 pb-2 sm:px-3 sm:pb-3">
   <div class="overflow-hidden rounded-[2rem] bg-card ring-1 ring-line">
     <div class="mx-auto grid max-w-[85rem] gap-12 px-5 pt-14 sm:px-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
       <div class="max-w-sm">
         <BrandLogo />
         <p class="mt-4 text-pretty text-muted">{t.site.description}</p>
-        <p class="mt-4 text-sm text-pretty text-muted">{siblingSites.statement}</p>
-        <ul class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm">
-          {siblingSites.links.map(link => <li><a href={link.href} class="text-ink/80 underline underline-offset-2 transition hover:text-orange-700 dark:hover:text-orange-300">{link.label}</a></li>)}
-        </ul>
         <a href={BOOKING_URL} class="cta-pill mt-6"><span>Book a call</span><span class="cta-chip"><Glyph icon="arrow-up-right" class="size-3.5" /></span></a>
         <ul class="mt-6 flex flex-wrap gap-1.5" aria-label="Buckleson on social media">
           {SOCIAL.map(item => {
@@ -51,8 +50,8 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="wordmark relative mt-10 select-none px-3" data-wordmark aria-hidden="true">
-      <p class="font-display text-[clamp(4rem,19vw,17rem)] leading-[0.8] font-semibold tracking-[-0.06em] text-ink/9">Buckleson</p>
-      <p class="wordmark-lit absolute inset-x-3 top-0 font-display text-[clamp(4rem,19vw,17rem)] leading-[0.8] font-semibold tracking-[-0.06em] text-orange-500">Buckleson</p>
+      <p class="font-display text-[clamp(4rem,19vw,17rem)] leading-[0.8] font-semibold tracking-[-0.06em] text-ink/9">Hyper 0x</p>
+      <p class="wordmark-lit absolute inset-x-3 top-0 font-display text-[clamp(4rem,19vw,17rem)] leading-[0.8] font-semibold tracking-[-0.06em] text-orange-500">Hyper 0x</p>
     </div>
 
     <div class="mx-auto flex max-w-[85rem] flex-wrap items-center justify-between gap-3 border-t border-line px-5 py-5 text-sm text-muted sm:px-8">
@@ -64,6 +63,7 @@ const year = new Date().getFullYear();
     </div>
   </div>
 </footer>
+</div>
 
 <style>
   /* A solid accent copy of the wordmark, revealed around the cursor. */

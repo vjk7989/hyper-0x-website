@@ -33,7 +33,7 @@ People often mix up the three terms, but they lead to different products:
 - **Wallet SDK.** Code runs inside your own app. The SDK can create and store keys on the user's device, so the wallet can be non-custodial. You design every screen.
 - **White-label app.** A complete, ready-made wallet app under your brand. It is the fastest to launch but the least flexible inside a product you already have.
 
-Some providers offer more than one. [Hyper Wallet](../../products/hyper-wallet/) is a full app and also ships as SDKs. A business can launch its own branded wallet or embed wallet features in an app it already runs.
+Some providers offer more than one. [Hyper Wallet](../../wallet/) is a full app and also ships as SDKs. A business can launch its own branded wallet or embed wallet features in an app it already runs.
 
 ## What must a wallet SDK include?
 

@@ -28,8 +28,7 @@ const lanes = compare
 
 {compare && (
   <section class:list={['cmp', className]} aria-labelledby={`cmp-${slug}`} data-compare>
-    <p class="font-mono text-xs font-medium text-muted">How it works</p>
-    <h2 id={`cmp-${slug}`} class="mt-2 text-2xl font-semibold text-balance text-ink sm:text-3xl">{compare.title}</h2>
+    <h2 id={`cmp-${slug}`} class="text-2xl font-semibold text-balance text-ink sm:text-3xl">{compare.title}</h2>
     <div class="mt-6 grid grid-cols-1 gap-4 2xl:grid-cols-2">
       {lanes.map(({ kind, title, lane }) => (
         <div class:list={['cmp-lane rounded-[1.6rem] p-4 sm:p-6', kind === 'with' ? 'cmp-with glass-tint' : 'cmp-without glass-card']} data-lane={kind} data-break={lane.breakAt ?? -1} data-stop={lane.stopAt ?? -1}>

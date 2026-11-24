@@ -1,97 +1,142 @@
 ---
 import Glyph from '@components/ui/Glyph.astro';
-import SystemDiagram from '@components/ui/SystemDiagram.astro';
 import SectionHead from '@components/home/SectionHead.astro';
-import type { SystemName } from '@data/systems';
 
-/** Tabbed animated system diagrams: pick a flow, watch it run. */
+/**
+ * See it run: a flow graph of icons, each with a few words, so the path is
+ * easy to remember. High level on purpose: no node explains a mechanism.
+ * Labels are inline (not in copy/en.ts) by agreement for this task.
+ * The attack is a branch that ends at the engine and does not continue.
+ */
 interface Props {
-  index: string;
-  label: string;
   claim: string;
   payoff: string;
   body: string;
-  tabs: { label: string; icon: string; system: SystemName }[];
 }
 
-const { index, label, claim, payoff, body, tabs } = Astro.props;
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const { claim, payoff, body } = Astro.props;
+
+const path = [
+  { icon: 'user-circle', title: 'Request', note: 'A person asks' },
+  { icon: 'robot', title: 'Agent', note: 'Raises a call' },
+  { icon: 'shuffle', title: 'Model router', note: 'Local, custom or frontier' },
+  { icon: 'funnel', title: 'Data check', note: 'What matters, what is masked' },
+  { icon: 'lock-key', title: 'Encrypted', note: 'Goes out encrypted' },
+  { icon: 'arrow-u-down-left', title: 'Reply', note: 'Comes back' },
+];
+
+const walk =
+  'A person makes a request and the agent raises a call. The call reaches the model router, which chooses where to send it: a local or custom model, or a frontier model. On the way, the system decides what data matters and what to mask. The call then goes out encrypted, and the reply comes back. The observability engine watches the whole path. If a third-party attack arrives through the agent, the engine refuses it, and that branch does not continue.';
 ---
 
-<section id="how-it-works" class="mx-auto max-w-[85rem] scroll-mt-24 px-4 py-20 sm:px-6 lg:px-8 lg:py-28" data-how>
-  <SectionHead index={index} label={label} claim={claim} payoff={payoff} body={body} />
-  <div class="mt-10 flex" data-reveal>
-    <div role="tablist" aria-label={label} class="glass-tint flex flex-wrap gap-1.5 rounded-full p-1.5">
-      {tabs.map((tab, i) => (
-        <button
-          type="button"
-          role="tab"
-          id={`how-tab-${tab.system}`}
-          aria-controls={`how-panel-${tab.system}`}
-          aria-selected={i === 0 ? 'true' : 'false'}
-          class="how-tab inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-muted transition hover:text-ink aria-selected:bg-sheet aria-selected:text-white dark:aria-selected:bg-orange-700"
-        >
-          <Glyph icon={tab.icon} class="size-4" />
-          {tab.label}
-        </button>
-      ))}
-    </div>
-  </div>
-  <div class="mt-6" data-reveal>
-    {tabs.map((tab, i) => (
-      <div role="tabpanel" id={`how-panel-${tab.system}`} aria-labelledby={`how-tab-${tab.system}`} hidden={i !== 0}>
-        {i === 0 ? <SystemDiagram name={tab.system} /> : <div class="aspect-[900/420] rounded-[1.6rem] bg-sheet" data-sd-lazy={`${base}/systems/${tab.system}.txt`}></div>}
+<section id="how-it-works" class="mx-auto max-w-[85rem] scroll-mt-24 px-4 py-20 sm:px-6 lg:px-8 lg:py-28" aria-labelledby="see-it-run">
+  <SectionHead id="see-it-run" claim={claim} payoff={payoff} body={body} />
+
+  <figure class="flow mt-10" data-reveal aria-label={walk}>
+    <div class="flow-body" aria-hidden="true">
+      <ol class="flow-path">
+        <li class="flow-track"><span class="flow-dot"></span></li>
+        {path.map((node, i) => (
+          <li class="node" style={`--i:${i}`}>
+            <span class="ico"><Glyph icon={node.icon} class="size-6" /></span>
+            <span class="txt">
+              <strong class="text-ink">{node.title}</strong>
+              <span class="text-muted">{node.note}</span>
+            </span>
+          </li>
+        ))}
+      </ol>
+
+      <div class="flow-attack">
+        <div class="node">
+          <span class="ico"><Glyph icon="shield-warning" class="size-6" /></span>
+          <span class="txt">
+            <strong class="text-ink">Third-party attack</strong>
+            <span class="text-muted">Arrives through the agent</span>
+          </span>
+        </div>
+        <span class="stub"></span>
+        <div class="node refused">
+          <span class="ico"><Glyph icon="prohibit" class="size-6" /></span>
+          <span class="txt">
+            <strong class="text-ink">Refused</strong>
+            <span class="text-muted">Checked by the engine</span>
+          </span>
+        </div>
       </div>
-    ))}
-  </div>
+
+      <div class="flow-watch">
+        <span class="ico"><Glyph icon="eye" class="size-6" /></span>
+        <span class="txt">
+          <strong class="text-ink">Observability engine</strong>
+          <span class="text-muted">Watches the whole path</span>
+        </span>
+      </div>
+    </div>
+  </figure>
 </section>
 
-<script>
-  // Hidden tabs fetch their diagram after load (or at once when picked), so
-  // the first paint carries only the first diagram.
-  const cache = new Map<string, Promise<string>>();
-  const fetchDiagram = (url: string) => {
-    if (!cache.has(url)) cache.set(url, fetch(url).then(r => (r.ok ? r.text() : '')));
-    return cache.get(url)!;
-  };
-  const fill = async (holder: HTMLElement) => {
-    const html = await fetchDiagram(holder.dataset.sdLazy!);
-    if (!html || !holder.isConnected) return;
-    const tpl = document.createElement('template');
-    tpl.innerHTML = html;
-    const figure = tpl.content.firstElementChild as HTMLElement | null;
-    if (!figure) return;
-    holder.replaceWith(figure);
-    figure.dispatchEvent(new Event('sd:add', { bubbles: true }));
-  };
-  const fillAll = () => document.querySelectorAll<HTMLElement>('[data-sd-lazy]').forEach(fill);
-  const idle = (fn: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 2500 }) : setTimeout(fn, 300));
-  if (document.readyState === 'complete') idle(fillAll);
-  else window.addEventListener('load', () => idle(fillAll), { once: true });
+<style>
+  .flow { --hl: var(--accent-600); }
+  :global(.dark) .flow { --hl: var(--accent-400); }
 
-  document.querySelectorAll<HTMLElement>('[data-how]').forEach(root => {
-    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
-    const select = (tab: HTMLButtonElement) => {
-      tabs.forEach(other => {
-        const on = other === tab;
-        other.setAttribute('aria-selected', String(on));
-        other.tabIndex = on ? 0 : -1;
-        const panel = root.querySelector<HTMLElement>(`#${other.getAttribute('aria-controls')}`)!;
-        panel.hidden = !on;
-        const holder = on && panel.querySelector<HTMLElement>('[data-sd-lazy]');
-        if (holder) fill(holder);
-      });
-    };
-    tabs.forEach((tab, index) => {
-      tab.tabIndex = index === 0 ? 0 : -1;
-      tab.addEventListener('click', () => select(tab));
-      tab.addEventListener('keydown', event => {
-        const step = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
-        if (!step) return;
-        const next = tabs[(index + step + tabs.length) % tabs.length];
-        select(next);
-        next.focus();
-      });
-    });
-  });
-</script>
+  .ico {
+    display: grid; place-items: center; flex: none; width: 3.5rem; height: 3.5rem;
+    border-radius: 999px; background: var(--ground, transparent); color: var(--ink);
+    box-shadow: 0 0 0 1px var(--line); position: relative; z-index: 1;
+  }
+  .txt { display: grid; gap: 0.15rem; font-size: 0.9rem; line-height: 1.3; }
+  .txt strong { font-weight: 600; }
+
+  /* Mobile: a vertical path, icon left, words right. */
+  .flow-path { position: relative; display: grid; gap: 1.5rem; list-style: none; padding: 0; margin: 0; }
+  .flow-path::before { content: ''; position: absolute; left: 1.75rem; top: 1.75rem; bottom: 1.75rem; width: 1px; background: var(--line); }
+  .node, .flow-watch { display: flex; align-items: center; gap: 1rem; }
+  .flow-track { display: none; }
+
+  .flow-attack { display: grid; gap: 1.5rem; margin-top: 2.5rem; padding-left: 1.75rem; border-left: 1px dashed var(--line); margin-left: 0; }
+  .flow-attack .stub { display: none; }
+  .refused .ico { color: var(--hl); box-shadow: 0 0 0 1.5px var(--hl); }
+
+  .flow-watch {
+    margin-top: 2.5rem; padding: 1rem 1.25rem; border-radius: 1.5rem; box-shadow: 0 0 0 1px var(--line);
+  }
+  .flow-watch .ico { color: var(--hl); box-shadow: 0 0 0 1.5px var(--hl); }
+
+  /* only the icon ring lights, in turn along the path */
+  .flow-path .ico { animation: lit 14s ease-in-out infinite; animation-delay: calc(var(--i, 0) * 2.4s); }
+  @keyframes lit {
+    0% { color: var(--ink); box-shadow: 0 0 0 1px var(--line); }
+    4%, 12% { color: var(--hl); box-shadow: 0 0 0 2px var(--hl); }
+    18%, 100% { color: var(--ink); box-shadow: 0 0 0 1px var(--line); }
+  }
+
+  @media (min-width: 1024px) {
+    .flow-path { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; }
+    .flow-path::before { display: none; }
+    .flow-path .node { flex-direction: column; text-align: center; padding: 0 0.5rem; }
+    .flow-track { display: block; position: absolute; top: 1.75rem; left: calc(100% / 12); right: calc(100% / 12); height: 1px; background: var(--line); }
+    .flow-dot { position: absolute; top: -3px; left: 0; width: 100%; height: 7px; opacity: 0; animation: travel 14s linear infinite; }
+    .flow-dot::before { content: ''; position: absolute; left: -3.5px; width: 7px; height: 7px; border-radius: 999px; background: var(--hl); }
+    @keyframes travel {
+      0% { transform: translateX(0); opacity: 0; }
+      3% { opacity: 1; }
+      83% { transform: translateX(100%); opacity: 1; }
+      86%, 100% { transform: translateX(100%); opacity: 0; }
+    }
+
+    /* Attack: drops from the agent (column 2), runs one step, and ends at a bar. */
+    .flow-attack { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; margin-top: 1.5rem; padding-left: 0; border-left: 0; position: relative; }
+    .flow-attack::before { content: ''; grid-column: 2; grid-row: 1; justify-self: center; width: 0; height: 100%; border-left: 1px dashed var(--line); position: absolute; top: -1.5rem; height: 1.5rem; left: calc(100% / 6 * 1.5); }
+    .flow-attack > .node:first-child { grid-column: 2; flex-direction: column; text-align: center; padding: 0 0.5rem; }
+    .flow-attack .stub { display: block; grid-column: 3; align-self: start; margin-top: 1.75rem; border-top: 1px dashed var(--line); position: relative; margin-right: 50%; }
+    .flow-attack .stub::after { content: ''; position: absolute; right: -1px; top: -0.5rem; height: 1rem; border-left: 2px solid var(--hl); }
+    .flow-attack .refused { grid-column: 3; flex-direction: column; text-align: center; padding: 0 0.5rem; margin-left: 50%; }
+    .flow-watch { justify-content: center; margin-top: 2.5rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flow-path .ico, .flow-dot { animation: none; }
+    .flow-dot { display: none; }
+  }
+</style>

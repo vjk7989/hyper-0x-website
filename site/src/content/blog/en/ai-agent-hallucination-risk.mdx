@@ -84,7 +84,7 @@ Ask for exceptions in a field of their own. An empty field named "exceptions" is
 
 A report is a claim. A receipt is evidence: a signed record that a job writes when it runs, with a link to the receipt before it.
 
-Take the backup example. Every night, the backup job writes a receipt on [Hyper 0x](../../products/hyper-0x/), our blockchain. The receipt holds the job ID, the time and the size of the backup. The agent reports "backup done, job 4472". The check looks up job 4472 and finds no receipt.
+Take the backup example. Every night, the backup job writes a receipt on [Hyper 0x](../../blockchain/), our blockchain. The receipt holds the job ID, the time and the size of the backup. The agent reports "backup done, job 4472". The check looks up job 4472 and finds no receipt.
 
 The mismatch blocks the restore plan, and an alert goes to the operations team. Now picture the same night without the check. The team trusts the report. A week later, a disk fails, and the restore fails with it, because the backup never ran. A receipt check on the first night catches the gap.
 
@@ -92,7 +92,7 @@ Chained receipts also show when an agent covers its tracks. If an entry disappea
 
 ## What part does H0x-ADE play?
 
-Be clear about what a security gateway can do here. [H0x-ADE](../../products/h0x-ade/), our security gateway for AI agents, does not fact-check what a model says. It does not detect hallucinations either. The check against your source systems belongs in your own workflow. H0x-ADE limits the damage when a wrong claim gets through, in three ways:
+Be clear about what a security gateway can do here. [H0x-ADE](../../ade/), our security gateway for AI agents, does not fact-check what a model says. It does not detect hallucinations either. The check against your source systems belongs in your own workflow. H0x-ADE limits the damage when a wrong claim gets through, in three ways:
 
 - **Receipts.** H0x-ADE gives every decision a signed receipt and anchors the receipt chain on Hyper 0x. Nobody can quietly edit that record later.
 - **Gates.** The supply chain gate treats an invented package like any other new part. Every new package or MCP server must pass an allow-list, a pinned hash or a sandbox test. A pinned hash is the fixed digital fingerprint of an approved version.

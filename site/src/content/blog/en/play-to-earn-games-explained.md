@@ -7,7 +7,6 @@ authorImageAlt: 'Buckleson logo'
 pubDate: 2026-10-14
 readTime: 5
 tags: ['Web3 gaming', 'Play-to-earn']
-diagram: 'hyperrun'
 faqs:
   - question: 'Can you really make money from play-to-earn games?'
     answer: 'Some players do, but no game can guarantee earnings. In token-based games, income depends on the token price, which can fall sharply. In skill-based games, rewards go mainly to players who win, so most players earn little or nothing.'
@@ -71,17 +70,11 @@ Imagine a mid-sized studio that builds a competitive shooter. Instead of a rewar
 
 Fans can be part of the economy too, when they predict results. That adds its own design and legal questions. Our post on [how blockchain makes esports predictions transparent](../esports-prediction-on-blockchain/) covers them. The idea of a signed, tamper-evident record comes from the same thinking as [proof of execution](../proof-of-execution-ai/).
 
-## How will HyperRun approach play-to-earn?
+## How does a studio pay out rewards fairly?
 
-[HyperRun](../../products/hyperrun/) is a Buckleson product. It is a realistic first-person shooter. In it, people earn in three ways:
+A studio signs every match result on its server before any payout. Then no one can change the result afterwards. A rewards contract on [Hyper 0x](../../blockchain/), the Buckleson blockchain, settles the payouts from those signed results. Anyone can read the contract and check the rules.
 
-- Players earn through gameplay and wins.
-- Fans earn when they predict matches and players.
-- Skilled gamers get sponsorship through the predictions that other players make on them.
-
-The diagram at the top of this page shows the planned flow.
-
-To keep it fair, HyperRun will sign every match result before any payout. Then no one can change the result afterwards. The plan is for a rewards contract on [Hyper 0x](../../products/hyper-0x/), the Buckleson blockchain, to resolve predictions and pay out. Players and fans will get an in-game wallet built with the Hyper Wallet SDK. As with any game that offers real-money rewards or predictions, the rules that apply will vary by country.
+The [Hyper Wallet](../../wallet/) SDKs give players a wallet inside the game. Account abstraction on Hyper 0x lets players sign in with a passkey or face scan. The studio can sponsor the network fees. As with any game that offers real-money rewards or predictions, the rules that apply vary by country.
 
 ## Where should you start?
 
@@ -91,4 +84,4 @@ To keep it fair, HyperRun will sign every match result before any payout. Then n
 4. Sign results. Pay out through code that anyone can verify.
 5. Get legal advice for each market on real-money rewards and predictions.
 
-HyperRun has signed results and on-chain payouts at its core. Book a call to talk about HyperRun, or about in-game wallets for your own studio.
+Book a call to talk about signed results, on-chain payouts or in-game wallets for your own studio.

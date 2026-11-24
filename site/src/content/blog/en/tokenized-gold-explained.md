@@ -72,11 +72,11 @@ ETFs are the most familiar route for investors with a brokerage account. But mos
 
 Imagine an asset issuer that already stores gold for clients. It wants to offer that gold in a mobile app. It places allocated Good Delivery bars in a trust with an independent vault. It mints one token per gram on its own ledger. It publishes bar lists and monthly attestations, and it lets users buy as little as a single gram.
 
-On [Hyper 0x](../../products/hyper-0x/), the Buckleson blockchain, that issuer can run its own private L2, a dedicated blockchain layer with its own rules. Hyper 0x checks KYC (know your customer) status, country restrictions and investor limits before a transfer executes. Investor records stay encrypted per party. Trades between gold and cash settle in one step, as our post on [atomic settlement](../atomic-settlement/) explains. Our [asset tokenization services](../../services/asset-tokenization/) cover the token, the rules and the investor app.
+On [Hyper 0x](../../blockchain/), the Buckleson blockchain, that issuer can run its own private L2, a dedicated blockchain layer with its own rules. Hyper 0x checks KYC (know your customer) status, country restrictions and investor limits before a transfer executes. Investor records stay encrypted per party. Trades between gold and cash settle in one step, as our post on [atomic settlement](../atomic-settlement/) explains. Our [asset tokenization services](../../services/asset-tokenization/) cover the token, the rules and the investor app.
 
 ## Where does H0X Pay fit?
 
-[H0X Pay](../../products/h0x-pay/) is a Buckleson product. Its first roadmap phase is tokenized gold. Users buy it in small slices from everyday payments, through an investment plan that they set once. The roadmap puts index funds, tokenized stocks and bonds next. Read [what micro-investing is](../what-is-micro-investing/) to see how slice-of-every-payment plans work. That post also covers their pros and cons.
+[H0X Pay](../../pay/) is a Buckleson product. Its first roadmap phase is tokenized gold. Users buy it in small slices from everyday payments, through an investment plan that they set once. The roadmap puts index funds, tokenized stocks and bonds next. Read [what micro-investing is](../what-is-micro-investing/) to see how slice-of-every-payment plans work. That post also covers their pros and cons.
 
 ## Where should you start?
 
