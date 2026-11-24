@@ -17,10 +17,19 @@ interface Props {
 const { tone = 'light', render = false, class: className } = Astro.props;
 ---
 
-<div class:list={['mx-2 mt-3 rounded-[2rem] sm:mx-3', !render && 'box-lazy', tone === 'dark' ? 'on-sheet bg-sheet text-white' : tone === 'paper' ? 'bg-paper ring-1 ring-paper-line' : 'glass', className]}>
+<div class:list={['mx-2 mt-3 rounded-[2rem] sm:mx-3', !render && 'box-lazy', tone === 'dark' ? 'on-sheet bg-sheet text-white' : tone === 'paper' ? 'bg-paper ring-1 ring-paper-line' : 'glass box-wash', className]}>
   <slot />
 </div>
 
 <style>
+  /* A faint single-hue wash from the top edge, fading out by a third of the
+     box: depth without a second colour. Static paint; the accent steps swap
+     with the theme, so dark gets a hint of orange. */
+  .box-wash {
+    background-image: linear-gradient(to bottom, color-mix(in oklab, var(--accent-600) 5%, transparent), transparent 35%);
+  }
+  :global(.dark) .box-wash {
+    background-image: linear-gradient(to bottom, color-mix(in oklab, var(--accent-600) 4%, transparent), transparent 35%);
+  }
   .box-lazy { content-visibility: auto; contain-intrinsic-size: auto 60rem; }
 </style>

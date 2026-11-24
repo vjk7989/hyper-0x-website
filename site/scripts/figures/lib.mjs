@@ -199,7 +199,7 @@ const SITE_CSS = `
 .iso .iso-plate-corner{color:var(--anatomy-text)}
 .iso-hero{--anatomy-card:color-mix(in oklab,var(--card,#fff) 80%,transparent)}
 .iso-hero .iso-plate{padding:46px 14px 42px}
-.iso-hero .iso-plate-corner,.iso-hero .fig-pin-text b,.iso-hero .fig-pin-text small,.iso-hero .fig-pin-num{font-size:11px}
+.iso-hero .iso-plate-corner,.iso-hero .fig-pin-text b,.iso-hero .fig-pin-text small,.iso-hero .fig-pin-num,.iso-card .iso-plate-corner,.iso-card .fig-pin-text b,.iso-card .fig-pin-text small,.iso-card .fig-pin-num{font-size:11px}
 .iso-hero .fig-pin-num{min-width:16px;height:16px}
 .fig-pin{position:absolute;display:flex;flex-direction:column;align-items:center;transform:translate(-50%,calc(-100% + 3px));pointer-events:none;transition:opacity .45s ease,transform .45s cubic-bezier(.22,1,.36,1);z-index:1}
 .fig-pin[data-side="down"]{flex-direction:column-reverse;transform:translate(-50%,-3px)}

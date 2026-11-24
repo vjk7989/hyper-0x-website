@@ -166,6 +166,7 @@ export const en = {
           points: [
             'Important work goes to Claude, Codex or ChatGPT',
             'Day-to-day work goes to a local model if you have one, and the router trains it in parallel',
+            'You set the rules for what leaves your side',
           ],
           cta: { title: 'Read more', url: '/blog/stop-llm-data-leaks-pii-redaction/' },
         },
@@ -177,7 +178,9 @@ export const en = {
           points: [
             'Built around prompt injection, LLM hijacking, distillation, skill hijacking and supply chain attacks',
             'The gate checks each call against your rules',
+            'Every call, passed or refused, leaves a signed receipt on the chain',
           ],
+          stat: { value: '6', label: 'gates check every agent call' },
           cta: { title: 'Read more', url: '/blog/how-to-secure-ai-agents/' },
         },
       ],
